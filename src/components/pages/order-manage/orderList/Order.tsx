@@ -1,3 +1,5 @@
+import { EditOrder } from "./EditOrder";
+
 interface OrderProps {
   orderItems: {
     name: string;
@@ -19,8 +21,8 @@ export const Order = ({ orderItems, totalPrice }: OrderProps) => {
       <span>합계:{totalPrice}</span>
       <div className="flex gap-4 justify-center items-center">
         <button>완료</button>
-        <button>수정</button>
       </div>
+      <EditOrder orderItems={orderItems} />
     </div>
   );
 };
