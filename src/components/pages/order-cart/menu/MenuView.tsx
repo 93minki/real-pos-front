@@ -1,62 +1,42 @@
 "use client";
+import { useEffect, useState } from "react";
 import { MenuCard } from "./MenuCard";
 
 type MenuItemsType = {
+  createdAt: string;
+  enable: boolean;
   name: string;
   price: number;
-  enable: boolean;
-}[];
-
-const MENU_ITEMS: MenuItemsType = [
-  {
-    name: "item1",
-    price: 4000,
-    enable: true,
-  },
-  {
-    name: "item2",
-    price: 3000,
-    enable: true,
-  },
-  {
-    name: "item3",
-    price: 3000,
-    enable: true,
-  },
-  {
-    name: "item4",
-    price: 3000,
-    enable: true,
-  },
-  {
-    name: "item5",
-    price: 3000,
-    enable: true,
-  },
-  {
-    name: "item6",
-    price: 3000,
-    enable: true,
-  },
-];
+  updatedAt: string;
+  __v: number;
+  _id: string;
+};
 
 export const MenuView = () => {
+  const [menuList, setMenuList] = useState<MenuItemsType[] | null>();
+
+  useEffect(() => {
+    const getMenuItems = async () => {
+      const fetchData = await fetch("/api/menu");
+      const response: { data: MenuItemsType[] } = await fetchData.json();
+      setMenuList(response.data);
+    };
+    getMenuItems();
+  }, []);
+
   return (
-    <div className="flex-grow-[8] basis-[80%] max-w-[80%] min-w-[80%]  pr-8">
+    <div className="flex-grow-[8] basis-[80%] max-w-[80%] min-w-[80%] pr-8 ">
       <ul className="grid grid-cols-5 gap-4">
-        {MENU_ITEMS.map((item) => {
-          return (
-            <>
-              {item.enable ? (
-                <li key={item.name} className="">
-                  <MenuCard name={item.name} price={item.price} />
+        {menuList &&
+          menuList.map((menu) => {
+            return (
+              menu.enable && (
+                <li key={menu._id} className="">
+                  <MenuCard name={menu.name} price={menu.price} />
                 </li>
-              ) : (
-                ""
-              )}
-            </>
-          );
-        })}
+              )
+            );
+          })}
       </ul>
     </div>
   );

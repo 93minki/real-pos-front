@@ -38,14 +38,14 @@ export const EditOrder = ({ orderItems }: EditOrderProps) => {
         ))}
 
         <DialogFooter>
-          <Button type="button" variant={"default"}>
-            변경하기
-          </Button>
           <DialogClose asChild>
             <Button type="button" variant={"secondary"}>
               Close
             </Button>
           </DialogClose>
+          <Button type="button" variant={"default"}>
+            변경하기
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
