@@ -1,3 +1,5 @@
+import { SquareX } from "lucide-react";
+
 interface OrderItemsProps {
   name: string;
   quantity: number;
@@ -14,9 +16,9 @@ export const OrderItems = ({
   deleteItem,
 }: OrderItemsProps) => {
   return (
-    <div className="flex gap-2 border justify-center items-center">
+    <div className="flex flex-col gap-2 border justify-center items-center py-2 relative">
       <span>{name}</span>
-      <div className="flex gap-4">
+      <div className="flex gap-4 ">
         <button
           className="border px-2"
           onClick={() => {
@@ -34,14 +36,14 @@ export const OrderItems = ({
         >
           +
         </button>
+
+        <SquareX
+          className="absolute right-0 bottom-0"
+          onClick={() => {
+            deleteItem(name);
+          }}
+        />
       </div>
-      <button
-        onClick={() => {
-          deleteItem(name);
-        }}
-      >
-        삭제
-      </button>
     </div>
   );
 };

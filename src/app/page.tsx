@@ -1,5 +1,5 @@
-import { MenuView } from "@/components/pages/menu/MenuView";
-import { OrderView } from "@/components/pages/order/OrderView";
+import { MenuView } from "@/components/pages/order-cart/menu/MenuView";
+import { OrderView } from "@/components/pages/order-cart/order/OrderView";
 
 export default function Home() {
   return (

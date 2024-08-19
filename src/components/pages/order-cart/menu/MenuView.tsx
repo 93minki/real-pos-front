@@ -42,13 +42,21 @@ const MENU_ITEMS: MenuItemsType = [
 
 export const MenuView = () => {
   return (
-    <div className="flex-grow-[8] pr-8">
+    <div className="flex-grow-[8] basis-[80%] max-w-[80%] min-w-[80%]  pr-8">
       <ul className="grid grid-cols-5 gap-4">
-        {MENU_ITEMS.map((item) => (
-          <li key={item.name} className="">
-            <MenuCard name={item.name} price={item.price} />
-          </li>
-        ))}
+        {MENU_ITEMS.map((item) => {
+          return (
+            <>
+              {item.enable ? (
+                <li key={item.name} className="">
+                  <MenuCard name={item.name} price={item.price} />
+                </li>
+              ) : (
+                ""
+              )}
+            </>
+          );
+        })}
       </ul>
     </div>
   );
