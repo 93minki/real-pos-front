@@ -25,6 +25,13 @@ export const defaultInitiState: OrderState = {
   totalPrice: 0,
 };
 
+const calcTotalPrice = (orderItems: OrderItems[]) => {
+  const totalPrice = orderItems.reduce((acc, cur) => {
+    return acc + cur.price * cur.quantity;
+  }, 0);
+  return totalPrice;
+};
+
 export const createOrderStore = (initState: OrderState = defaultInitiState) => {
   return createStore<OrderStore>()((set) => ({
     ...initState,
@@ -41,7 +48,7 @@ export const createOrderStore = (initState: OrderState = defaultInitiState) => {
 
           return {
             orderItems: updateOrderItems,
-            totalPrice: state.totalPrice + item.price,
+            totalPrice: calcTotalPrice(updateOrderItems),
           };
         } else {
           return {
@@ -52,16 +59,17 @@ export const createOrderStore = (initState: OrderState = defaultInitiState) => {
       }),
     deleteOrder: (name) =>
       set((state) => {
-        const itemToDelete = state.orderItems.find(
+        const existItemIndex = state.orderItems.findIndex(
           (orderItem) => orderItem.name === name
         );
-        if (itemToDelete) {
+
+        if (existItemIndex !== -1) {
+          const updateOrderItems = state.orderItems.filter(
+            (orderItem) => orderItem.name !== name
+          );
           return {
-            orderItems: state.orderItems.filter(
-              (orderItem) => orderItem.name !== name
-            ),
-            totalPrice:
-              state.totalPrice - itemToDelete.price * itemToDelete.quantity,
+            orderItems: updateOrderItems,
+            totalPrice: calcTotalPrice(updateOrderItems),
           };
         } else {
           return state;
@@ -80,6 +88,7 @@ export const createOrderStore = (initState: OrderState = defaultInitiState) => {
 
           return {
             orderItems: updateOrderItems,
+            totalPrice: calcTotalPrice(updateOrderItems),
           };
         } else {
           return state;
@@ -98,12 +107,15 @@ export const createOrderStore = (initState: OrderState = defaultInitiState) => {
             existItem.quantity -= 1;
             return {
               orderItems: updateOrderItems,
+              totalPrice: calcTotalPrice(updateOrderItems),
             };
           } else {
+            const deletedItem = state.orderItems.filter(
+              (item) => item.name !== name
+            );
             return {
-              orderItems: state.orderItems.filter(
-                (orderItem) => orderItem.name !== name
-              ),
+              orderItems: deletedItem,
+              totalPrice: calcTotalPrice(deletedItem),
             };
           }
         } else {

@@ -3,6 +3,7 @@ interface OrderItemsProps {
   quantity: number;
   upCount: (name: string) => void;
   downCount: (name: string) => void;
+  deleteItem: (name: string) => void;
 }
 
 export const OrderItems = ({
@@ -10,6 +11,7 @@ export const OrderItems = ({
   quantity,
   upCount,
   downCount,
+  deleteItem,
 }: OrderItemsProps) => {
   return (
     <div className="flex gap-2 border justify-center items-center">
@@ -33,6 +35,13 @@ export const OrderItems = ({
           +
         </button>
       </div>
+      <button
+        onClick={() => {
+          deleteItem(name);
+        }}
+      >
+        삭제
+      </button>
     </div>
   );
 };

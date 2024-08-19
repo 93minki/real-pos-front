@@ -6,15 +6,25 @@ import { OrderItems } from "./OrderItems";
 
 export const OrderView = () => {
   const [quantity, setQuantity] = useState(1);
-  const { orderItems, totalPrice, increaseOrderCount, decreaseOrderCount } = useOrderStore(
-    (state) => state
-  );
+  const {
+    orderItems,
+    totalPrice,
+    increaseOrderCount,
+    decreaseOrderCount,
+    deleteOrder,
+  } = useOrderStore((state) => state);
+
+  console.log("orderItems", orderItems);
 
   const upCount = (name: string) => {
     increaseOrderCount(name);
   };
   const downCount = (name: string) => {
-    decreaseOrderCount(name)
+    decreaseOrderCount(name);
+  };
+
+  const deleteItem = (name: string) => {
+    deleteOrder(name);
   };
 
   return (
@@ -27,6 +37,7 @@ export const OrderView = () => {
             quantity={item.quantity}
             downCount={downCount}
             upCount={upCount}
+            deleteItem={deleteItem}
           />
         );
       })}
