@@ -6,9 +6,10 @@ interface MenuCardProps {
   name: string;
   price: number;
   id: string;
+  editMode: boolean;
 }
 
-export const MenuCard = ({ name, price, id }: MenuCardProps) => {
+export const MenuCard = ({ name, price, id, editMode }: MenuCardProps) => {
   const { addOrder } = useOrderStore((state) => state);
   return (
     <div
@@ -20,8 +21,12 @@ export const MenuCard = ({ name, price, id }: MenuCardProps) => {
     >
       <span>{name}</span>
       <span>{price}</span>
-      <EditMenu name={name} price={price} id={id} />
-      <DeleteMenu id={id} />
+      {editMode && (
+        <>
+          <EditMenu name={name} price={price} id={id} />
+          <DeleteMenu id={id} />
+        </>
+      )}
     </div>
   );
 };

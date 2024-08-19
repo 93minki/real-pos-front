@@ -14,6 +14,7 @@ type MenuItemsType = {
 
 export const MenuView = () => {
   const [menuList, setMenuList] = useState<MenuItemsType[] | null>();
+  const [menuEditMode, setMenuEditMode] = useState(false);
 
   useEffect(() => {
     const getMenuItems = async () => {
@@ -26,13 +27,21 @@ export const MenuView = () => {
 
   return (
     <div className="flex-grow-[8] basis-[80%] max-w-[80%] min-w-[80%] pr-8 ">
+      <button onClick={() => setMenuEditMode(!menuEditMode)}>
+        toggle edit mode
+      </button>
       <ul className="grid grid-cols-5 gap-4">
         {menuList &&
           menuList.map((menu) => {
             return (
               menu.enable && (
                 <li key={menu._id} className="">
-                  <MenuCard name={menu.name} price={menu.price} id={menu._id} />
+                  <MenuCard
+                    name={menu.name}
+                    price={menu.price}
+                    id={menu._id}
+                    editMode={menuEditMode}
+                  />
                 </li>
               )
             );
