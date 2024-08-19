@@ -1,18 +1,11 @@
-"use client";
+import { MenuView } from "@/components/pages/menu/MenuView";
+import { OrderView } from "@/components/pages/order/OrderView";
+
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="flex flex-col justify-center items-center">
-        API Test
-        <button
-          onClick={async () => {
-            const fetchData = await fetch("/api/menu");
-            const response = await fetchData.json();
-          }}
-        >
-          Get Menus
-        </button>
-      </div>
+    <main className="flex min-h-screen items-center justify-between p-24">
+      <MenuView />
+      <OrderView />
     </main>
   );
 }
