@@ -1,4 +1,5 @@
 import { useOrderStore } from "@/provider/order-store-provider";
+import { EditMenu } from "./EditMenu";
 
 interface MenuCardProps {
   name: string;
@@ -18,6 +19,7 @@ export const MenuCard = ({ name, price }: MenuCardProps) => {
     >
       <span>{name}</span>
       <span>{price}</span>
+      <EditMenu name={name} price={price} />
     </div>
   );
 };
