@@ -1,14 +1,15 @@
 import { useOrderStore } from "@/provider/order-store-provider";
+import { DeleteMenu } from "./DeleteMenu";
 import { EditMenu } from "./EditMenu";
 
 interface MenuCardProps {
   name: string;
   price: number;
+  id: string;
 }
 
-export const MenuCard = ({ name, price }: MenuCardProps) => {
+export const MenuCard = ({ name, price, id }: MenuCardProps) => {
   const { addOrder } = useOrderStore((state) => state);
-
   return (
     <div
       role="button"
@@ -19,7 +20,8 @@ export const MenuCard = ({ name, price }: MenuCardProps) => {
     >
       <span>{name}</span>
       <span>{price}</span>
-      <EditMenu name={name} price={price} />
+      <EditMenu name={name} price={price} id={id} />
+      <DeleteMenu id={id} />
     </div>
   );
 };

@@ -32,7 +32,7 @@ export const MenuView = () => {
             return (
               menu.enable && (
                 <li key={menu._id} className="">
-                  <MenuCard name={menu.name} price={menu.price} />
+                  <MenuCard name={menu.name} price={menu.price} id={menu._id} />
                 </li>
               )
             );
