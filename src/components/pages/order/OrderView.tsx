@@ -1,36 +1,38 @@
 "use client";
 
+import { useOrderStore } from "@/provider/order-store-provider";
 import { useState } from "react";
+import { OrderItems } from "./OrderItems";
 
 export const OrderView = () => {
   const [quantity, setQuantity] = useState(1);
+  const { orderItems, totalPrice, increaseOrderCount, decreaseOrderCount } = useOrderStore(
+    (state) => state
+  );
 
-  const upCount = () => {
-    setQuantity((prev) => prev + 1);
+  const upCount = (name: string) => {
+    increaseOrderCount(name);
   };
-  const downCount = () => {
-    if (quantity > 0) {
-      setQuantity((prev) => prev - 1);
-    }
+  const downCount = (name: string) => {
+    decreaseOrderCount(name)
   };
 
   return (
     <div className="flex-grow-[2] px-2">
-      <div className="flex gap-2 border justify-center items-center">
-        <span>item</span>
-        <div className="flex gap-4">
-          <button className="border px-2" onClick={downCount}>
-            -
-          </button>
-          <span>{quantity}</span>
-          <button className="border px-2" onClick={upCount}>
-            +
-          </button>
-        </div>
-      </div>
+      {orderItems.map((item) => {
+        return (
+          <OrderItems
+            key={item.name}
+            name={item.name}
+            quantity={item.quantity}
+            downCount={downCount}
+            upCount={upCount}
+          />
+        );
+      })}
 
       <div>
-        <span>totalPrice</span>
+        <span>{totalPrice}</span>
       </div>
     </div>
   );

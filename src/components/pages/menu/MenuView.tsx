@@ -1,5 +1,4 @@
 "use client";
-import { MouseEvent } from "react";
 import { MenuCard } from "./MenuCard";
 
 type MenuItemsType = {
@@ -42,20 +41,12 @@ const MENU_ITEMS: MenuItemsType = [
 ];
 
 export const MenuView = () => {
-  const MenuClickHandler = (e: MouseEvent<HTMLDivElement>) => {
-    console.log("e", e.currentTarget);
-  };
-
   return (
     <div className="flex-grow-[8] pr-8">
       <ul className="grid grid-cols-5 gap-4">
         {MENU_ITEMS.map((item) => (
           <li key={item.name} className="">
-            <MenuCard
-              name={item.name}
-              price={item.price}
-              onClickHandler={MenuClickHandler}
-            />
+            <MenuCard name={item.name} price={item.price} />
           </li>
         ))}
       </ul>
