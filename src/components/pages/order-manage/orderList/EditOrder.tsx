@@ -8,16 +8,42 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { FormEvent } from "react";
+import { OrderItemDatas } from "./OrderList";
 
 interface EditOrderProps {
-  orderItems: {
-    name: string;
-    quantity: number;
-    price: number;
-  }[];
+  orderItems: OrderItemDatas[];
+  orderId: string;
 }
 
-export const EditOrder = ({ orderItems }: EditOrderProps) => {
+// name: string;
+//   price: number;
+//   quantity: number;
+
+export const EditOrder = ({ orderItems, orderId }: EditOrderProps) => {
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+
+    const updateOrderItems = orderItems.map(({ _id, ...rest }) => ({
+      ...rest,
+      quantity: data[rest.name],
+    }));
+
+    const fetchData = await fetch(`/api/order/${orderId}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        items: updateOrderItems,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const response = await fetchData.json();
+    console.log("response", response);
+  };
+
   return (
     <Dialog>
       <DialogTrigger>수정</DialogTrigger>
@@ -25,28 +51,40 @@ export const EditOrder = ({ orderItems }: EditOrderProps) => {
         <DialogHeader>
           <DialogTitle>주문 수정</DialogTitle>
         </DialogHeader>
-        {orderItems.map((item) => (
-          <div key={item.name} className="flex flex-col">
-            <div className="flex gap-4">
-              <span>{item.name}</span>
-              <span>{item.price}</span>
+        <form onSubmit={submitHandler}>
+          <fieldset>
+            <legend>주문 목록</legend>
+            <div className="flex flex-col gap-2">
+              {orderItems.map((item) => (
+                <div
+                  key={item._id}
+                  className="flex gap-4 justify-start items-center"
+                >
+                  <span>{item.name}</span>
+                  <span>{item.price}</span>
+                  <label htmlFor={`${item.name}`}>
+                    <input
+                      className="border py-2 px-4 rounded-lg"
+                      type={"number"}
+                      name={`${item.name}`}
+                      defaultValue={item.quantity}
+                    />
+                  </label>
+                </div>
+              ))}
             </div>
-            <input type="number" value={item.quantity} />
-
-            <span>total: {item.price * item.quantity}</span>
-          </div>
-        ))}
-
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button type="button" variant={"secondary"}>
-              Close
+          </fieldset>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant={"secondary"}>
+                취소
+              </Button>
+            </DialogClose>
+            <Button type="submit" variant={"default"}>
+              변경하기
             </Button>
-          </DialogClose>
-          <Button type="button" variant={"default"}>
-            변경하기
-          </Button>
-        </DialogFooter>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

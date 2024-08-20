@@ -3,9 +3,13 @@ import { OrderItems } from "@/store/order-store";
 import { useEffect, useState } from "react";
 import { Order } from "./Order";
 
+export interface OrderItemDatas extends OrderItems {
+  _id: string;
+}
+
 type OrderDataType = {
   _id: string;
-  items: OrderItems[];
+  items: OrderItemDatas[];
   active: boolean;
   createdAt: string;
   updatedAt: string;
@@ -31,7 +35,7 @@ export const OrderList = () => {
           return (
             order.active && (
               <li key={order._id} className="">
-                <Order orderItems={order.items} />
+                <Order orderItems={order.items} orderId={order._id} />
               </li>
             )
           );

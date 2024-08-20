@@ -1,3 +1,4 @@
+import { calcTotalPrice } from "@/lib/utils";
 import { createStore } from "zustand";
 
 export type OrderItems = {
@@ -24,13 +25,6 @@ export type OrderStore = OrderState & OrderActions;
 export const defaultInitiState: OrderState = {
   orderItems: [],
   totalPrice: 0,
-};
-
-const calcTotalPrice = (orderItems: OrderItems[]) => {
-  const totalPrice = orderItems.reduce((acc, cur) => {
-    return acc + cur.price * cur.quantity;
-  }, 0);
-  return totalPrice;
 };
 
 export const createOrderStore = (initState: OrderState = defaultInitiState) => {
