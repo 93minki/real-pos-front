@@ -1,28 +1,21 @@
 "use client";
+import { useMenuStore } from "@/provider/menu-store-provider";
+import { MenuItem } from "@/store/menu-store";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { MenuCard } from "./MenuCard";
 
-type MenuItemsType = {
-  createdAt: string;
-  active: boolean;
-  name: string;
-  price: number;
-  updatedAt: string;
-  __v: number;
-  _id: string;
-};
-
 export const MenuView = () => {
-  const [menuList, setMenuList] = useState<MenuItemsType[] | null>();
   const [menuEditMode, setMenuEditMode] = useState(false);
+
+  const { menuItems, setMenuItems } = useMenuStore((state) => state);
 
   const { isPending, error, data, isLoading } = useQuery({
     queryKey: ["menu"],
     queryFn: async () => {
       const fetchData = await fetch("/api/menu");
-      const response: { data: MenuItemsType[] } = await fetchData.json();
-      setMenuList(response.data);
+      const response: { data: MenuItem[] } = await fetchData.json();
+      setMenuItems(response.data);
       return response.data;
     },
   });
@@ -36,8 +29,8 @@ export const MenuView = () => {
         toggle edit mode
       </button>
       <ul className="grid grid-cols-5 gap-4">
-        {menuList &&
-          menuList.map((menu) => {
+        {menuItems &&
+          menuItems.map((menu) => {
             return (
               menu.active && (
                 <li key={menu._id} className="">

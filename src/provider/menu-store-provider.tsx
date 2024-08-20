@@ -1,3 +1,4 @@
+"use client";
 import { createMenuStore, MenuStore } from "@/store/menu-store";
 import { createContext, useContext, useRef } from "react";
 import { useStore } from "zustand";

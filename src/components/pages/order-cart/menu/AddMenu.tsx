@@ -9,11 +9,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useMenuStore } from "@/provider/menu-store-provider";
+import { MenuItem } from "@/store/menu-store";
 import { useState } from "react";
 
 export const AddMenu = () => {
   const [menuName, setMenuName] = useState("");
   const [menuPrice, setMenuPrice] = useState(0);
+  const { addMenuItem } = useMenuStore((state) => state);
 
   const buttonClickHandler = async () => {
     const fetchData = await fetch("/api/menu", {
@@ -26,8 +29,8 @@ export const AddMenu = () => {
         "Content-Type": "application/json",
       },
     });
-    const response = await fetchData.json();
-    console.log("response", response);
+    const response: { data: MenuItem } = await fetchData.json();
+    addMenuItem(response.data);
   };
 
   return (

@@ -1,9 +1,13 @@
 import { createStore } from "zustand";
 
 export type MenuItem = {
-  id: string;
+  createdAt: string;
+  active: boolean;
   name: string;
   price: number;
+  updatedAt: string;
+  __v: number;
+  _id: string;
 };
 
 export type MenuState = {
@@ -12,6 +16,7 @@ export type MenuState = {
 
 export type MenuActions = {
   setMenuItems: (items: MenuItem[]) => void;
+  addMenuItem: (item: MenuItem) => void;
   clearMenuItems: () => void;
 };
 
@@ -25,6 +30,8 @@ export const createMenuStore = (initState: MenuState = defaultInitiState) => {
   return createStore<MenuStore>()((set) => ({
     ...initState,
     setMenuItems: (items) => set((state) => ({ menuItems: items })),
+    addMenuItem: (item) =>
+      set((state) => ({ menuItems: [...state.menuItems, item] })),
     clearMenuItems: () => set(initState),
   }));
 };
