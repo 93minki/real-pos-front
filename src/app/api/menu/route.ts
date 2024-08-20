@@ -17,8 +17,8 @@ export async function POST(request: NextRequest) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: body.menuName,
-        price: body.menuPrice,
+        name: body.name,
+        price: body.price,
       }),
     });
     const data = await response.json();

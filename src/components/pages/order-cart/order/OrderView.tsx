@@ -22,6 +22,19 @@ export const OrderView = () => {
   const deleteItem = (name: string) => {
     deleteOrder(name);
   };
+  const orderHandler = async () => {
+    const fetchData = await fetch("/api/order", {
+      method: "POST",
+      body: JSON.stringify({
+        items: orderItems,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const response = await fetchData.json();
+    console.log("response", response);
+  };
 
   return (
     <div className="flex-grow-[2] basis-[20%] max-w-[20%] min-w-[20%] px-2">
@@ -47,7 +60,14 @@ export const OrderView = () => {
 
       <div>
         {/* 주문 내역을 백엔드로 보내야 함 */}
-        <button className="border p-2 w-full">주문</button>
+        <button
+          className="border p-2 w-full"
+          onClick={() => {
+            orderHandler();
+          }}
+        >
+          주문
+        </button>
       </div>
     </div>
   );

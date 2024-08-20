@@ -19,8 +19,8 @@ export const AddMenu = () => {
     const fetchData = await fetch("/api/menu", {
       method: "POST",
       body: JSON.stringify({
-        menuName,
-        menuPrice,
+        name: menuName,
+        price: menuPrice,
       }),
       headers: {
         "Content-Type": "application/json",
