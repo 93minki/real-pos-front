@@ -21,10 +21,9 @@ export const EditMenu = ({ name, price, id }: EditMenuProps) => {
   const [menuPrice, setMenuPrice] = useState(price);
 
   const buttonClickHandler = async () => {
-    const fetchData = await fetch("/api/menu", {
+    const fetchData = await fetch(`/api/menu/${id}`, {
       method: "PATCH",
       body: JSON.stringify({
-        id,
         menuName,
         menuPrice,
       }),
@@ -69,15 +68,17 @@ export const EditMenu = ({ name, price, id }: EditMenuProps) => {
               Close
             </Button>
           </DialogClose>
-          <Button
-            type="button"
-            variant={"default"}
-            onClick={() => {
-              buttonClickHandler();
-            }}
-          >
-            변경하기
-          </Button>
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant={"default"}
+              onClick={() => {
+                buttonClickHandler();
+              }}
+            >
+              수정
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

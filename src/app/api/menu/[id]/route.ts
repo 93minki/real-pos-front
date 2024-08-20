@@ -21,3 +21,30 @@ export async function DELETE(
     );
   }
 }
+
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const body = await request.json();
+    const response = await fetch(`http://localhost:8080/menu/${params.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: body.menuName,
+        price: body.menuPrice,
+      }),
+    });
+    const data = await response.json();
+    return NextResponse.json({ success: true, data });
+  } catch (error) {
+    console.error("POST request error:", error);
+    return NextResponse.json(
+      { success: false, error: "Failed to process POST request" },
+      { status: 500 }
+    );
+  }
+}
