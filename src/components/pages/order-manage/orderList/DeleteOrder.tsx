@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 
-export const DeleteMenu = ({ id }: { id: string }) => {
+export const DeleteOrder = ({ id }: { id: string }) => {
   const deleteHandler = async () => {
     const fetchData = await fetch(`/api/order/${id}`, {
       method: "DELETE",

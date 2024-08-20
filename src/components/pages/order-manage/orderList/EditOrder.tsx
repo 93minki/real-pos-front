@@ -80,9 +80,11 @@ export const EditOrder = ({ orderItems, orderId }: EditOrderProps) => {
                 취소
               </Button>
             </DialogClose>
-            <Button type="submit" variant={"default"}>
-              변경하기
-            </Button>
+            <DialogClose asChild>
+              <Button type="submit" variant={"default"}>
+                변경하기
+              </Button>
+            </DialogClose>
           </DialogFooter>
         </form>
       </DialogContent>

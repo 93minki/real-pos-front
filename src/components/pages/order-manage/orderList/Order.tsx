@@ -1,4 +1,5 @@
 import { calcTotalPrice } from "@/lib/utils";
+import { DeleteOrder } from "./DeleteOrder";
 import { EditOrder } from "./EditOrder";
 import { OrderItemDatas } from "./OrderList";
 
@@ -20,6 +21,7 @@ export const Order = ({ orderItems, orderId }: OrderProps) => {
       <div className="flex gap-4 justify-center items-center">
         <button>완료</button>
       </div>
+      <DeleteOrder id={orderId} />
       <EditOrder orderItems={orderItems} orderId={orderId} />
     </div>
   );
