@@ -1,10 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
-  const res = await fetch("http://localhost:8080/menu");
-
-  const data = await res.json();
-  return NextResponse.json({ data });
+  try {
+    const response = await fetch("http://localhost:8080/menu", {
+      method: "GET",
+    });
+    const data = await response.json();
+    return NextResponse.json({ success: true, data });
+  } catch (error) {
+    console.error("GET request error:", error);
+    return NextResponse.json(
+      { success: false, error: "Failed to process GET request" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(request: NextRequest) {

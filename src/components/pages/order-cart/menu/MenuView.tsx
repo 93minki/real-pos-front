@@ -4,7 +4,7 @@ import { MenuCard } from "./MenuCard";
 
 type MenuItemsType = {
   createdAt: string;
-  enable: boolean;
+  active: boolean;
   name: string;
   price: number;
   updatedAt: string;
@@ -20,6 +20,7 @@ export const MenuView = () => {
     const getMenuItems = async () => {
       const fetchData = await fetch("/api/menu");
       const response: { data: MenuItemsType[] } = await fetchData.json();
+      console.log("response", response.data);
       setMenuList(response.data);
     };
     getMenuItems();
@@ -34,7 +35,7 @@ export const MenuView = () => {
         {menuList &&
           menuList.map((menu) => {
             return (
-              menu.enable && (
+              menu.active && (
                 <li key={menu._id} className="">
                   <MenuCard
                     name={menu.name}
