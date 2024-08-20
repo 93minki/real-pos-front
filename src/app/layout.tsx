@@ -1,3 +1,4 @@
+import { MenuStoreProvider } from "@/provider/menu-store-provider";
 import { OrderStoreProvider } from "@/provider/order-store-provider";
 import { ReactQueryClientProvider } from "@/provider/ReactQueryClientProvider";
 import type { Metadata } from "next";
@@ -20,7 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ReactQueryClientProvider>
-          <OrderStoreProvider>{children}</OrderStoreProvider>
+          <MenuStoreProvider>
+            <OrderStoreProvider>{children}</OrderStoreProvider>
+          </MenuStoreProvider>
         </ReactQueryClientProvider>
       </body>
     </html>
