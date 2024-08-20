@@ -1,3 +1,4 @@
+import { OrderItems } from "@/store/order-store";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(
@@ -22,20 +23,34 @@ export async function DELETE(
   }
 }
 
+type updateOrderBody = {
+  items?: OrderItems[];
+  active?: boolean;
+};
+
 export async function PATCH(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
     const body = await request.json();
+
+    const bodyObject: Partial<updateOrderBody> = {};
+
+    if (body.items) {
+      bodyObject.items = body.items;
+    }
+
+    if (body.active !== undefined) {
+      bodyObject.active = body.active;
+    }
+
     const response = await fetch(`http://localhost:8080/order/${params.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        items: body.items,
-      }),
+      body: JSON.stringify(bodyObject),
     });
     const data = await response.json();
     return NextResponse.json({ success: true, data });

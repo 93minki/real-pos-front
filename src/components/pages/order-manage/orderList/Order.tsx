@@ -9,6 +9,20 @@ interface OrderProps {
 }
 
 export const Order = ({ orderItems, orderId }: OrderProps) => {
+  const clickHandler = async () => {
+    const fetchData = await fetch(`/api/order/${orderId}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        active: false,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const response = await fetchData.json();
+    console.log("response", response);
+  };
+
   return (
     <div role="button" className="flex flex-col shadow-lg rounded-lg p-4">
       {orderItems.map((items) => (
@@ -19,7 +33,13 @@ export const Order = ({ orderItems, orderId }: OrderProps) => {
       ))}
       <span>합계:{calcTotalPrice(orderItems)}</span>
       <div className="flex gap-4 justify-center items-center">
-        <button>완료</button>
+        <button
+          onClick={() => {
+            clickHandler();
+          }}
+        >
+          완료
+        </button>
       </div>
       <DeleteOrder id={orderId} />
       <EditOrder orderItems={orderItems} orderId={orderId} />
