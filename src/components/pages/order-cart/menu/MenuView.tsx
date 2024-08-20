@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { MenuCard } from "./MenuCard";
 
 type MenuItemsType = {
@@ -16,15 +17,18 @@ export const MenuView = () => {
   const [menuList, setMenuList] = useState<MenuItemsType[] | null>();
   const [menuEditMode, setMenuEditMode] = useState(false);
 
-  useEffect(() => {
-    const getMenuItems = async () => {
+  const { isPending, error, data, isLoading } = useQuery({
+    queryKey: ["menu"],
+    queryFn: async () => {
       const fetchData = await fetch("/api/menu");
       const response: { data: MenuItemsType[] } = await fetchData.json();
-      console.log("response", response.data);
       setMenuList(response.data);
-    };
-    getMenuItems();
-  }, []);
+      return response.data;
+    },
+  });
+
+  console.log("query data", data);
+  if (isPending) return <div>Loading...</div>;
 
   return (
     <div className="flex-grow-[8] basis-[80%] max-w-[80%] min-w-[80%] pr-8 ">

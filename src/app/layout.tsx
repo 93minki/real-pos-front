@@ -1,4 +1,5 @@
 import { OrderStoreProvider } from "@/provider/order-store-provider";
+import { ReactQueryClientProvider } from "@/provider/ReactQueryClientProvider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <OrderStoreProvider>{children}</OrderStoreProvider>
+        <ReactQueryClientProvider>
+          <OrderStoreProvider>{children}</OrderStoreProvider>
+        </ReactQueryClientProvider>
       </body>
     </html>
   );
