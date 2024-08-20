@@ -16,6 +16,7 @@ export type OrderActions = {
   deleteOrder: (name: string) => void;
   increaseOrderCount: (name: string) => void;
   decreaseOrderCount: (name: string) => void;
+  reset: () => void;
 };
 
 export type OrderStore = OrderState & OrderActions;
@@ -122,5 +123,8 @@ export const createOrderStore = (initState: OrderState = defaultInitiState) => {
           return state;
         }
       }),
+    reset: () => {
+      set(initState);
+    },
   }));
 };

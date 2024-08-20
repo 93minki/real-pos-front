@@ -10,6 +10,7 @@ export const OrderView = () => {
     increaseOrderCount,
     decreaseOrderCount,
     deleteOrder,
+    reset,
   } = useOrderStore((state) => state);
 
   const upCount = (name: string) => {
@@ -34,6 +35,7 @@ export const OrderView = () => {
     });
     const response = await fetchData.json();
     console.log("response", response);
+    reset();
   };
 
   return (
