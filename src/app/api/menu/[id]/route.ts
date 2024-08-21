@@ -34,11 +34,12 @@ export async function PATCH(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: body.menuName,
-        price: body.menuPrice,
+        name: body.name,
+        price: body.price,
       }),
     });
     const data = await response.json();
+    console.log("response data", data);
     return NextResponse.json({ success: true, data });
   } catch (error) {
     console.error("PATCH request error:", error);

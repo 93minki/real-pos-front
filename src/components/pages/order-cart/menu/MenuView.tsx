@@ -20,7 +20,6 @@ export const MenuView = () => {
     },
   });
 
-  console.log("query data", data);
   if (isPending) return <div>Loading...</div>;
 
   return (
