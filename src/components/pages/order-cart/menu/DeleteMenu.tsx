@@ -10,8 +10,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { useMenuStore } from "@/provider/menu-store-provider";
 
 export const DeleteMenu = ({ id }: { id: string }) => {
+  const { setMenuItems, menuItems } = useMenuStore((state) => state);
+
   const deleteHandler = async () => {
     const fetchData = await fetch(`/api/menu/${id}`, {
       method: "DELETE",
@@ -20,7 +23,10 @@ export const DeleteMenu = ({ id }: { id: string }) => {
       },
     });
     const response = await fetchData.json();
-    console.log("response", response);
+    const updateMenuItems = menuItems.filter(
+      (item) => item._id !== response.data._id
+    );
+    setMenuItems(updateMenuItems);
   };
 
   return (
