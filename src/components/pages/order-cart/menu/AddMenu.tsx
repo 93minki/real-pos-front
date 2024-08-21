@@ -93,6 +93,7 @@ export const AddMenu = () => {
               onClick={() => {
                 buttonClickHandler();
               }}
+              disabled={mutation.isPending}
             >
               추가
             </Button>

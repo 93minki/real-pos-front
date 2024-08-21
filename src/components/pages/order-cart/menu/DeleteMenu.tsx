@@ -63,7 +63,12 @@ export const DeleteMenu = ({ id }: { id: string }) => {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Button onClick={() => deleteHandler()}>삭제하기</Button>
+            <Button
+              onClick={() => deleteHandler()}
+              disabled={mutation.isPending}
+            >
+              삭제하기
+            </Button>
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

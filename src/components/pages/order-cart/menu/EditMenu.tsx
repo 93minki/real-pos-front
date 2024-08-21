@@ -9,6 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useMenuStore } from "@/provider/menu-store-provider";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 interface EditMenuProps {
@@ -17,31 +18,55 @@ interface EditMenuProps {
   id: string;
 }
 
+const editMenuItem = async ({
+  id,
+  name,
+  price,
+}: {
+  id: string;
+  name: string;
+  price: number;
+}) => {
+  const response = await fetch(`/api/menu/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name,
+      price,
+    }),
+  });
+  if (!response.ok) {
+    throw new Error("Failed to edit menu item");
+  }
+  return response.json();
+};
+
 export const EditMenu = ({ name, price, id }: EditMenuProps) => {
   const [menuName, setMenuName] = useState(name);
   const [menuPrice, setMenuPrice] = useState(price);
-
   const { menuItems, setMenuItems } = useMenuStore((state) => state);
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: editMenuItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["menu"] });
+    },
+  });
 
   const buttonClickHandler = async () => {
-    const fetchData = await fetch(`/api/menu/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify({
-        menuName,
-        menuPrice,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const response = await fetchData.json();
-    const existIndex = menuItems.findIndex(
-      (item) => item._id === response.data._id
-    );
-    const updateMenuItems = [...menuItems];
-    updateMenuItems[existIndex].name = menuName;
-    updateMenuItems[existIndex].price = menuPrice;
-    setMenuItems(updateMenuItems);
+    mutation.mutate({ id, name: menuName, price: menuPrice });
+    if (mutation.isSuccess) {
+      const existIndex = menuItems.findIndex(
+        (item) => item._id === mutation.data._id
+      );
+      const updateMenuItems = [...menuItems];
+      updateMenuItems[existIndex].name = menuName;
+      updateMenuItems[existIndex].price = menuPrice;
+      setMenuItems(updateMenuItems);
+    }
   };
 
   return (
@@ -84,6 +109,7 @@ export const EditMenu = ({ name, price, id }: EditMenuProps) => {
               onClick={() => {
                 buttonClickHandler();
               }}
+              disabled={mutation.isPending}
             >
               수정
             </Button>
