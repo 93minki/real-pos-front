@@ -11,22 +11,40 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useMenuStore } from "@/provider/menu-store-provider";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+const deleteItems = async (id: string) => {
+  const response = await fetch(`/api/menu/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Failed to delete menu item");
+  }
+  return response.json();
+};
 
 export const DeleteMenu = ({ id }: { id: string }) => {
   const { setMenuItems, menuItems } = useMenuStore((state) => state);
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: deleteItems,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["menu"] });
+    },
+  });
 
   const deleteHandler = async () => {
-    const fetchData = await fetch(`/api/menu/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const response = await fetchData.json();
-    const updateMenuItems = menuItems.filter(
-      (item) => item._id !== response.data._id
-    );
-    setMenuItems(updateMenuItems);
+    mutation.mutate(id);
+    if (mutation.isSuccess) {
+      const updateMenuItems = menuItems.filter(
+        (item) => item._id !== mutation.data._id
+      );
+      setMenuItems(updateMenuItems);
+    }
   };
 
   return (
