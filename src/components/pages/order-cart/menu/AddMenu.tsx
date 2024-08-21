@@ -10,27 +10,49 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useMenuStore } from "@/provider/menu-store-provider";
-import { MenuItem } from "@/store/menu-store";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+
+const uploadMenuItem = async ({
+  name,
+  price,
+}: {
+  name: string;
+  price: number;
+}) => {
+  const response = await fetch("/api/menu", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, price }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to add menu item");
+  }
+
+  return response.json();
+};
 
 export const AddMenu = () => {
   const [menuName, setMenuName] = useState("");
   const [menuPrice, setMenuPrice] = useState(0);
   const { addMenuItem } = useMenuStore((state) => state);
+  const queryClient = useQueryClient();
 
-  const buttonClickHandler = async () => {
-    const fetchData = await fetch("/api/menu", {
-      method: "POST",
-      body: JSON.stringify({
-        name: menuName,
-        price: menuPrice,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const response: { data: MenuItem } = await fetchData.json();
-    addMenuItem(response.data);
+  const mutation = useMutation({
+    mutationFn: uploadMenuItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["menu"] });
+    },
+  });
+
+  const buttonClickHandler = () => {
+    mutation.mutate({ name: menuName, price: menuPrice });
+    if (mutation.isSuccess) {
+      addMenuItem(mutation.data);
+    }
   };
 
   return (

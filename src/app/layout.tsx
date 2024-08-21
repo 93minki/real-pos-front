@@ -1,6 +1,7 @@
 import { MenuStoreProvider } from "@/provider/menu-store-provider";
 import { OrderStoreProvider } from "@/provider/order-store-provider";
 import { ReactQueryClientProvider } from "@/provider/ReactQueryClientProvider";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -21,6 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ReactQueryClientProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
           <MenuStoreProvider>
             <OrderStoreProvider>{children}</OrderStoreProvider>
           </MenuStoreProvider>
