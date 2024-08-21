@@ -1,5 +1,4 @@
 "use client";
-import { useMenuStore } from "@/provider/menu-store-provider";
 import { MenuItem } from "@/store/menu-store";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -8,14 +7,11 @@ import { MenuCard } from "./MenuCard";
 export const MenuView = () => {
   const [menuEditMode, setMenuEditMode] = useState(false);
 
-  const { menuItems, setMenuItems } = useMenuStore((state) => state);
-
   const { isPending, error, data, isLoading } = useQuery({
     queryKey: ["menu"],
     queryFn: async () => {
       const fetchData = await fetch("/api/menu");
       const response: { data: MenuItem[] } = await fetchData.json();
-      setMenuItems(response.data);
       return response.data;
     },
   });
@@ -28,8 +24,8 @@ export const MenuView = () => {
         toggle edit mode
       </button>
       <ul className="grid grid-cols-5 gap-4">
-        {menuItems &&
-          menuItems.map((menu) => {
+        {data &&
+          data.map((menu) => {
             return (
               menu.active && (
                 <li key={menu._id} className="">

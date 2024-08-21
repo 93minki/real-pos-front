@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useMenuStore } from "@/provider/menu-store-provider";
+import { MenuItem } from "@/store/menu-store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -20,7 +20,7 @@ const uploadMenuItem = async ({
   name: string;
   price: number;
 }) => {
-  const response = await fetch("/api/menu", {
+  const response = await fetch("/api/menu2", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -38,21 +38,41 @@ const uploadMenuItem = async ({
 export const AddMenu = () => {
   const [menuName, setMenuName] = useState("");
   const [menuPrice, setMenuPrice] = useState(0);
-  const { addMenuItem } = useMenuStore((state) => state);
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: uploadMenuItem,
-    onSuccess: () => {
+    onMutate: async (newMenu) => {
+      console.log("newMenu", newMenu);
+      await queryClient.cancelQueries({ queryKey: ["menu"] });
+
+      const prevMenuItem = queryClient.getQueryData(["menu"]);
+
+      queryClient.setQueryData(["menu"], (prev: MenuItem[]) => [
+        ...prev,
+        {
+          ...newMenu,
+          active: true,
+          _id: "fakeId",
+          __v: 0,
+          createdAt: "dsdsds",
+          updatedAt: "sdsdsds",
+        },
+        ,
+      ]);
+
+      return { prevMenuItem };
+    },
+    onError: (err, newMenu, context) => {
+      queryClient.setQueryData(["menu"], context?.prevMenuItem);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["menu"] });
     },
   });
 
   const buttonClickHandler = () => {
     mutation.mutate({ name: menuName, price: menuPrice });
-    if (mutation.isSuccess) {
-      addMenuItem(mutation.data);
-    }
   };
 
   return (
