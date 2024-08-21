@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useMenuStore } from "@/provider/menu-store-provider";
 import { useState } from "react";
 
 interface EditMenuProps {
@@ -19,6 +20,8 @@ interface EditMenuProps {
 export const EditMenu = ({ name, price, id }: EditMenuProps) => {
   const [menuName, setMenuName] = useState(name);
   const [menuPrice, setMenuPrice] = useState(price);
+
+  const { menuItems, setMenuItems } = useMenuStore((state) => state);
 
   const buttonClickHandler = async () => {
     const fetchData = await fetch(`/api/menu/${id}`, {
@@ -32,7 +35,13 @@ export const EditMenu = ({ name, price, id }: EditMenuProps) => {
       },
     });
     const response = await fetchData.json();
-    console.log("response", response);
+    const existIndex = menuItems.findIndex(
+      (item) => item._id === response.data._id
+    );
+    const updateMenuItems = [...menuItems];
+    updateMenuItems[existIndex].name = menuName;
+    updateMenuItems[existIndex].price = menuPrice;
+    setMenuItems(updateMenuItems);
   };
 
   return (
