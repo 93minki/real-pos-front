@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useMenuStore } from "@/provider/menu-store-provider";
+import { MenuItem } from "@/store/menu-store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -46,27 +46,35 @@ const editMenuItem = async ({
 export const EditMenu = ({ name, price, id }: EditMenuProps) => {
   const [menuName, setMenuName] = useState(name);
   const [menuPrice, setMenuPrice] = useState(price);
-  const { menuItems, setMenuItems } = useMenuStore((state) => state);
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: editMenuItem,
-    onSuccess: () => {
+    onMutate: async (editItem) => {
+      await queryClient.cancelQueries({ queryKey: ["menu"] });
+
+      const prevMenuItem = queryClient.getQueryData(["menu"]) as MenuItem[];
+      const existIndex = prevMenuItem.findIndex(
+        (item) => item._id === editItem.id
+      );
+      const updateMenuItems = [...prevMenuItem];
+      updateMenuItems[existIndex].name = editItem.name;
+      updateMenuItems[existIndex].price = editItem.price;
+
+      queryClient.setQueryData(["menu"], updateMenuItems);
+
+      return { prevMenuItem };
+    },
+    onError: (error, editItem, context) => {
+      queryClient.setQueryData(["menu"], context?.prevMenuItem);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["menu"] });
     },
   });
 
   const buttonClickHandler = async () => {
     mutation.mutate({ id, name: menuName, price: menuPrice });
-    if (mutation.isSuccess) {
-      const existIndex = menuItems.findIndex(
-        (item) => item._id === mutation.data._id
-      );
-      const updateMenuItems = [...menuItems];
-      updateMenuItems[existIndex].name = menuName;
-      updateMenuItems[existIndex].price = menuPrice;
-      setMenuItems(updateMenuItems);
-    }
   };
 
   return (
