@@ -3,6 +3,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -11,7 +12,7 @@ import {
 import { calcTotalPrice } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FormEvent } from "react";
-import { OrderItem, OrderItemDatas } from "../type/OrderItem";
+import { OrderItemDatas } from "../type/OrderItem";
 
 interface EditOrderProps {
   orderItems: OrderItemDatas[];
@@ -37,11 +38,9 @@ const editOrderState = async ({
       "Content-Type": "application/json",
     },
   });
-
   if (!response.ok) {
     throw new Error("Failed to update orderItem state");
   }
-
   return response.json();
 };
 
@@ -49,33 +48,11 @@ export const EditOrder = ({ orderItems, orderId }: EditOrderProps) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: editOrderState,
-    onMutate: async (updateItems) => {
-      console.log("mutate updateItems", updateItems);
-      await queryClient.cancelQueries({ queryKey: ["order"] });
-      const prevOrderItems = queryClient.getQueryData(["order"]) as OrderItem[];
-      const existIndex = prevOrderItems.findIndex(
-        (order) => order._id === orderId
-      );
-
-      const updateOrderList = [...prevOrderItems];
-
-      console.log("exist item before", updateOrderList[existIndex].items);
-
-      updateOrderList[existIndex].items = updateItems.updateOrderItems;
-
-      updateOrderList[existIndex] = {
-        ...updateOrderList[existIndex],
-        items: updateItems.updateOrderItems,
-        totalPrice: updateItems.totalPrice,
-      };
-      console.log("exist item after", updateOrderList[existIndex].items);
-
-      queryClient.setQueryData(["order"], updateOrderList);
-
-      return { prevOrderItems };
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["order"] });
     },
-    onError: (error, deleteItmeId, context) => {
-      queryClient.setQueryData(["order"], context?.prevOrderItems);
+    onError: (error) => {
+      console.error("Failed to update:", error);
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["order"] });
@@ -86,27 +63,12 @@ export const EditOrder = ({ orderItems, orderId }: EditOrderProps) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
-
     const updateOrderItems = orderItems.map((item) => ({
       ...item,
-      quantity: data[item.name] as unknown as number,
+      quantity: Number(data[item.name]),
     }));
-
     const totalPrice = calcTotalPrice(updateOrderItems);
-    console.log("totalPrice", totalPrice);
-
     mutation.mutate({ orderId, totalPrice, updateOrderItems });
-    // const fetchData = await fetch(`/api/order/${orderId}`, {
-    //   method: "PATCH",
-    //   body: JSON.stringify({
-    //     items: updateOrderItems,
-    //   }),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    // const response = await fetchData.json();
-    // console.log("response", response);
   };
 
   return (
@@ -115,6 +77,7 @@ export const EditOrder = ({ orderItems, orderId }: EditOrderProps) => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>주문 수정</DialogTitle>
+          <DialogDescription></DialogDescription>
         </DialogHeader>
         <form onSubmit={submitHandler}>
           <fieldset>

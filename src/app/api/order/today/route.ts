@@ -1,13 +1,11 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  console.log("today");
   try {
     const response = await fetch("http://localhost:8080/order/today", {
       method: "GET",
     });
     const data = await response.json();
-    console.log("data", data);
     return NextResponse.json({ success: true, data });
   } catch (error) {
     console.error("GET request error:", error);

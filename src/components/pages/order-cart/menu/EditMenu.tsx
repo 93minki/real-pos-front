@@ -29,8 +29,8 @@ const editMenuItem = async ({ id, name, price, active }: EditMenuProps) => {
     },
     body: JSON.stringify({
       name,
-      price,
-      active,
+      price,  
+      active, 
     }),
   });
   if (!response.ok) {
