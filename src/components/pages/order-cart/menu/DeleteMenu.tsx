@@ -31,13 +31,11 @@ export const DeleteMenu = ({ id }: { id: string }) => {
 
   const mutation = useMutation({
     mutationFn: deleteItems,
-    onMutate: async (deleteItemId) => {
+    onMutate: async (itemId) => {
       await queryClient.cancelQueries({ queryKey: ["menu"] });
 
       const prevMenuItem = queryClient.getQueryData(["menu"]) as MenuItem[];
-      const updateMenuItem = prevMenuItem.filter(
-        (item) => item._id !== deleteItemId
-      );
+      const updateMenuItem = prevMenuItem.filter((item) => item._id !== itemId);
 
       queryClient.setQueryData(["menu"], updateMenuItem);
 

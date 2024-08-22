@@ -1,26 +1,63 @@
 import { calcTotalPrice } from "@/lib/utils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { DeleteOrder } from "./DeleteOrder";
 import { EditOrder } from "./EditOrder";
-import { OrderItemDatas } from "./OrderList";
+import { OrderItem, OrderItemDatas } from "./type/OrderItem";
 
 interface OrderProps {
   orderItems: OrderItemDatas[];
   orderId: string;
 }
 
+const updateActiveState = async (orderId: string) => {
+  const response = await fetch(`/api/order/${orderId}`, {
+    method: "PATCH",
+    body: JSON.stringify({
+      active: false,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  console.log("data:", await response.json());
+  if (!response.ok) {
+    throw new Error("Failed to update active state");
+  }
+
+  return response.json();
+};
+
 export const Order = ({ orderItems, orderId }: OrderProps) => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: updateActiveState,
+    onMutate: async (orderId) => {
+      await queryClient.cancelQueries({ queryKey: ["order"] });
+      const prevOrder = queryClient.getQueryData(["order"]) as OrderItem[];
+      const existIndex = prevOrder.findIndex((order) => order._id === orderId);
+
+      const updateOrderList = [...prevOrder];
+
+      updateOrderList[existIndex] = {
+        ...updateOrderList[existIndex],
+        active: true,
+      };
+
+      queryClient.setQueryData(["order"], updateOrderList);
+
+      return { prevOrder };
+    },
+    onError: (error, deleteItmeId, context) => {
+      queryClient.setQueryData(["order"], context?.prevOrder);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["order"] });
+    },
+  });
+
   const clickHandler = async () => {
-    const fetchData = await fetch(`/api/order/${orderId}`, {
-      method: "PATCH",
-      body: JSON.stringify({
-        active: false,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const response = await fetchData.json();
-    console.log("response", response);
+    mutation.mutate(orderId);
   };
 
   return (

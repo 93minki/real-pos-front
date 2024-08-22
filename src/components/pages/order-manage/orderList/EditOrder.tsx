@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { FormEvent } from "react";
-import { OrderItemDatas } from "./OrderList";
+import { OrderItemDatas } from "./type/OrderItem";
 
 interface EditOrderProps {
   orderItems: OrderItemDatas[];
