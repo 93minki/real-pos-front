@@ -10,5 +10,6 @@ export type OrderItem = {
   active: boolean;
   createdAt: string;
   updatedAt: string;
+  totalPrice: number;
   __v: number;
 };

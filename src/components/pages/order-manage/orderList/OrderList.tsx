@@ -12,7 +12,7 @@ export const OrderList = () => {
       return response.data;
     },
   });
-
+  console.log("orderlist data", data);
   if (isPending) return <div>Loading...</div>;
 
   return (

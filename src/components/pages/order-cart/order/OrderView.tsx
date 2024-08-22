@@ -28,6 +28,7 @@ export const OrderView = () => {
       method: "POST",
       body: JSON.stringify({
         items: orderItems,
+        totalPrice,
       }),
       headers: {
         "Content-Type": "application/json",

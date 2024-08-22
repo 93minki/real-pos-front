@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
+  console.log("today");
   try {
     const response = await fetch("http://localhost:8080/order/today", {
       method: "GET",

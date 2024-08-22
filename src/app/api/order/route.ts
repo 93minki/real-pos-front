@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({
         items: body.items,
+        totalPrice: body.totalPrice,
       }),
     });
     const data = await response.json();

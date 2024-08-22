@@ -8,40 +8,105 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { calcTotalPrice } from "@/lib/utils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FormEvent } from "react";
-import { OrderItemDatas } from "../type/OrderItem";
+import { OrderItem, OrderItemDatas } from "../type/OrderItem";
 
 interface EditOrderProps {
   orderItems: OrderItemDatas[];
   orderId: string;
 }
 
-// name: string;
-//   price: number;
-//   quantity: number;
+const editOrderState = async ({
+  orderId,
+  totalPrice,
+  updateOrderItems,
+}: {
+  orderId: string;
+  totalPrice: number;
+  updateOrderItems: OrderItemDatas[];
+}) => {
+  const response = await fetch(`/api/order/${orderId}`, {
+    method: "PATCH",
+    body: JSON.stringify({
+      items: updateOrderItems,
+      totalPrice,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update orderItem state");
+  }
+
+  return response.json();
+};
 
 export const EditOrder = ({ orderItems, orderId }: EditOrderProps) => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: editOrderState,
+    onMutate: async (updateItems) => {
+      console.log("mutate updateItems", updateItems);
+      await queryClient.cancelQueries({ queryKey: ["order"] });
+      const prevOrderItems = queryClient.getQueryData(["order"]) as OrderItem[];
+      const existIndex = prevOrderItems.findIndex(
+        (order) => order._id === orderId
+      );
+
+      const updateOrderList = [...prevOrderItems];
+
+      console.log("exist item before", updateOrderList[existIndex].items);
+
+      updateOrderList[existIndex].items = updateItems.updateOrderItems;
+
+      updateOrderList[existIndex] = {
+        ...updateOrderList[existIndex],
+        items: updateItems.updateOrderItems,
+        totalPrice: updateItems.totalPrice,
+      };
+      console.log("exist item after", updateOrderList[existIndex].items);
+
+      queryClient.setQueryData(["order"], updateOrderList);
+
+      return { prevOrderItems };
+    },
+    onError: (error, deleteItmeId, context) => {
+      queryClient.setQueryData(["order"], context?.prevOrderItems);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["order"] });
+    },
+  });
+
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
 
-    const updateOrderItems = orderItems.map(({ _id, ...rest }) => ({
-      ...rest,
-      quantity: data[rest.name],
+    const updateOrderItems = orderItems.map((item) => ({
+      ...item,
+      quantity: data[item.name] as unknown as number,
     }));
 
-    const fetchData = await fetch(`/api/order/${orderId}`, {
-      method: "PATCH",
-      body: JSON.stringify({
-        items: updateOrderItems,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const response = await fetchData.json();
-    console.log("response", response);
+    const totalPrice = calcTotalPrice(updateOrderItems);
+    console.log("totalPrice", totalPrice);
+
+    mutation.mutate({ orderId, totalPrice, updateOrderItems });
+    // const fetchData = await fetch(`/api/order/${orderId}`, {
+    //   method: "PATCH",
+    //   body: JSON.stringify({
+    //     items: updateOrderItems,
+    //   }),
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // });
+    // const response = await fetchData.json();
+    // console.log("response", response);
   };
 
   return (
