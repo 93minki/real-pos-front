@@ -43,11 +43,11 @@ export const AddMenu = () => {
   const mutation = useMutation({
     mutationFn: uploadMenuItem,
     onMutate: async (newMenu) => {
-      console.log("newMenu", newMenu);
       await queryClient.cancelQueries({ queryKey: ["menu"] });
 
       const prevMenuItem = queryClient.getQueryData(["menu"]);
 
+      // NOTE: 낙관적 업데이트를 위해 name, price를 제외한 나머지 데이터는 fake 데이터
       queryClient.setQueryData(["menu"], (prev: MenuItem[]) => [
         ...prev,
         {
@@ -55,8 +55,8 @@ export const AddMenu = () => {
           active: true,
           _id: "fakeId",
           __v: 0,
-          createdAt: "dsdsds",
-          updatedAt: "sdsdsds",
+          createdAt: "fakeCreatedAt",
+          updatedAt: "fakeUpdatedAt",
         },
         ,
       ]);

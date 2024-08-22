@@ -10,7 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { useMenuStore } from "@/provider/menu-store-provider";
+import { MenuItem } from "@/store/menu-store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const deleteItems = async (id: string) => {
@@ -27,24 +27,32 @@ const deleteItems = async (id: string) => {
 };
 
 export const DeleteMenu = ({ id }: { id: string }) => {
-  const { setMenuItems, menuItems } = useMenuStore((state) => state);
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: deleteItems,
-    onSuccess: () => {
+    onMutate: async (deleteItemId) => {
+      await queryClient.cancelQueries({ queryKey: ["menu"] });
+
+      const prevMenuItem = queryClient.getQueryData(["menu"]) as MenuItem[];
+      const updateMenuItem = prevMenuItem.filter(
+        (item) => item._id !== deleteItemId
+      );
+
+      queryClient.setQueryData(["menu"], updateMenuItem);
+
+      return { prevMenuItem };
+    },
+    onError: (error, deleteItmeId, context) => {
+      queryClient.setQueryData(["menu"], context?.prevMenuItem);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["menu"] });
     },
   });
 
   const deleteHandler = async () => {
     mutation.mutate(id);
-    if (mutation.isSuccess) {
-      const updateMenuItems = menuItems.filter(
-        (item) => item._id !== mutation.data._id
-      );
-      setMenuItems(updateMenuItems);
-    }
   };
 
   return (
