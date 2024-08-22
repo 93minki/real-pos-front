@@ -19,10 +19,10 @@ export const OrderView = () => {
   const downCount = (name: string) => {
     decreaseOrderCount(name);
   };
-
   const deleteItem = (name: string) => {
     deleteOrder(name);
   };
+
   const orderHandler = async () => {
     const fetchData = await fetch("/api/order", {
       method: "POST",

@@ -8,6 +8,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { MenuItem } from "./type/MenuItem";
@@ -16,17 +18,10 @@ interface EditMenuProps {
   name: string;
   price: number;
   id: string;
+  active: boolean;
 }
 
-const editMenuItem = async ({
-  id,
-  name,
-  price,
-}: {
-  id: string;
-  name: string;
-  price: number;
-}) => {
+const editMenuItem = async ({ id, name, price, active }: EditMenuProps) => {
   const response = await fetch(`/api/menu/${id}`, {
     method: "PATCH",
     headers: {
@@ -35,6 +30,7 @@ const editMenuItem = async ({
     body: JSON.stringify({
       name,
       price,
+      active,
     }),
   });
   if (!response.ok) {
@@ -43,9 +39,10 @@ const editMenuItem = async ({
   return response.json();
 };
 
-export const EditMenu = ({ name, price, id }: EditMenuProps) => {
+export const EditMenu = ({ name, price, id, active }: EditMenuProps) => {
   const [menuName, setMenuName] = useState(name);
   const [menuPrice, setMenuPrice] = useState(price);
+  const [activeState, setActiveState] = useState(active);
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -58,8 +55,13 @@ export const EditMenu = ({ name, price, id }: EditMenuProps) => {
         (item) => item._id === editItem.id
       );
       const updateMenuItems = [...prevMenuItem];
-      updateMenuItems[existIndex].name = editItem.name;
-      updateMenuItems[existIndex].price = editItem.price;
+
+      updateMenuItems[existIndex] = {
+        ...updateMenuItems[existIndex],
+        name: editItem.name,
+        price: editItem.price,
+        active: editItem.active,
+      };
 
       queryClient.setQueryData(["menu"], updateMenuItems);
 
@@ -74,7 +76,12 @@ export const EditMenu = ({ name, price, id }: EditMenuProps) => {
   });
 
   const buttonClickHandler = async () => {
-    mutation.mutate({ id, name: menuName, price: menuPrice });
+    mutation.mutate({
+      id,
+      name: menuName,
+      price: menuPrice,
+      active: activeState,
+    });
   };
 
   return (
@@ -103,6 +110,16 @@ export const EditMenu = ({ name, price, id }: EditMenuProps) => {
             value={menuPrice}
             onChange={(e) => setMenuPrice(+e.currentTarget.value)}
           />
+          <div>
+            <Switch
+              id="active"
+              checked={activeState}
+              onCheckedChange={(e) => {
+                setActiveState(e);
+              }}
+            />
+            <Label htmlFor="active">사용</Label>
+          </div>
         </div>
         <DialogFooter>
           <DialogClose asChild>

@@ -1,5 +1,7 @@
 "use client";
+import { Toggle } from "@/components/ui/toggle";
 import { useQuery } from "@tanstack/react-query";
+import { Settings } from "lucide-react";
 import { useState } from "react";
 import { MenuCard } from "./MenuCard";
 import { MenuItem } from "./type/MenuItem";
@@ -20,9 +22,13 @@ export const MenuView = () => {
 
   return (
     <div className="flex-grow-[8] basis-[80%] max-w-[80%] min-w-[80%] pr-8 ">
-      <button onClick={() => setMenuEditMode(!menuEditMode)}>
-        toggle edit mode
-      </button>
+      <Toggle
+        onPressedChange={(e) => setMenuEditMode(e)}
+        pressed={menuEditMode}
+      >
+        <Settings />
+      </Toggle>
+
       <ul className="grid grid-cols-5 gap-4">
         {data &&
           data.map((menu) => {
@@ -33,6 +39,7 @@ export const MenuView = () => {
                     name={menu.name}
                     price={menu.price}
                     id={menu._id}
+                    active={menu.active}
                     editMode={menuEditMode}
                   />
                 </li>

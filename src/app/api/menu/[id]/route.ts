@@ -36,6 +36,7 @@ export async function PATCH(
       body: JSON.stringify({
         name: body.name,
         price: body.price,
+        active: body.active,
       }),
     });
     const data = await response.json();
