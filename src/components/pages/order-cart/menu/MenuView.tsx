@@ -1,5 +1,6 @@
 "use client";
 import { Toggle } from "@/components/ui/toggle";
+import { useOrderStore } from "@/provider/order-store-provider";
 import { useQuery } from "@tanstack/react-query";
 import { Settings } from "lucide-react";
 import { useState } from "react";
@@ -9,6 +10,7 @@ import { MenuItem } from "./type/MenuItem";
 
 export const MenuView = () => {
   const [menuEditMode, setMenuEditMode] = useState(false);
+  const { reset } = useOrderStore((state) => state);
 
   const { isPending, error, data, isLoading } = useQuery({
     queryKey: ["menu"],
@@ -24,7 +26,10 @@ export const MenuView = () => {
   return (
     <div className="flex-grow-[8] basis-[80%] max-w-[80%] min-w-[80%] pr-8 ">
       <Toggle
-        onPressedChange={(e) => setMenuEditMode(e)}
+        onPressedChange={(e) => {
+          setMenuEditMode(e);
+          reset();
+        }}
         pressed={menuEditMode}
       >
         <Settings />

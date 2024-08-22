@@ -21,9 +21,14 @@ export const MenuCard = ({
   return (
     <div
       role="button"
-      className="flex flex-col rounded-lg shadow-md p-4 justify-center items-center"
+      className={`flex flex-col rounded-lg shadow-md p-4 justify-center items-center ${
+        active ? "bg-white" : "bg-slate-400"
+      } `}
+      aria-disabled={editMode}
       onClick={(e) => {
-        addOrder({ name, price, quantity: 1 });
+        if (!editMode) {
+          addOrder({ name, price, quantity: 1 });
+        }
       }}
     >
       <span>{name}</span>
