@@ -3,6 +3,7 @@ import { Toggle } from "@/components/ui/toggle";
 import { useQuery } from "@tanstack/react-query";
 import { Settings } from "lucide-react";
 import { useState } from "react";
+import { AddMenu } from "./AddMenu";
 import { MenuCard } from "./MenuCard";
 import { MenuItem } from "./type/MenuItem";
 
@@ -28,13 +29,14 @@ export const MenuView = () => {
       >
         <Settings />
       </Toggle>
+      {menuEditMode && <AddMenu />}
 
       <ul className="grid grid-cols-5 gap-4">
         {data &&
           data.map((menu) => {
-            return (
-              menu.active && (
-                <li key={menu._id} className="">
+            if (menuEditMode || menu.active) {
+              return (
+                <li key={menu._id}>
                   <MenuCard
                     name={menu.name}
                     price={menu.price}
@@ -43,8 +45,8 @@ export const MenuView = () => {
                     editMode={menuEditMode}
                   />
                 </li>
-              )
-            );
+              );
+            }
           })}
       </ul>
     </div>

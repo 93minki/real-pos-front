@@ -1,4 +1,3 @@
-import { AddMenu } from "@/components/pages/order-cart/menu/AddMenu";
 import { MenuView } from "@/components/pages/order-cart/menu/MenuView";
 import { OrderView } from "@/components/pages/order-cart/order/OrderView";
 
@@ -9,7 +8,6 @@ export default function Home() {
         <MenuView />
         <OrderView />
       </div>
-      <AddMenu />
     </main>
   );
 }
