@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { MenuItem } from "./type/MenuItem";
+import { MenuItem } from "../type/MenuItem";
 
 const uploadMenuItem = async ({
   name,

@@ -4,9 +4,9 @@ import { useOrderStore } from "@/provider/order-store-provider";
 import { useQuery } from "@tanstack/react-query";
 import { Settings } from "lucide-react";
 import { useState } from "react";
+import { MenuItem } from "../type/MenuItem";
 import { AddMenu } from "./AddMenu";
 import { MenuCard } from "./MenuCard";
-import { MenuItem } from "./type/MenuItem";
 
 export const MenuView = () => {
   const [menuEditMode, setMenuEditMode] = useState(false);

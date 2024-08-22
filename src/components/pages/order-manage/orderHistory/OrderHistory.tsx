@@ -1,9 +1,9 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import { OrderItem } from "../type/OrderItem";
-import { Order } from "./Order";
+import { CompletedOrder } from "./CompletedOrder";
 
-export const OrderList = () => {
+export const OrderHistory = () => {
   const { isPending, data, error } = useQuery({
     queryKey: ["order"],
     queryFn: async () => {
@@ -12,7 +12,6 @@ export const OrderList = () => {
       return response.data;
     },
   });
-
   if (isPending) return <div>Loading...</div>;
 
   return (
@@ -20,9 +19,9 @@ export const OrderList = () => {
       {data &&
         data.map((order) => {
           return (
-            order.active && (
+            !order.active && (
               <li key={order._id} className="">
-                <Order orderItems={order.items} orderId={order._id} />
+                <CompletedOrder orderItems={order.items} orderId={order._id} />
               </li>
             )
           );

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { MenuItem } from "./type/MenuItem";
+import { MenuItem } from "../type/MenuItem";
 
 const deleteItems = async (id: string) => {
   const response = await fetch(`/api/menu/${id}`, {

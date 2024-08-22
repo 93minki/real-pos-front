@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { MenuItem } from "./type/MenuItem";
+import { MenuItem } from "../type/MenuItem";
 
 interface EditMenuProps {
   name: string;

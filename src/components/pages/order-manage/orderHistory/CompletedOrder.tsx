@@ -1,54 +1,45 @@
+"use client";
+
 import { calcTotalPrice } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { OrderItem, OrderItemDatas } from "../type/OrderItem";
-import { EditOrder } from "./EditOrder";
 
-interface OrderProps {
+interface CompletedOrderProp {
   orderItems: OrderItemDatas[];
   orderId: string;
 }
 
-const updateActiveState = async (orderId: string) => {
-  const response = await fetch(`/api/order/${orderId}`, {
-    method: "PATCH",
-    body: JSON.stringify({
-      active: false,
-    }),
+const deleteOrder = async (id: string) => {
+  const response = await fetch(`/api/order/${id}`, {
+    method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },
   });
-
-  console.log("data:", await response.json());
   if (!response.ok) {
-    throw new Error("Failed to update active state");
+    throw new Error("Failed to delete order item");
   }
-
   return response.json();
 };
 
-export const Order = ({ orderItems, orderId }: OrderProps) => {
+export const CompletedOrder = ({ orderId, orderItems }: CompletedOrderProp) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: updateActiveState,
+    mutationFn: deleteOrder,
     onMutate: async (orderId) => {
       await queryClient.cancelQueries({ queryKey: ["order"] });
-      const prevOrder = queryClient.getQueryData(["order"]) as OrderItem[];
-      const existIndex = prevOrder.findIndex((order) => order._id === orderId);
 
-      const updateOrderList = [...prevOrder];
-
-      updateOrderList[existIndex] = {
-        ...updateOrderList[existIndex],
-        active: true,
-      };
+      const prevOrderList = queryClient.getQueryData(["order"]) as OrderItem[];
+      const updateOrderList = prevOrderList.filter(
+        (order) => order._id !== orderId
+      );
 
       queryClient.setQueryData(["order"], updateOrderList);
 
-      return { prevOrder };
+      return { prevOrderList };
     },
     onError: (error, deleteItmeId, context) => {
-      queryClient.setQueryData(["order"], context?.prevOrder);
+      queryClient.setQueryData(["order"], context?.prevOrderList);
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["order"] });
@@ -74,10 +65,9 @@ export const Order = ({ orderItems, orderId }: OrderProps) => {
             clickHandler();
           }}
         >
-          완료
+          삭제
         </button>
       </div>
-      <EditOrder orderItems={orderItems} orderId={orderId} />
     </div>
   );
 };
