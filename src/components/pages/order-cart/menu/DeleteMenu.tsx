@@ -10,8 +10,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { MenuItem } from "@/store/menu-store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { MenuItem } from "./type/MenuItem";
 
 const deleteItems = async (id: string) => {
   const response = await fetch(`/api/menu/${id}`, {

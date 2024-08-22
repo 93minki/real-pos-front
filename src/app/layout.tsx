@@ -1,4 +1,3 @@
-import { MenuStoreProvider } from "@/provider/menu-store-provider";
 import { OrderStoreProvider } from "@/provider/order-store-provider";
 import { ReactQueryClientProvider } from "@/provider/ReactQueryClientProvider";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -23,9 +22,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ReactQueryClientProvider>
           <ReactQueryDevtools initialIsOpen={false} />
-          <MenuStoreProvider>
-            <OrderStoreProvider>{children}</OrderStoreProvider>
-          </MenuStoreProvider>
+          <OrderStoreProvider>{children}</OrderStoreProvider>
         </ReactQueryClientProvider>
       </body>
     </html>

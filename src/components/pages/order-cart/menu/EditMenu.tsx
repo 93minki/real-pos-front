@@ -8,9 +8,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { MenuItem } from "@/store/menu-store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { MenuItem } from "./type/MenuItem";
 
 interface EditMenuProps {
   name: string;

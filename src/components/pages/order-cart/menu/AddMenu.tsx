@@ -9,9 +9,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { MenuItem } from "@/store/menu-store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { MenuItem } from "./type/MenuItem";
 
 const uploadMenuItem = async ({
   name,
@@ -20,7 +20,7 @@ const uploadMenuItem = async ({
   name: string;
   price: number;
 }) => {
-  const response = await fetch("/api/menu2", {
+  const response = await fetch("/api/menu", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

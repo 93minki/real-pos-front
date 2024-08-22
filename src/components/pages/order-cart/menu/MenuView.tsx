@@ -1,8 +1,8 @@
 "use client";
-import { MenuItem } from "@/store/menu-store";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { MenuCard } from "./MenuCard";
+import { MenuItem } from "./type/MenuItem";
 
 export const MenuView = () => {
   const [menuEditMode, setMenuEditMode] = useState(false);
