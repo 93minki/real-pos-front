@@ -7,7 +7,7 @@ export const OrderHistory = () => {
   const { isPending, data, error } = useQuery({
     queryKey: ["order"],
     queryFn: async () => {
-      const fetchData = await fetch("/api/order");
+      const fetchData = await fetch("/api/order/toady");
       const response: { data: OrderItem[] } = await fetchData.json();
       return response.data;
     },
