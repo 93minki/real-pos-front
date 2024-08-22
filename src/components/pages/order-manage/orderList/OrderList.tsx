@@ -1,6 +1,6 @@
 "use client";
 import { OrderItems } from "@/store/order-store";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Order } from "./Order";
 
 export interface OrderItemDatas extends OrderItems {
@@ -17,21 +17,21 @@ type OrderDataType = {
 };
 
 export const OrderList = () => {
-  const [orderList, setOrderList] = useState<OrderDataType[] | null>();
-
-  useEffect(() => {
-    const getOrderDatas = async () => {
+  const { isPending, data, error } = useQuery({
+    queryKey: ["order"],
+    queryFn: async () => {
       const fetchData = await fetch("/api/order");
       const response: { data: OrderDataType[] } = await fetchData.json();
-      setOrderList(response.data);
-    };
-    getOrderDatas();
-  }, []);
+      return response.data;
+    },
+  });
+
+  if (isPending) return <div>Loading...</div>;
 
   return (
     <ul className="grid grid-cols-5 gap-4">
-      {orderList &&
-        orderList.map((order) => {
+      {data &&
+        data.map((order) => {
           return (
             order.active && (
               <li key={order._id} className="">
