@@ -1,4 +1,3 @@
-import { OrderHistory } from "@/components/pages/order-manage/orderHistory/OrderHistory";
 import { OrderList } from "@/components/pages/order-manage/orderList/OrderList";
 
 export default function OrderManagePage() {
@@ -6,7 +5,7 @@ export default function OrderManagePage() {
     <main className="flex min-h-screen items-center justify-between p-24">
       <div className="flex">
         <OrderList />
-        <OrderHistory />
+        {/* <OrderHistory /> */}
       </div>
     </main>
   );

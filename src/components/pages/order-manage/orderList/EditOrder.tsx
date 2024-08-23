@@ -12,7 +12,7 @@ import {
 import { calcTotalPrice } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FormEvent } from "react";
-import { OrderItemDatas } from "../type/OrderItem";
+import { OrderItem, OrderItemDatas } from "../type/OrderItem";
 
 interface EditOrderProps {
   orderItems: OrderItemDatas[];
@@ -48,14 +48,31 @@ export const EditOrder = ({ orderItems, orderId }: EditOrderProps) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: editOrderState,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["order"] });
-    },
-    onError: (error) => {
-      console.error("Failed to update:", error);
+    onMutate: async (updateItem) => {
+      await queryClient.cancelQueries({ queryKey: ["order"] });
+
+      const prevOrderItems = queryClient.getQueryData(["order"]) as OrderItem[];
+      const existIndex = prevOrderItems.findIndex(
+        (order) => order._id === updateItem.orderId
+      );
+      const updateOrderList = [...prevOrderItems];
+
+      updateOrderList[existIndex] = {
+        ...updateOrderList[existIndex],
+        items: updateItem.updateOrderItems,
+        totalPrice: updateItem.totalPrice,
+      };
+
+      queryClient.setQueryData(["order"], updateOrderList);
+
+      return { prevOrderItems };
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["order"] });
+    },
+    onError: (error, updateOrderId, context) => {
+      console.error("Failed to update:", error);
+      queryClient.setQueryData(["order"], context?.prevOrderItems);
     },
   });
 

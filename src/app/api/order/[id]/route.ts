@@ -58,7 +58,6 @@ export async function PATCH(
       body: JSON.stringify(bodyObject),
     });
     const data = await response.json();
-    console.log("result", data);
     return NextResponse.json({ success: true, data });
   } catch (error) {
     console.error("PATCH request error:", error);

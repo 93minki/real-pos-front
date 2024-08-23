@@ -4,6 +4,7 @@ export async function GET() {
   try {
     const response = await fetch("http://localhost:8080/order/today", {
       method: "GET",
+      cache: "no-store",
     });
     const data = await response.json();
     return NextResponse.json({ success: true, data });
