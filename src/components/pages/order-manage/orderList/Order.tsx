@@ -2,6 +2,7 @@ import { calcTotalPrice } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { OrderItem, OrderItemDatas } from "../type/OrderItem";
 import { EditOrder } from "./EditOrder";
+import { DeleteOrder } from "./DeleteOrder";
 
 interface OrderProps {
   orderItems: OrderItemDatas[];
@@ -76,6 +77,7 @@ export const Order = ({ orderItems, orderId }: OrderProps) => {
         </button>
       </div>
       <EditOrder orderItems={orderItems} orderId={orderId} />
+      <DeleteOrder id={orderId} />
     </div>
   );
 };

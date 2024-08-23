@@ -3,7 +3,6 @@
 import { calcTotalPrice } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { OrderItem, OrderItemDatas } from "../type/OrderItem";
-import { DeleteOrder } from "./DeleteOrder";
 
 interface CompletedOrderProp {
   orderItems: OrderItemDatas[];
@@ -78,7 +77,6 @@ export const CompletedOrder = ({ orderId, orderItems }: CompletedOrderProp) => {
           완료 취소
         </button>
       </div>
-      <DeleteOrder id={orderId} />
     </div>
   );
 };
