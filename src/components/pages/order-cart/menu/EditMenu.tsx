@@ -3,6 +3,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -29,8 +30,8 @@ const editMenuItem = async ({ id, name, price, active }: EditMenuProps) => {
     },
     body: JSON.stringify({
       name,
-      price,  
-      active, 
+      price,
+      active,
     }),
   });
   if (!response.ok) {
@@ -94,6 +95,7 @@ export const EditMenu = ({ name, price, id, active }: EditMenuProps) => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{name}</DialogTitle>
+          <DialogDescription></DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-4">
           <input

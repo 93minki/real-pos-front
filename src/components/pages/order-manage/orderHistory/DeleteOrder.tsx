@@ -11,41 +11,43 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { MenuItem } from "../type/MenuItem";
+import { OrderItem } from "../type/OrderItem";
 
-const deleteItems = async (id: string) => {
-  const response = await fetch(`/api/menu/${id}`, {
+const deleteOrder = async (id: string) => {
+  const response = await fetch(`/api/order/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },
   });
   if (!response.ok) {
-    throw new Error("Failed to delete menu item");
+    throw new Error("Failed to delete order item");
   }
   return response.json();
 };
 
-export const DeleteMenu = ({ id }: { id: string }) => {
+export const DeleteOrder = ({ id }: { id: string }) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: deleteItems,
-    onMutate: async (itemId) => {
-      await queryClient.cancelQueries({ queryKey: ["menu"] });
+    mutationFn: deleteOrder,
+    onMutate: async (orderId) => {
+      await queryClient.cancelQueries({ queryKey: ["order"] });
 
-      const prevMenuItem = queryClient.getQueryData(["menu"]) as MenuItem[];
-      const updateMenuItem = prevMenuItem.filter((item) => item._id !== itemId);
+      const prevOrderList = queryClient.getQueryData(["order"]) as OrderItem[];
+      const updateOrderList = prevOrderList.filter(
+        (order) => order._id !== orderId
+      );
 
-      queryClient.setQueryData(["menu"], updateMenuItem);
+      queryClient.setQueryData(["order"], updateOrderList);
 
-      return { prevMenuItem };
+      return { prevOrderList };
     },
     onError: (error, deleteItmeId, context) => {
-      queryClient.setQueryData(["menu"], context?.prevMenuItem);
+      queryClient.setQueryData(["order"], context?.prevOrderList);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["menu"] });
+      queryClient.invalidateQueries({ queryKey: ["order"] });
     },
   });
 
@@ -60,10 +62,10 @@ export const DeleteMenu = ({ id }: { id: string }) => {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>메뉴를 완전히 삭제합니다</AlertDialogTitle>
+          <AlertDialogTitle>주문을 완전히 삭제합니다</AlertDialogTitle>
           <AlertDialogDescription>
-            데이터베이스에서 제거되며, 복구할 수 없습니다. 일시적으로 사용하지
-            않으려면 수정버튼을 클릭해서 비활성화 처리하시기 바랍니다.
+            데이터베이스에서 제거되며, 복구할 수 없습니다. 삭제된 주문은 매출
+            집계에 포함되지 않습니다.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
