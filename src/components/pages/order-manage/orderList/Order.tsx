@@ -18,8 +18,6 @@ const updateActiveState = async (orderId: string) => {
       "Content-Type": "application/json",
     },
   });
-
-  console.log("data:", await response.json());
   if (!response.ok) {
     throw new Error("Failed to update active state");
   }
@@ -40,7 +38,7 @@ export const Order = ({ orderItems, orderId }: OrderProps) => {
 
       updateOrderList[existIndex] = {
         ...updateOrderList[existIndex],
-        active: true,
+        active: false,
       };
 
       queryClient.setQueryData(["order"], updateOrderList);
