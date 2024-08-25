@@ -16,17 +16,22 @@ export const OrderList = () => {
   if (isPending) return <div>Loading...</div>;
 
   return (
-    <ul className="grid grid-cols-5 gap-4">
-      {data &&
-        data.map((order) => {
-          return (
-            order.active && (
-              <li key={order._id} className="">
-                <Order orderItems={order.items} orderId={order._id} />
-              </li>
-            )
-          );
-        })}
-    </ul>
+    <div className="flex-grow-[5] basis-[50%] max-w-[50%] min-w-[50%] flex flex-col gap-8">
+      <div className="flex items-center justify-center relative px-2 py-4 bg-[#FDEACA] rounded-lg">
+        <span className="text-2xl">주문 현황</span>
+      </div>
+      <ul className="grid grid-cols-3 gap-4">
+        {data &&
+          data.map((order) => {
+            return (
+              order.active && (
+                <li key={order._id} className="">
+                  <Order orderItems={order.items} orderId={order._id} />
+                </li>
+              )
+            );
+          })}
+      </ul>
+    </div>
   );
 };

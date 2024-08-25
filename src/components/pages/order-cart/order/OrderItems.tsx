@@ -1,5 +1,3 @@
-import { SquareX } from "lucide-react";
-
 interface OrderItemsProps {
   name: string;
   quantity: number;
@@ -16,11 +14,13 @@ export const OrderItems = ({
   deleteItem,
 }: OrderItemsProps) => {
   return (
-    <div className="flex flex-col gap-2 border justify-center items-center py-2 relative">
-      <span>{name}</span>
-      <div className="flex gap-4 ">
+    <div className="flex justify-center items-center relative bg-white rounded-lg">
+      <div className="flex-grow-[3] basis-[60%] max-w-[60%] min-w-[60%] py-2 px-4">
+        <span className="text-lg font-semibold">{name}</span>
+      </div>
+      <div className="flex-grow-[7] basis-[40%] max-w-[40%] min-w-[40%] py-2 px-4 flex gap-4">
         <button
-          className="border px-2"
+          className="border px-2 rounded-lg  border-[#FDEACA]"
           onClick={() => {
             downCount(name);
           }}
@@ -29,20 +29,20 @@ export const OrderItems = ({
         </button>
         <span>{quantity}</span>
         <button
-          className="border px-2"
+          className="border px-2 rounded-lg bg-[#AF794B] text-white border-transparent"
           onClick={() => {
             upCount(name);
           }}
         >
           +
         </button>
-
-        <SquareX
-          className="absolute right-0 bottom-0"
+        {/* NOTE 삭제 버튼 활용 여부는 생각좀 해봐야 함. */}
+        {/* <SquareX
+          className="absolute left-0 top-1/2"
           onClick={() => {
             deleteItem(name);
           }}
-        />
+        /> */}
       </div>
     </div>
   );

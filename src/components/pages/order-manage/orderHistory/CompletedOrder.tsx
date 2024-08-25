@@ -59,22 +59,31 @@ export const CompletedOrder = ({ orderId, orderItems }: CompletedOrderProp) => {
     mutation.mutate(orderId);
   };
   return (
-    <div role="button" className="flex flex-col shadow-lg rounded-lg p-4">
+    <div
+      role="button"
+      className="flex flex-col shadow-lg rounded-lg p-4 bg-white gap-2"
+    >
       {orderItems &&
         orderItems.map((items) => (
           <div key={items._id} className="flex gap-2">
-            <span>{items.name}</span>
-            <span>{items.quantity}</span>
+            <span className="flex-grow-[7] text-lg font-bold">
+              {items.name}
+            </span>
+            <span className="flex-grow-3">{items.quantity} 개</span>
           </div>
         ))}
-      <span>합계:{calcTotalPrice(orderItems)}</span>
+      <span className="text-right text-lg">
+        합계:
+        <span className="font-bold">{calcTotalPrice(orderItems)}</span>
+      </span>
       <div className="flex gap-4 justify-center items-center">
         <button
+          className="w-full bg-[#6E4E39] py-2 px-4 rounded-lg text-white"
           onClick={() => {
             clickHandler();
           }}
         >
-          완료 취소
+          취소
         </button>
       </div>
     </div>

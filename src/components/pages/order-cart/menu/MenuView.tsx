@@ -23,18 +23,26 @@ export const MenuView = () => {
 
   if (isPending) return <div>Loading...</div>;
 
+  if (error) return <div>메뉴 가져오는데 실패했습니다...</div>;
+
   return (
-    <div className="flex-grow-[8] basis-[80%] max-w-[80%] min-w-[80%] pr-8 ">
-      <Toggle
-        onPressedChange={(e) => {
-          setMenuEditMode(e);
-          reset();
-        }}
-        pressed={menuEditMode}
-      >
-        <Settings />
-      </Toggle>
-      {menuEditMode && <AddMenu />}
+    <div className="flex-grow-[8] basis-[80%] max-w-[80%] min-w-[80%] pr-8 flex flex-col gap-8 border-r">
+      <div className="flex items-center justify-center relative px-2 py-4 bg-[#FDEACA] rounded-lg">
+        <span className="text-2xl">메뉴 리스트</span>
+        <div className="absolute right-5 flex items-center justify-center gap-2">
+          {menuEditMode && <AddMenu />}
+          <Toggle
+            variant={"default"}
+            onPressedChange={(e) => {
+              setMenuEditMode(e);
+              reset();
+            }}
+            pressed={menuEditMode}
+          >
+            <Settings />
+          </Toggle>
+        </div>
+      </div>
 
       <ul className="grid grid-cols-5 gap-4">
         {data &&
