@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import { Calendar } from "./Calendar";
+import { MonthlyOrderList } from "./MonthlyOrderList";
 
 export const Dashboard = () => {
   const fetchAllData = async () => {
@@ -18,13 +18,15 @@ export const Dashboard = () => {
   };
 
   useEffect(() => {
-    fetchAllData();
-    fetchDateFilter();
+    // fetchAllData();
+    // fetchDateFilter();
   });
 
   return (
-    <div>
-      <Calendar />
+    <div className="p-32">
+      <div className="w-[500px]">
+        <MonthlyOrderList />
+      </div>
     </div>
   );
 };
