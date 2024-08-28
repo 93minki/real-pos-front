@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
-    const date = req.nextUrl.searchParams.get("date");
+    const month = req.nextUrl.searchParams.get("month");
 
     const response = await fetch(
-      `http://localhost:8080/order/filter?date=${date}`,
+      `http://localhost:8080/order/filter?month=${month}`,
       {
         method: "GET",
       }

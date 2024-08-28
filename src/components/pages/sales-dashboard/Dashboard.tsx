@@ -11,7 +11,7 @@ export const Dashboard = () => {
   };
 
   const fetchDateFilter = async () => {
-    const response = await fetch(`/api/order/filter?date=2024-07`);
+    const response = await fetch(`/api/order/filter?month=2024-07`);
     const data = await response.json();
 
     console.log("data", data.data);
