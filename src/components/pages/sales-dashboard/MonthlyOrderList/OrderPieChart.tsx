@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ChartConfig,
   ChartContainer,
@@ -5,12 +7,8 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useEffect, useState } from "react";
-import { Label, Pie, PieChart } from "recharts";
+import { LabelList, Pie, PieChart } from "recharts";
 import { OrderItem } from "../../order-manage/type/OrderItem";
-
-// chartData 만들어야 함. 메뉴... 메뉴를 어쩌지?
-// 메뉴는 고정이 아님... 즉 DB에 있는 메뉴를 가져와서 만들 수 없음
-// 그냥 월 주문 목록에서 메뉴를 뽑아 내야 함.
 
 interface OrderPieChartProps {
   monthOrderData: OrderItem[];
@@ -19,11 +17,33 @@ interface OrderPieChartProps {
 interface chartItemType {
   menu: string;
   quantity: number;
+  fill?: string;
 }
 
-export const OrderPieChart = ({ monthOrderData }: OrderPieChartProps) => {
-  console.log("monthOrderData", monthOrderData);
+const colorPalette = [
+  "#FF4500", // 가장 많이 팔린 메뉴 색상
+  "#FF8C00",
+  "#FFD700",
+  "#ADFF2F",
+  "#32CD32",
+  "#00FA9A",
+  "#4682B4",
+  "#4169E1",
+  "#8A2BE2",
+  "#FF69B4",
+  "#FF6347", // Tomato
+  "#FF7F50", // Coral
+  "#FFD700", // Gold
+  "#ADFF2F", // GreenYellow
+  "#7FFF00", // Chartreuse
+  "#00FF7F", // SpringGreen
+  "#87CEEB", // SkyBlue
+  "#6495ED", // CornflowerBlue
+  "#BA55D3", // MediumOrchid
+  "#DA70D6", // Orchid
+];
 
+export const OrderPieChart = ({ monthOrderData }: OrderPieChartProps) => {
   const [orderChartData, setOrderChartData] = useState<chartItemType[]>([]);
   const [chartConfig, setChartConfig] = useState<ChartConfig>({});
 
@@ -35,84 +55,69 @@ export const OrderPieChart = ({ monthOrderData }: OrderPieChartProps) => {
       setChartConfig({});
       return;
     }
-    monthOrderData.map((orderData) => {
-      orderData.items.map((order) => {
+
+    monthOrderData.forEach((orderData) => {
+      orderData.items.forEach((order) => {
         const existingItem = menuSet.find((set) => set.menu === order.name);
 
         if (existingItem) {
           existingItem.quantity += order.quantity;
         } else {
-          menuSet.push({ menu: order.name, quantity: order.quantity });
+          menuSet.push({
+            menu: order.name,
+            quantity: order.quantity,
+          });
         }
       });
     });
-    setOrderChartData(menuSet);
+    menuSet.sort((a, b) => b.quantity - a.quantity);
+
+    const updatedMenuSet = menuSet.map((item, index) => ({
+      ...item,
+      fill: colorPalette[index % colorPalette.length],
+    }));
+
+    setOrderChartData(updatedMenuSet);
 
     const orderChartConfig: ChartConfig = menuSet.reduce((acc, item, index) => {
       acc[item.menu] = {
         label: item.menu,
-        color: `hsl(var(--chart-${index + 1}))`,
+        color: item.fill!,
       };
       return acc;
     }, {} as ChartConfig);
-    setChartConfig(orderChartConfig);
 
-    console.log(menuSet);
+    setChartConfig({
+      menu: { label: "Menu" }, // 차트의 레이블 (기본값)
+      ...orderChartConfig,
+    });
   }, [monthOrderData]);
 
-  const totalPrice = monthOrderData.reduce(
-    (acc, cur) => acc + cur.totalPrice,
-    0
-  );
-
   return (
-    <ChartContainer
-      config={chartConfig}
-      className="mx-auto aspect-square max-h-[250px]"
-    >
-      <PieChart>
-        <ChartTooltip
-          cursor={false}
-          content={<ChartTooltipContent hideLabel />}
-        />
-        <Pie
-          data={orderChartData}
-          dataKey={"quantity"}
-          nameKey="menu"
-          innerRadius={60}
-          strokeWidth={5}
-        >
-          <Label
-            content={({ viewBox }) => {
-              if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                return (
-                  <text
-                    x={viewBox.cx}
-                    y={viewBox.cy}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                  >
-                    <tspan
-                      x={viewBox.cx}
-                      y={viewBox.cy}
-                      className="fill-foreground text-3xl font-bold"
-                    >
-                      {totalPrice.toLocaleString()}
-                    </tspan>
-                    <tspan
-                      x={viewBox.cx}
-                      y={(viewBox.cy || 0) + 24}
-                      className="fill-muted-foreground"
-                    >
-                      Visitors
-                    </tspan>
-                  </text>
-                );
-              }
-            }}
+    <div>
+      <span>월 매출:</span>{monthOrderData.reduce((acc, cur) => acc + cur.totalPrice, 0)}
+      <ChartContainer
+        config={chartConfig}
+        className="mx-auto aspect-square w-[500px]"
+      >
+        <PieChart>
+          <ChartTooltip
+            cursor={false}
+            content={<ChartTooltipContent hideLabel nameKey="menu" />}
           />
-        </Pie>
-      </PieChart>
-    </ChartContainer>
+          <Pie data={orderChartData} dataKey={"quantity"} nameKey={"menu"}>
+            <LabelList
+              dataKey={"menu"}
+              className="fill-background"
+              stroke="none"
+              fontSize={12}
+              formatter={(value: keyof typeof chartConfig) =>
+                chartConfig[value]?.label
+              }
+            />
+          </Pie>
+        </PieChart>
+      </ChartContainer>
+    </div>
   );
 };
