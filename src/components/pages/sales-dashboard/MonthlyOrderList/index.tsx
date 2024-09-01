@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { OrderItem } from "../../order-manage/type/OrderItem";
 import { Calendar } from "./Calendar";
 import { OrderList } from "./OrderList";
+import { OrderPieChart } from "./OrderPieChart";
 
 export const MonthlyOrderList = () => {
   const [year, setYear] = useState(0);
@@ -17,8 +18,6 @@ export const MonthlyOrderList = () => {
     setDate(today.getDate());
   }, []);
 
-  // 여기서 오늘 날짜를 구해야 할 것 같은데?
-
   const { isPending, error, data, isLoading } = useQuery({
     queryKey: [`month-order-${year}-${month}`],
     queryFn: async () => {
@@ -26,7 +25,6 @@ export const MonthlyOrderList = () => {
       const response = await fetch(`/api/order/filter?month=${year}-${month}`);
       const data: { success: boolean; data: OrderItem[] } =
         await response.json();
-
       return data.data;
     },
   });
@@ -34,15 +32,20 @@ export const MonthlyOrderList = () => {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="flex gap-4">
-      <Calendar
-        year={year}
-        setYear={setYear}
-        month={month}
-        setMonth={setMonth}
-        date={date}
-        setDate={setDate}
-      />
+    <div className="flex">
+      <div className="flex flex-col gap-4 ">
+        <Calendar
+          year={year}
+          setYear={setYear}
+          month={month}
+          setMonth={setMonth}
+          date={date}
+          setDate={setDate}
+        />
+        <div>
+          <OrderPieChart monthOrderData={data || []} />
+        </div>
+      </div>
       <OrderList
         year={year}
         month={month}

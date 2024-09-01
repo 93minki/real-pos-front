@@ -8,8 +8,8 @@ export type OrderItem = {
   _id: string;
   items: OrderItemDatas[];
   active: boolean;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   totalPrice: number;
   __v: number;
 };
