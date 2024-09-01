@@ -1,18 +1,24 @@
 "use client";
 import { SquareChevronLeft, SquareChevronRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface CalendarProps {
-  targetDate: (year: number, month: number, date: number) => void;
+  year: number;
+  setYear: Dispatch<SetStateAction<number>>;
+  month: number;
+  setMonth: Dispatch<SetStateAction<number>>;
+  date: number;
+  setDate: Dispatch<SetStateAction<number>>;
 }
 
-export const Calendar = ({ targetDate }: CalendarProps) => {
-  const today = new Date();
-
-  const [year, setYear] = useState(today.getFullYear());
-  const [month, setMonth] = useState(today.getMonth());
-  const [selectDate, setSelectDate] = useState(today.getDate());
-
+export const Calendar = ({
+  year,
+  setYear,
+  month,
+  setMonth,
+  date,
+  setDate,
+}: CalendarProps) => {
   const [, setStartDate] = useState<Date>();
   const [, setLastDate] = useState<Date>();
   const [dayArray, setDayArray] = useState<string[]>([]);
@@ -44,25 +50,21 @@ export const Calendar = ({ targetDate }: CalendarProps) => {
             if (month < 1) {
               setYear((prev) => prev - 1);
               setMonth(11);
-              targetDate(year - 1, 12, selectDate);
             } else {
               setMonth((prev) => prev - 1);
-              targetDate(year, month, selectDate);
             }
           }}
         />
         <span>
-          {year}년 {month + 1}월
+          {year}년 {month}월
         </span>
         <SquareChevronRight
           onClick={() => {
             if (month > 10) {
               setYear((prev) => prev + 1);
               setMonth(0);
-              targetDate(year + 1, 1, selectDate);
             } else {
               setMonth((prev) => prev + 1);
-              targetDate(year, month + 2, selectDate);
             }
           }}
         />
@@ -83,13 +85,12 @@ export const Calendar = ({ targetDate }: CalendarProps) => {
               key={i}
               className={`border aspect-square`}
               onClick={() => {
-                setSelectDate(+arr);
-                targetDate(year, month + 1, +arr);
+                setDate(+arr);
               }}
             >
               <span
                 className={`w-full h-full flex justify-center items-center ${
-                  selectDate === +arr ? "bg-red-300 border rounded-full" : ""
+                  date === +arr ? "bg-red-300 border rounded-full" : ""
                 }`}
               >
                 {arr}

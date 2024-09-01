@@ -10,12 +10,6 @@ export const MonthlyOrderList = () => {
   const [month, setMonth] = useState(0);
   const [date, setDate] = useState(0);
 
-  const targetDate = (year: number, month: number, date: number) => {
-    setYear(year);
-    setMonth(month);
-    setDate(date);
-  };
-
   useEffect(() => {
     const today = new Date();
     setYear(today.getFullYear());
@@ -26,13 +20,10 @@ export const MonthlyOrderList = () => {
   // 여기서 오늘 날짜를 구해야 할 것 같은데?
 
   const { isPending, error, data, isLoading } = useQuery({
-    queryKey: ["month-order"],
-    queryFn: async (yearMonth) => {
-      const today = new Date();
-
-      const response = await fetch(
-        `/api/order/filter?month=${today.getFullYear()}-${today.getMonth() + 1}`
-      );
+    queryKey: [`month-order-${year}-${month}`],
+    queryFn: async () => {
+      console.log("usequery year, month", year, month);
+      const response = await fetch(`/api/order/filter?month=${year}-${month}`);
       const data: { success: boolean; data: OrderItem[] } =
         await response.json();
 
@@ -44,7 +35,14 @@ export const MonthlyOrderList = () => {
 
   return (
     <div className="flex gap-4">
-      <Calendar targetDate={targetDate} />
+      <Calendar
+        year={year}
+        setYear={setYear}
+        month={month}
+        setMonth={setMonth}
+        date={date}
+        setDate={setDate}
+      />
       <OrderList
         year={year}
         month={month}

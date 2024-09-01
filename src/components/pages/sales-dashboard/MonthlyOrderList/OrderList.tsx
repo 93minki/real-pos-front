@@ -13,8 +13,6 @@ export const OrderList = ({
   date,
   monthOrderData,
 }: OrderListProps) => {
-  console.log("date", date);
-
   const RenderOrderByDay = (monthOrderData: OrderItem[]) => {
     console.log("param", monthOrderData);
     const filteredOrder = monthOrderData.filter((orderData) => {
