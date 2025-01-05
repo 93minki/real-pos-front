@@ -6,6 +6,14 @@ import { Calendar } from "./Calendar";
 import { OrderList } from "./OrderList";
 import { OrderPieChart } from "./OrderPieChart";
 
+const fetchMonthOrder = async (year: number, month: number) => {
+  const response = await fetch(`api/order/filter?month=${year}-${month}`);
+  const responseData: { success: boolean; data: OrderItem[] } =
+    await response.json();
+
+  return responseData.data;
+};
+
 export const MonthlyOrderList = () => {
   const [year, setYear] = useState(0);
   const [month, setMonth] = useState(0);
@@ -18,18 +26,13 @@ export const MonthlyOrderList = () => {
     setDate(today.getDate());
   }, []);
 
-  const { isPending, error, data, isLoading } = useQuery({
-    queryKey: [`month-order-${year}-${month}`],
-    queryFn: async () => {
-      console.log("usequery year, month", year, month);
-      const response = await fetch(`/api/order/filter?month=${year}-${month}`);
-      const data: { success: boolean; data: OrderItem[] } =
-        await response.json();
-      return data.data;
-    },
+  const { isPending, error, data, isLoading, isError } = useQuery({
+    queryKey: [`month-order`, year, month],
+    queryFn: () => fetchMonthOrder(year, month),
   });
 
   if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>{error.toString()}</div>;
 
   return (
     <div className="flex">

@@ -24,8 +24,8 @@ export const Calendar = ({
   const [dayArray, setDayArray] = useState<string[]>([]);
 
   useEffect(() => {
-    const start = new Date(year, month, 1);
-    const last = new Date(year, month + 1, 0);
+    const start = new Date(year, month - 1, 1);
+    const last = new Date(year, month, 0);
 
     setStartDate(start);
     setLastDate(last);
@@ -34,11 +34,17 @@ export const Calendar = ({
     const days = Array.from({ length: last.getDate() }, (_, i) =>
       (i + 1).toString()
     );
-    setDayArray(days);
-
     for (let i = 0; i < indentCount; i++) {
       days.unshift(" ");
     }
+
+    const moreDaysCount = 7 - (days.length % 7);
+
+    for (let i = 0; i < moreDaysCount; i++) {
+      days.push(" ");
+    }
+    console.log("days", days);
+    setDayArray(days);
   }, [year, month]);
 
   return (
@@ -46,10 +52,9 @@ export const Calendar = ({
       <div className="flex justify-between items-center px-16">
         <SquareChevronLeft
           onClick={() => {
-            // 0 ~ 11
-            if (month < 1) {
+            if (month === 1) {
               setYear((prev) => prev - 1);
-              setMonth(11);
+              setMonth(12);
             } else {
               setMonth((prev) => prev - 1);
             }
@@ -60,9 +65,9 @@ export const Calendar = ({
         </span>
         <SquareChevronRight
           onClick={() => {
-            if (month > 10) {
+            if (month === 12) {
               setYear((prev) => prev + 1);
-              setMonth(0);
+              setMonth(1);
             } else {
               setMonth((prev) => prev + 1);
             }
