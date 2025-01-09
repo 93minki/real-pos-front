@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -67,7 +68,7 @@ export const SignupForm = () => {
         {...register("passwordConfirm")}
       />
       {errors.passwordConfirm && <span>{errors.passwordConfirm.message}</span>}
-      <button type="submit">회원가입</button>
+      <Button type="submit">회원가입</Button>
     </form>
   );
 };
