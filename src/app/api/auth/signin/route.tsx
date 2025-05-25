@@ -11,9 +11,16 @@ export async function POST(request: NextRequest) {
       email: body.email,
       password: body.password,
     }),
+    credentials: "include",
   });
 
   const data = await response.json();
+  const setCookie = response.headers.get("Set-Cookie");
+  const nextResponse = NextResponse.json(data);
 
-  return NextResponse.json(data);
+  if (setCookie) {
+    nextResponse.headers.set("Set-Cookie", setCookie);
+  }
+
+  return nextResponse;
 }

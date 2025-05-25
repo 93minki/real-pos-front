@@ -31,7 +31,7 @@ export const SigninForm = () => {
     const result = await response.json();
     console.log(result);
     if (result.code === "OK") {
-      localStorage.setItem("accessToken", result.data.accessToken);
+      localStorage.setItem("accessToken", result.accessToken);
       router.push("/");
     } else {
       alert(result.message || "로그인에 실패했습니다.");
