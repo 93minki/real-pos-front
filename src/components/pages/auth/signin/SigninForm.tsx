@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -13,6 +14,7 @@ const signinSchema = z.object({
 type SigninFormData = z.infer<typeof signinSchema>;
 
 export const SigninForm = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -21,10 +23,19 @@ export const SigninForm = () => {
     resolver: zodResolver(signinSchema),
   });
 
-  console.log("submitCount", submitCount);
-
-  const onSubmit = (data: SigninFormData) => {
-    console.log(data);
+  const onSubmit = async (data: SigninFormData) => {
+    const response = await fetch("/api/auth/signin", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+    console.log(result);
+    if (result.code === "OK") {
+      localStorage.setItem("accessToken", result.data.accessToken);
+      router.push("/");
+    } else {
+      alert(result.message || "로그인에 실패했습니다.");
+    }
   };
 
   return (

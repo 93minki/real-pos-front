@@ -3,7 +3,7 @@ import { Toggle } from "@/components/ui/toggle";
 import { useOrderStore } from "@/provider/order-store-provider";
 import { useQuery } from "@tanstack/react-query";
 import { Settings } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MenuItem } from "../type/MenuItem";
 import { AddMenu } from "./AddMenu";
 import { MenuCard } from "./MenuCard";
@@ -20,6 +20,10 @@ export const MenuView = () => {
       return response.data;
     },
   });
+
+  useEffect(() => {
+    console.log("data", data);
+  }, [data]);
 
   if (isPending) return <div>Loading...</div>;
 
@@ -46,6 +50,7 @@ export const MenuView = () => {
 
       <ul className="grid grid-cols-5 gap-4">
         {data &&
+          data.length > 0 &&
           data.map((menu) => {
             if (menuEditMode || menu.active) {
               return (

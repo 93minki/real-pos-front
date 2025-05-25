@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const response = await fetch("http://localhost:8080/auth/signup", {
+  const response = await fetch("http://localhost:8080/auth/signin", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -10,8 +10,6 @@ export async function POST(request: NextRequest) {
     body: JSON.stringify({
       email: body.email,
       password: body.password,
-      store_name: body.storeName,
-      phone: body.phone || "",
     }),
   });
 
