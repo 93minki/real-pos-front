@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const response = await fetch("http://localhost:8080/auth/signup", {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const response = await fetch(`${apiUrl}/auth/signin`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -10,12 +11,17 @@ export async function POST(request: NextRequest) {
     body: JSON.stringify({
       email: body.email,
       password: body.password,
-      store_name: body.storeName,
-      phone: body.phone || "",
     }),
+    credentials: "include",
   });
 
   const data = await response.json();
+  const setCookie = response.headers.get("Set-Cookie");
+  const nextResponse = NextResponse.json(data);
 
-  return NextResponse.json(data);
+  if (setCookie) {
+    nextResponse.headers.set("Set-Cookie", setCookie);
+  }
+
+  return nextResponse;
 }
