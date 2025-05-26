@@ -9,16 +9,24 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Switch } from "@/components/ui/switch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { MenuItem } from "../type/MenuItem";
 
 const uploadMenuItem = async ({
   name,
   price,
+  description,
+  category,
+  is_active,
 }: {
   name: string;
   price: number;
+  description: string;
+  category: string;
+  is_active: boolean;
 }) => {
   const response = await fetch("/api/menu", {
     method: "POST",
@@ -38,41 +46,38 @@ const uploadMenuItem = async ({
 export const AddMenu = () => {
   const [menuName, setMenuName] = useState("");
   const [menuPrice, setMenuPrice] = useState(0);
+  const [menuDescription, setMenuDescription] = useState("");
+  const [menuCategory, setMenuCategory] = useState("");
+  const [menuIsActive, setMenuIsActive] = useState(true);
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: uploadMenuItem,
     onMutate: async (newMenu) => {
-      await queryClient.cancelQueries({ queryKey: ["menu"] });
-
-      const prevMenuItem = queryClient.getQueryData(["menu"]);
-
-      // NOTE: 낙관적 업데이트를 위해 name, price를 제외한 나머지 데이터는 fake 데이터
-      queryClient.setQueryData(["menu"], (prev: MenuItem[]) => [
+      await queryClient.cancelQueries({ queryKey: ["menu-list"] });
+      const prevMenuItem = queryClient.getQueryData(["menu-list"]);
+      queryClient.setQueryData(["menu-list"], (prev: MenuItem[]) => [
         ...prev,
-        {
-          ...newMenu,
-          active: true,
-          _id: "fakeId",
-          __v: 0,
-          createdAt: "fakeCreatedAt",
-          updatedAt: "fakeUpdatedAt",
-        },
-        ,
+        { ...newMenu, id: uuidv4() },
       ]);
-
       return { prevMenuItem };
     },
     onError: (err, newMenu, context) => {
-      queryClient.setQueryData(["menu"], context?.prevMenuItem);
+      queryClient.setQueryData(["menu-list"], context?.prevMenuItem);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["menu"] });
+      queryClient.invalidateQueries({ queryKey: ["menu-list"] });
     },
   });
 
   const buttonClickHandler = () => {
-    mutation.mutate({ name: menuName, price: menuPrice });
+    mutation.mutate({
+      name: menuName,
+      price: menuPrice,
+      description: menuDescription,
+      category: menuCategory,
+      is_active: menuIsActive,
+    });
   };
 
   return (
@@ -84,7 +89,15 @@ export const AddMenu = () => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>새로운 메뉴 추가하기</DialogTitle>
+          <div className="flex items-center justify-between">
+            <DialogTitle>새로운 메뉴 추가하기</DialogTitle>
+            <Switch
+              id="is_active"
+              checked={menuIsActive}
+              onCheckedChange={setMenuIsActive}
+              className="data-[state=checked]:bg-green-500 mr-4"
+            />
+          </div>
         </DialogHeader>
         <div className="flex flex-col gap-4">
           <input
@@ -98,6 +111,18 @@ export const AddMenu = () => {
             placeholder="가격"
             className="px-4 py-2"
             onChange={(e) => setMenuPrice(+e.currentTarget.value)}
+          />
+          <input
+            type="text"
+            placeholder="카테고리"
+            className="px-4 py-2"
+            onChange={(e) => setMenuCategory(e.currentTarget.value)}
+          />
+          <input
+            type="text"
+            placeholder="설명"
+            className="px-4 py-2"
+            onChange={(e) => setMenuDescription(e.currentTarget.value)}
           />
         </div>
         <DialogFooter>

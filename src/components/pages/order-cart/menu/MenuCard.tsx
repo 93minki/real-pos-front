@@ -46,4 +46,3 @@ export const MenuCard = ({
     </div>
   );
 };
-// ECB176 6F4E37

@@ -1,9 +1,10 @@
 export type MenuItem = {
+  id: string;
+  category: string | null;
   createdAt: string;
-  active: boolean;
+  description: string | null;
+  is_active: 1 | 0;
   name: string;
   price: number;
   updatedAt: string;
-  __v: number;
-  _id: string;
 };

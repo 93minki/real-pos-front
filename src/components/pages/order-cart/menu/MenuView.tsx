@@ -13,7 +13,7 @@ export const MenuView = () => {
   const { reset } = useOrderStore((state) => state);
 
   const { isPending, error, data, isLoading } = useQuery({
-    queryKey: ["menu"],
+    queryKey: ["menu-list"],
     queryFn: async () => {
       const fetchData = await fetch("/api/menu");
       const response: { data: MenuItem[] } = await fetchData.json();
@@ -52,14 +52,14 @@ export const MenuView = () => {
         {data &&
           data.length > 0 &&
           data.map((menu) => {
-            if (menuEditMode || menu.active) {
+            if (menuEditMode || menu.is_active) {
               return (
-                <li key={menu._id}>
+                <li key={menu.id}>
                   <MenuCard
                     name={menu.name}
                     price={menu.price}
-                    id={menu._id}
-                    active={menu.active}
+                    id={menu.id}
+                    active={menu.is_active === 1}
                     editMode={menuEditMode}
                   />
                 </li>
