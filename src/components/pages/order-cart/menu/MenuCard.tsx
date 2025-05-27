@@ -6,7 +6,7 @@ import { EditMenu } from "./EditMenu";
 interface MenuCardProps {
   name: string;
   price: number;
-  id: string;
+  id: number;
   is_active: boolean;
   editMode: boolean;
   category: string | null;
@@ -48,7 +48,7 @@ export const MenuCard = ({
         disabled={editMode}
         onClick={(e) => {
           if (!editMode) {
-            addOrder({ name, price, quantity: 1 });
+            addOrder({ id, name, price, quantity: 1 });
           }
         }}
       >

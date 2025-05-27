@@ -1,5 +1,5 @@
 export type MenuItem = {
-  id: string;
+  id: number;
   category: string | null;
   createdAt: string;
   description: string | null;

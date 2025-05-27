@@ -1,12 +1,14 @@
 interface OrderItemsProps {
+  id: number;
   name: string;
   quantity: number;
-  upCount: (name: string) => void;
-  downCount: (name: string) => void;
-  deleteItem: (name: string) => void;
+  upCount: (id: number) => void;
+  downCount: (id: number) => void;
+  deleteItem: (id: number) => void;
 }
 
 export const OrderItems = ({
+  id,
   name,
   quantity,
   upCount,
@@ -22,7 +24,7 @@ export const OrderItems = ({
         <button
           className="border px-2 rounded-lg  border-[#FDEACA]"
           onClick={() => {
-            downCount(name);
+            downCount(id);
           }}
         >
           -
@@ -31,7 +33,7 @@ export const OrderItems = ({
         <button
           className="border px-2 rounded-lg bg-[#AF794B] text-white border-transparent"
           onClick={() => {
-            upCount(name);
+            upCount(id);
           }}
         >
           +

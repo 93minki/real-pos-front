@@ -15,17 +15,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { MenuItem } from "../type/MenuItem";
 
-// id: string;
-// category: string | null;
-// createdAt: string;
-// description: string | null;
-// is_active: 1 | 0;
-// name: string;
-// price: number;
-// updatedAt: string;
-
 interface EditMenuProps {
-  id: string;
+  id: number;
   name: string;
   price: number;
   category: string;

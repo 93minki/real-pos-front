@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MenuItem } from "../type/MenuItem";
 
-const deleteItems = async (id: string) => {
+const deleteItems = async (id: number) => {
   const response = await fetch(`/api/menu/${id}`, {
     method: "DELETE",
     headers: {
@@ -26,7 +26,7 @@ const deleteItems = async (id: string) => {
   return response.json();
 };
 
-export const DeleteMenu = ({ id }: { id: string }) => {
+export const DeleteMenu = ({ id }: { id: number }) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({

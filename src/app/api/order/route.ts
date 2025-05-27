@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const response = await fetch("http://localhost:8080/order", {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const response = await fetch(`${apiUrl}/orders`, {
       method: "GET",
     });
     const data = await response.json();
@@ -19,16 +20,25 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const accessToken = request.cookies.get("accessToken")?.value;
+    const refreshToken = request.cookies.get("refreshToken")?.value;
+    const cookieHeader = [
+      accessToken ? `accessToken=${accessToken}` : null,
+      refreshToken ? `refreshToken=${refreshToken}` : null,
+    ]
+      .filter(Boolean)
+      .join("; ");
     const body = await request.json();
-
-    const response = await fetch("http://localhost:8080/order", {
+    const response = await fetch(`${apiUrl}/orders`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        ...(cookieHeader && { Cookie: cookieHeader }),
       },
       body: JSON.stringify({
         items: body.items,
-        totalPrice: body.totalPrice,
+        status: body.status,
       }),
     });
     const data = await response.json();

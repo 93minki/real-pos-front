@@ -1,22 +1,23 @@
 import { calcTotalPrice } from "@/lib/utils";
 import { createStore } from "zustand";
 
-export type OrderItems = {
+export type OrderItemsType = {
+  id: number;
   name: string;
   price: number;
   quantity: number;
 };
 
 export type OrderState = {
-  orderItems: OrderItems[];
+  orderItems: OrderItemsType[];
   totalPrice: number;
 };
 
 export type OrderActions = {
-  addOrder: (item: OrderItems) => void;
-  deleteOrder: (name: string) => void;
-  increaseOrderCount: (name: string) => void;
-  decreaseOrderCount: (name: string) => void;
+  addOrder: (item: OrderItemsType) => void;
+  deleteOrder: (id: number) => void;
+  increaseOrderCount: (id: number) => void;
+  decreaseOrderCount: (id: number) => void;
   reset: () => void;
 };
 
@@ -33,7 +34,7 @@ export const createOrderStore = (initState: OrderState = defaultInitiState) => {
     addOrder: (item) =>
       set((state) => {
         const existItemIndex = state.orderItems.findIndex(
-          (orderItem) => orderItem.name === item.name
+          (orderItem) => orderItem.id === item.id
         );
 
         if (existItemIndex !== -1) {
@@ -52,15 +53,15 @@ export const createOrderStore = (initState: OrderState = defaultInitiState) => {
           };
         }
       }),
-    deleteOrder: (name) =>
+    deleteOrder: (id) =>
       set((state) => {
         const existItemIndex = state.orderItems.findIndex(
-          (orderItem) => orderItem.name === name
+          (orderItem) => orderItem.id === id
         );
 
         if (existItemIndex !== -1) {
           const updateOrderItems = state.orderItems.filter(
-            (orderItem) => orderItem.name !== name
+            (orderItem) => orderItem.id !== id
           );
           return {
             orderItems: updateOrderItems,
@@ -70,10 +71,10 @@ export const createOrderStore = (initState: OrderState = defaultInitiState) => {
           return state;
         }
       }),
-    increaseOrderCount: (name) =>
+    increaseOrderCount: (id) =>
       set((state) => {
         const existItemIndex = state.orderItems.findIndex(
-          (orderItem) => orderItem.name === name
+          (orderItem) => orderItem.id === id
         );
 
         if (existItemIndex !== -1) {
@@ -89,10 +90,10 @@ export const createOrderStore = (initState: OrderState = defaultInitiState) => {
           return state;
         }
       }),
-    decreaseOrderCount: (name) =>
+    decreaseOrderCount: (id) =>
       set((state) => {
         const existItemIndex = state.orderItems.findIndex(
-          (orderItem) => orderItem.name === name
+          (orderItem) => orderItem.id === id
         );
 
         if (existItemIndex !== -1) {
@@ -106,7 +107,7 @@ export const createOrderStore = (initState: OrderState = defaultInitiState) => {
             };
           } else {
             const deletedItem = state.orderItems.filter(
-              (item) => item.name !== name
+              (item) => item.id !== id
             );
             return {
               orderItems: deletedItem,

@@ -13,22 +13,29 @@ export const OrderView = () => {
     reset,
   } = useOrderStore((state) => state);
 
-  const upCount = (name: string) => {
-    increaseOrderCount(name);
+  const upCount = (id: number) => {
+    increaseOrderCount(id);
   };
-  const downCount = (name: string) => {
-    decreaseOrderCount(name);
+  const downCount = (id: number) => {
+    decreaseOrderCount(id);
   };
-  const deleteItem = (name: string) => {
-    deleteOrder(name);
+  const deleteItem = (id: number) => {
+    deleteOrder(id);
   };
 
   const orderHandler = async () => {
+    const items = orderItems.map((item) => {
+      return {
+        menuId: +item.id,
+        quantity: item.quantity,
+      };
+    });
+    console.log("items", items);
     const fetchData = await fetch("/api/order", {
       method: "POST",
       body: JSON.stringify({
-        items: orderItems,
-        totalPrice,
+        items,
+        status: "IN_PROGRESS",
       }),
       headers: {
         "Content-Type": "application/json",
@@ -50,6 +57,7 @@ export const OrderView = () => {
         {orderItems.map((item) => {
           return (
             <OrderItems
+              id={item.id}
               key={item.name}
               name={item.name}
               quantity={item.quantity}
