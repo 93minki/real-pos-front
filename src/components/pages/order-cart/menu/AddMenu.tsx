@@ -33,7 +33,7 @@ const uploadMenuItem = async ({
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ name, price }),
+    body: JSON.stringify({ name, price, description, category, is_active }),
   });
 
   if (!response.ok) {

@@ -7,29 +7,40 @@ interface MenuCardProps {
   name: string;
   price: number;
   id: string;
-  active: boolean;
+  is_active: boolean;
   editMode: boolean;
+  category: string | null;
+  description: string | null;
 }
 
 export const MenuCard = ({
   name,
   price,
   id,
-  active,
+  is_active,
   editMode,
+  category,
+  description,
 }: MenuCardProps) => {
   const { addOrder } = useOrderStore((state) => state);
   return (
     <div
       className={`flex flex-col rounded-lg shadow-lg p-4 justify-center items-center gap-4 ${
-        active ? "bg-white" : "bg-slate-400"
+        is_active ? "bg-white" : "bg-slate-400"
       } `}
     >
       <span className="text-xl font-bold">{name}</span>
       <span className="text-lg">{price}원</span>
       {editMode && (
         <div className="flex gap-4">
-          <EditMenu name={name} price={price} id={id} active={active} />
+          <EditMenu
+            name={name}
+            price={price}
+            id={id}
+            is_active={is_active}
+            category={category || ""}
+            description={description || ""}
+          />
           <DeleteMenu id={id} />
         </div>
       )}

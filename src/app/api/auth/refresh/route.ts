@@ -2,9 +2,10 @@
 
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function POST(request: NextRequest) {
+  console.log("refresh");
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  const cookie = req.headers.get("cookie") || "";
+  const cookie = request.headers.get("cookie") || "";
 
   const response = await fetch(`${apiUrl}/auth/refresh`, {
     method: "POST",
@@ -16,12 +17,11 @@ export async function POST(req: NextRequest) {
   });
 
   const data = await response.json();
-
+  const setCookie = response.headers.get("Set-Cookie");
   const nextResponse = NextResponse.json(data, { status: response.status });
 
-  const setCookie = response.headers.get("set-cookie");
   if (setCookie) {
-    nextResponse.headers.set("set-cookie", setCookie);
+    nextResponse.headers.set("Set-Cookie", setCookie);
   }
 
   return nextResponse;

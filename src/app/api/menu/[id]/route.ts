@@ -5,7 +5,8 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const response = await fetch(`http://localhost:8080/menu/${params.id}`, {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const response = await fetch(`${apiUrl}/menus/${params.id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -27,16 +28,28 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const body = await request.json();
-    const response = await fetch(`http://localhost:8080/menu/${params.id}`, {
+    const accessToken = request.cookies.get("accessToken")?.value;
+    const refreshToken = request.cookies.get("refreshToken")?.value;
+    const cookieHeader = [
+      accessToken ? `accessToken=${accessToken}` : null,
+      refreshToken ? `refreshToken=${refreshToken}` : null,
+    ]
+      .filter(Boolean)
+      .join("; ");
+    const response = await fetch(`${apiUrl}/menus/${params.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        ...(cookieHeader && { Cookie: cookieHeader }),
       },
       body: JSON.stringify({
         name: body.name,
         price: body.price,
-        active: body.active,
+        description: body.description,
+        category: body.category,
+        is_active: body.is_active,
       }),
     });
     const data = await response.json();

@@ -9,21 +9,39 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { MenuItem } from "../type/MenuItem";
 
+// id: string;
+// category: string | null;
+// createdAt: string;
+// description: string | null;
+// is_active: 1 | 0;
+// name: string;
+// price: number;
+// updatedAt: string;
+
 interface EditMenuProps {
+  id: string;
   name: string;
   price: number;
-  id: string;
-  active: boolean;
+  category: string;
+  description: string;
+  is_active: boolean;
 }
 
-const editMenuItem = async ({ id, name, price, active }: EditMenuProps) => {
-  const response = await fetch(`/api/menu/${id}`, {
+const editMenuItem = async ({
+  id,
+  name,
+  price,
+  category,
+  description,
+  is_active,
+}: EditMenuProps) => {
+  const response = await fetchWithAuth(`/api/menu/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -31,7 +49,9 @@ const editMenuItem = async ({ id, name, price, active }: EditMenuProps) => {
     body: JSON.stringify({
       name,
       price,
-      active,
+      category,
+      description,
+      is_active,
     }),
   });
   if (!response.ok) {
@@ -40,20 +60,33 @@ const editMenuItem = async ({ id, name, price, active }: EditMenuProps) => {
   return response.json();
 };
 
-export const EditMenu = ({ name, price, id, active }: EditMenuProps) => {
+export const EditMenu = ({
+  name,
+  price,
+  id,
+  is_active,
+  category,
+  description,
+}: EditMenuProps) => {
   const [menuName, setMenuName] = useState(name);
   const [menuPrice, setMenuPrice] = useState(price);
-  const [activeState, setActiveState] = useState(active);
+  const [menuIsActive, setMenuIsActive] = useState(is_active);
+  const [menuCategory, setMenuCategory] = useState(category);
+  const [menuDescription, setMenuDescription] = useState(description);
   const queryClient = useQueryClient();
+
+  console.log("menuCategory", menuCategory);
 
   const mutation = useMutation({
     mutationFn: editMenuItem,
     onMutate: async (editItem) => {
-      await queryClient.cancelQueries({ queryKey: ["menu"] });
+      await queryClient.cancelQueries({ queryKey: ["menu-list"] });
 
-      const prevMenuItem = queryClient.getQueryData(["menu"]) as MenuItem[];
+      const prevMenuItem = queryClient.getQueryData([
+        "menu-list",
+      ]) as MenuItem[];
       const existIndex = prevMenuItem.findIndex(
-        (item) => item._id === editItem.id
+        (item) => item.id === editItem.id
       );
       const updateMenuItems = [...prevMenuItem];
 
@@ -61,18 +94,20 @@ export const EditMenu = ({ name, price, id, active }: EditMenuProps) => {
         ...updateMenuItems[existIndex],
         name: editItem.name,
         price: editItem.price,
-        active: editItem.active,
+        is_active: editItem.is_active ? 1 : 0,
+        category: editItem.category,
+        description: editItem.description,
       };
 
-      queryClient.setQueryData(["menu"], updateMenuItems);
+      queryClient.setQueryData(["menu-list"], updateMenuItems);
 
       return { prevMenuItem };
     },
     onError: (error, editItem, context) => {
-      queryClient.setQueryData(["menu"], context?.prevMenuItem);
+      queryClient.setQueryData(["menu-list"], context?.prevMenuItem);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["menu"] });
+      queryClient.invalidateQueries({ queryKey: ["menu-list"] });
     },
   });
 
@@ -81,7 +116,9 @@ export const EditMenu = ({ name, price, id, active }: EditMenuProps) => {
       id,
       name: menuName,
       price: menuPrice,
-      active: activeState,
+      is_active: menuIsActive,
+      category: menuCategory,
+      description: menuDescription,
     });
   };
 
@@ -94,8 +131,14 @@ export const EditMenu = ({ name, price, id, active }: EditMenuProps) => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{name}</DialogTitle>
           <DialogDescription></DialogDescription>
+          <DialogTitle>메뉴 수정 </DialogTitle>
+          <Switch
+            id="is_active"
+            checked={menuIsActive}
+            onCheckedChange={setMenuIsActive}
+            className="data-[state=checked]:bg-green-500 mr-4"
+          />
         </DialogHeader>
         <div className="flex flex-col gap-4">
           <input
@@ -112,16 +155,20 @@ export const EditMenu = ({ name, price, id, active }: EditMenuProps) => {
             value={menuPrice}
             onChange={(e) => setMenuPrice(+e.currentTarget.value)}
           />
-          <div>
-            <Switch
-              id="active"
-              checked={activeState}
-              onCheckedChange={(e) => {
-                setActiveState(e);
-              }}
-            />
-            <Label htmlFor="active">사용</Label>
-          </div>
+          <input
+            type="text"
+            placeholder="카테고리"
+            className="px-4 py-2"
+            value={menuCategory}
+            onChange={(e) => setMenuCategory(e.currentTarget.value)}
+          />
+          <input
+            type="text"
+            placeholder="설명"
+            className="px-4 py-2"
+            value={menuDescription}
+            onChange={(e) => setMenuDescription(e.currentTarget.value)}
+          />
         </div>
         <DialogFooter>
           <DialogClose asChild>

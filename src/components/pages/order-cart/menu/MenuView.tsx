@@ -1,5 +1,6 @@
 "use client";
 import { Toggle } from "@/components/ui/toggle";
+import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import { useOrderStore } from "@/provider/order-store-provider";
 import { useQuery } from "@tanstack/react-query";
 import { Settings } from "lucide-react";
@@ -15,7 +16,7 @@ export const MenuView = () => {
   const { isPending, error, data, isLoading } = useQuery({
     queryKey: ["menu-list"],
     queryFn: async () => {
-      const fetchData = await fetch("/api/menu");
+      const fetchData = await fetchWithAuth("/api/menu");
       const response: { data: MenuItem[] } = await fetchData.json();
       return response.data;
     },
@@ -59,8 +60,10 @@ export const MenuView = () => {
                     name={menu.name}
                     price={menu.price}
                     id={menu.id}
-                    active={menu.is_active === 1}
+                    is_active={menu.is_active === 1}
                     editMode={menuEditMode}
+                    category={menu.category}
+                    description={menu.description}
                   />
                 </li>
               );
