@@ -32,20 +32,22 @@ export const DeleteMenu = ({ id }: { id: string }) => {
   const mutation = useMutation({
     mutationFn: deleteItems,
     onMutate: async (itemId) => {
-      await queryClient.cancelQueries({ queryKey: ["menu"] });
+      await queryClient.cancelQueries({ queryKey: ["menu-list"] });
 
-      const prevMenuItem = queryClient.getQueryData(["menu"]) as MenuItem[];
-      const updateMenuItem = prevMenuItem.filter((item) => item._id !== itemId);
+      const prevMenuItem = queryClient.getQueryData([
+        "menu-list",
+      ]) as MenuItem[];
+      const updateMenuItem = prevMenuItem.filter((item) => item.id !== itemId);
 
-      queryClient.setQueryData(["menu"], updateMenuItem);
+      queryClient.setQueryData(["menu-list"], updateMenuItem);
 
       return { prevMenuItem };
     },
     onError: (error, deleteItmeId, context) => {
-      queryClient.setQueryData(["menu"], context?.prevMenuItem);
+      queryClient.setQueryData(["menu-list"], context?.prevMenuItem);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["menu"] });
+      queryClient.invalidateQueries({ queryKey: ["menu-list"] });
     },
   });
 
