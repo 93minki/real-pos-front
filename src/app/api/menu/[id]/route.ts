@@ -22,11 +22,13 @@ export async function DELETE(
       },
     });
     const data = await response.json();
-    return NextResponse.json({ success: true, data });
-  } catch (error) {
-    console.error("POST request error:", error);
     return NextResponse.json(
-      { success: false, error: "Failed to process POST request" },
+      { success: data.ok, data },
+      { status: response.status }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { success: false, error: "Failed to process Delete Menu request" },
       { status: 500 }
     );
   }

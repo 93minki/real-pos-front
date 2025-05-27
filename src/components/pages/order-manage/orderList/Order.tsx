@@ -1,6 +1,6 @@
 import { calcTotalPrice } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { OrderItem, OrderItemDatas } from "../type/OrderItem";
+import { OrderItemDatas, OrderListItems } from "../type/OrderItem";
 import { DeleteOrder } from "./DeleteOrder";
 import { EditOrder } from "./EditOrder";
 
@@ -31,15 +31,19 @@ export const Order = ({ orderItems, orderId }: OrderProps) => {
   const mutation = useMutation({
     mutationFn: updateActiveState,
     onMutate: async (orderId) => {
-      await queryClient.cancelQueries({ queryKey: ["order"] });
-      const prevOrder = queryClient.getQueryData(["order"]) as OrderItem[];
-      const existIndex = prevOrder.findIndex((order) => order._id === orderId);
+      await queryClient.cancelQueries({ queryKey: ["order-list"] });
+      const prevOrder = queryClient.getQueryData([
+        "order-list",
+      ]) as OrderListItems[];
+      const existIndex = prevOrder.findIndex(
+        (order) => order.id.toString() === orderId
+      );
 
       const updateOrderList = [...prevOrder];
 
       updateOrderList[existIndex] = {
         ...updateOrderList[existIndex],
-        active: false,
+        status: "COMPLETED",
       };
 
       queryClient.setQueryData(["order"], updateOrderList);
@@ -64,8 +68,10 @@ export const Order = ({ orderItems, orderId }: OrderProps) => {
       className="flex flex-col shadow-lg rounded-lg p-4 bg-white gap-2"
     >
       {orderItems.map((items) => (
-        <div key={items._id} className="flex gap-2">
-          <span className="flex-grow-[7] text-lg font-bold">{items.name}</span>
+        <div key={items.id} className="flex gap-2">
+          <span className="flex-grow-[7] text-lg font-bold">
+            {items.menu.name}
+          </span>
           <span className="flex-grow-3">{items.quantity} 개</span>
         </div>
       ))}

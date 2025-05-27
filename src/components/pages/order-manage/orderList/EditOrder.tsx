@@ -12,7 +12,7 @@ import {
 import { calcTotalPrice } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FormEvent } from "react";
-import { OrderItem, OrderItemDatas } from "../type/OrderItem";
+import { OrderItemDatas, OrderListItems } from "../type/OrderItem";
 
 interface EditOrderProps {
   orderItems: OrderItemDatas[];
@@ -49,30 +49,31 @@ export const EditOrder = ({ orderItems, orderId }: EditOrderProps) => {
   const mutation = useMutation({
     mutationFn: editOrderState,
     onMutate: async (updateItem) => {
-      await queryClient.cancelQueries({ queryKey: ["order"] });
+      await queryClient.cancelQueries({ queryKey: ["order-list"] });
 
-      const prevOrderItems = queryClient.getQueryData(["order"]) as OrderItem[];
+      const prevOrderItems = queryClient.getQueryData([
+        "order-list",
+      ]) as OrderListItems[];
       const existIndex = prevOrderItems.findIndex(
-        (order) => order._id === updateItem.orderId
+        (order) => order.id.toString() === updateItem.orderId
       );
       const updateOrderList = [...prevOrderItems];
 
       updateOrderList[existIndex] = {
         ...updateOrderList[existIndex],
         items: updateItem.updateOrderItems,
-        totalPrice: updateItem.totalPrice,
       };
 
-      queryClient.setQueryData(["order"], updateOrderList);
+      queryClient.setQueryData(["order-list"], updateOrderList);
 
       return { prevOrderItems };
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["order"] });
+      queryClient.invalidateQueries({ queryKey: ["order-list"] });
     },
     onError: (error, updateOrderId, context) => {
       console.error("Failed to update:", error);
-      queryClient.setQueryData(["order"], context?.prevOrderItems);
+      queryClient.setQueryData(["order-list"], context?.prevOrderItems);
     },
   });
 
@@ -82,7 +83,7 @@ export const EditOrder = ({ orderItems, orderId }: EditOrderProps) => {
     const data = Object.fromEntries(formData.entries());
     const updateOrderItems = orderItems.map((item) => ({
       ...item,
-      quantity: Number(data[item.name]),
+      quantity: Number(data[item.menu.name]),
     }));
     const totalPrice = calcTotalPrice(updateOrderItems);
     mutation.mutate({ orderId, totalPrice, updateOrderItems });
@@ -102,16 +103,16 @@ export const EditOrder = ({ orderItems, orderId }: EditOrderProps) => {
             <div className="flex flex-col gap-2">
               {orderItems.map((item) => (
                 <div
-                  key={item._id}
+                  key={item.id}
                   className="flex gap-4 justify-start items-center"
                 >
-                  <span>{item.name}</span>
-                  <span>{item.price}</span>
-                  <label htmlFor={`${item.name}`}>
+                  <span>{item.menu.name}</span>
+                  <span>{item.menu.price}</span>
+                  <label htmlFor={`${item.menu.name}`}>
                     <input
                       className="border py-2 px-4 rounded-lg"
                       type={"number"}
-                      name={`${item.name}`}
+                      name={`${item.menu.name}`}
                       defaultValue={item.quantity}
                     />
                   </label>

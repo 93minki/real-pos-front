@@ -23,9 +23,8 @@ export async function GET(request: NextRequest) {
       { status: response.status }
     );
   } catch (error) {
-    console.error("GET request error:", error);
     return NextResponse.json(
-      { success: false, error: "Failed to process GET request" },
+      { success: false, error: "Failed to process Get Menus request" },
       { status: 500 }
     );
   }
@@ -61,9 +60,8 @@ export async function POST(request: NextRequest) {
     console.log("data", data);
     return NextResponse.json({ success: true, data });
   } catch (error) {
-    console.error("POST request error:", error);
     return NextResponse.json(
-      { success: false, error: "Failed to process POST request" },
+      { success: false, error: "Failed to process Create Menu request" },
       { status: 500 }
     );
   }

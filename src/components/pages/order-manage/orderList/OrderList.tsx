@@ -1,18 +1,23 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { OrderItem } from "../type/OrderItem";
+import { useEffect } from "react";
+import { OrderListItems } from "../type/OrderItem";
 import { Order } from "./Order";
 
 export const OrderList = () => {
   const { isPending, data, error } = useQuery({
-    queryKey: ["order"],
+    queryKey: ["order-list"],
     queryFn: async () => {
       const fetchData = await fetch("/api/order/today");
-      const response: { data: OrderItem[] } = await fetchData.json();
+      const response: { data: OrderListItems[] } = await fetchData.json();
       return response.data;
     },
   });
-  console.log("cache data:", data);
+
+  useEffect(() => {
+    console.log("data:", data);
+  }, [data]);
+
   if (isPending) return <div>Loading...</div>;
 
   return (
@@ -24,9 +29,12 @@ export const OrderList = () => {
         {data &&
           data.map((order) => {
             return (
-              order.active && (
-                <li key={order._id} className="">
-                  <Order orderItems={order.items} orderId={order._id} />
+              order.status === "IN_PROGRESS" && (
+                <li key={order.id} className="">
+                  <Order
+                    orderItems={order.items}
+                    orderId={order.id.toString()}
+                  />
                 </li>
               )
             );
