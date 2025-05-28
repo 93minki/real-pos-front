@@ -27,10 +27,7 @@ export const OrderHistory = () => {
             return (
               order.status === "COMPLETED" && (
                 <li key={order.id} className="">
-                  <CompletedOrder
-                    orderItems={order.items}
-                    orderId={order.id.toString()}
-                  />
+                  <CompletedOrder orderItems={order.items} />
                 </li>
               )
             );
