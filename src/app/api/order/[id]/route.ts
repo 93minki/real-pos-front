@@ -6,18 +6,31 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const response = await fetch(`http://localhost:8080/order/${params.id}`, {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const accessToken = request.cookies.get("accessToken")?.value;
+    const refreshToken = request.cookies.get("refreshToken")?.value;
+    const cookieHeader = [
+      accessToken ? `accessToken=${accessToken}` : null,
+      refreshToken ? `refreshToken=${refreshToken}` : null,
+    ]
+      .filter(Boolean)
+      .join("; ");
+    const response = await fetch(`${apiUrl}/orders/${params.id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        ...(cookieHeader && { Cookie: cookieHeader }),
       },
     });
     const data = await response.json();
-    return NextResponse.json({ success: true, data });
-  } catch (error) {
-    console.error("DELETE request error:", error);
+    console.log("data", data);
     return NextResponse.json(
-      { success: false, error: "Failed to process DELETE request" },
+      { success: response.ok, data },
+      { status: response.status }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { success: false, error: "Failed to process Delete Order request" },
       { status: 500 }
     );
   }

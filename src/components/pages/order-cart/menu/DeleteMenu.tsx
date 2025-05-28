@@ -10,11 +10,12 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MenuItem } from "../type/MenuItem";
 
 const deleteItems = async (id: number) => {
-  const response = await fetch(`/api/menu/${id}`, {
+  const response = await fetchWithAuth(`/api/menu/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

@@ -64,10 +64,8 @@ export async function PATCH(
       }),
     });
     const data = await response.json();
-    console.log("response data", data);
     return NextResponse.json({ success: true, data });
   } catch (error) {
-    console.error("PATCH request error:", error);
     return NextResponse.json(
       { success: false, error: "Failed to process PATCH request" },
       { status: 500 }

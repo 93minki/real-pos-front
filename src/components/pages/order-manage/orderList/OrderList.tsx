@@ -1,6 +1,6 @@
 "use client";
+import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
 import { OrderListItems } from "../type/OrderItem";
 import { Order } from "./Order";
 
@@ -8,15 +8,11 @@ export const OrderList = () => {
   const { isPending, data, error } = useQuery({
     queryKey: ["order-list"],
     queryFn: async () => {
-      const fetchData = await fetch("/api/order/today");
+      const fetchData = await fetchWithAuth("/api/order/today");
       const response: { data: OrderListItems[] } = await fetchData.json();
       return response.data;
     },
   });
-
-  useEffect(() => {
-    console.log("data:", data);
-  }, [data]);
 
   if (isPending) return <div>Loading...</div>;
 

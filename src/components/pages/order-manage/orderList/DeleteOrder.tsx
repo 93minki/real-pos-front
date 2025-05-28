@@ -10,11 +10,12 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { OrderItem } from "../type/OrderItem";
+import { OrderListItems } from "../type/OrderItem";
 
 const deleteOrder = async (id: string) => {
-  const response = await fetch(`/api/order/${id}`, {
+  const response = await fetchWithAuth(`/api/order/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -32,22 +33,24 @@ export const DeleteOrder = ({ id }: { id: string }) => {
   const mutation = useMutation({
     mutationFn: deleteOrder,
     onMutate: async (orderId) => {
-      await queryClient.cancelQueries({ queryKey: ["order"] });
+      await queryClient.cancelQueries({ queryKey: ["order-list"] });
 
-      const prevOrderList = queryClient.getQueryData(["order"]) as OrderItem[];
+      const prevOrderList = queryClient.getQueryData([
+        "order-list",
+      ]) as OrderListItems[];
       const updateOrderList = prevOrderList.filter(
-        (order) => order._id !== orderId
+        (order) => order.id.toString() !== orderId
       );
 
-      queryClient.setQueryData(["order"], updateOrderList);
+      queryClient.setQueryData(["order-list"], updateOrderList);
 
       return { prevOrderList };
     },
     onError: (error, deleteItmeId, context) => {
-      queryClient.setQueryData(["order"], context?.prevOrderList);
+      queryClient.setQueryData(["order-list"], context?.prevOrderList);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["order"] });
+      queryClient.invalidateQueries({ queryKey: ["order-list"] });
     },
   });
 

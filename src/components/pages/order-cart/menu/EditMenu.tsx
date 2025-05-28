@@ -66,8 +66,6 @@ export const EditMenu = ({
   const [menuDescription, setMenuDescription] = useState(description);
   const queryClient = useQueryClient();
 
-  console.log("menuCategory", menuCategory);
-
   const mutation = useMutation({
     mutationFn: editMenuItem,
     onMutate: async (editItem) => {

@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
+import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -28,7 +29,7 @@ const uploadMenuItem = async ({
   category: string;
   is_active: boolean;
 }) => {
-  const response = await fetch("/api/menu", {
+  const response = await fetchWithAuth("/api/menu", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

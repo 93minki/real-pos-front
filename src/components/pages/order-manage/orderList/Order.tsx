@@ -1,4 +1,3 @@
-import { calcTotalPrice } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { OrderItemDatas, OrderListItems } from "../type/OrderItem";
 import { DeleteOrder } from "./DeleteOrder";
@@ -10,7 +9,7 @@ interface OrderProps {
 }
 
 const updateActiveState = async (orderId: string) => {
-  const response = await fetch(`/api/order/${orderId}`, {
+  const response = await fetch(`/api/order/${orderId}/complete`, {
     method: "PATCH",
     body: JSON.stringify({
       active: false,
@@ -46,15 +45,15 @@ export const Order = ({ orderItems, orderId }: OrderProps) => {
         status: "COMPLETED",
       };
 
-      queryClient.setQueryData(["order"], updateOrderList);
+      queryClient.setQueryData(["order-list"], updateOrderList);
 
       return { prevOrder };
     },
     onError: (error, deleteItmeId, context) => {
-      queryClient.setQueryData(["order"], context?.prevOrder);
+      queryClient.setQueryData(["order-list"], context?.prevOrder);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["order"] });
+      queryClient.invalidateQueries({ queryKey: ["order-list"] });
     },
   });
 
@@ -77,7 +76,9 @@ export const Order = ({ orderItems, orderId }: OrderProps) => {
       ))}
       <span className="text-right text-lg">
         합계:
-        <span className="font-bold">{calcTotalPrice(orderItems)}</span>
+        <span className="font-bold">
+          {orderItems.reduce((acc, cur) => acc + cur.price, 0)}
+        </span>
       </span>
       <div className="flex gap-2 justify-center items-center">
         <EditOrder orderItems={orderItems} orderId={orderId} />

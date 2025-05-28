@@ -1,17 +1,19 @@
 "use client";
+import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import { useQuery } from "@tanstack/react-query";
-import { OrderListResponse } from "../type/OrderItem";
+import { OrderListItems } from "../type/OrderItem";
 import { CompletedOrder } from "./CompletedOrder";
 
 export const OrderHistory = () => {
   const { isPending, data, error } = useQuery({
     queryKey: ["order-list"],
     queryFn: async () => {
-      const fetchData = await fetch("/api/order/today");
-      const response: { data: OrderListResponse } = await fetchData.json();
+      const fetchData = await fetchWithAuth("/api/order/today");
+      const response: { data: OrderListItems[] } = await fetchData.json();
       return response.data;
     },
   });
+
   if (isPending) return <div>Loading...</div>;
 
   return (
@@ -20,8 +22,8 @@ export const OrderHistory = () => {
         <span className="text-2xl">완료된 주문</span>
       </div>
       <ul className="grid grid-cols-3 gap-4 ">
-        {data?.data &&
-          data.data.map((order) => {
+        {data &&
+          data.map((order) => {
             return (
               order.status === "COMPLETED" && (
                 <li key={order.id} className="">

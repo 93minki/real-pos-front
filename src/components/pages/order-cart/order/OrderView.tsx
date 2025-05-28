@@ -1,5 +1,6 @@
 "use client";
 
+import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import { useOrderStore } from "@/provider/order-store-provider";
 import { OrderItems } from "./OrderItems";
 
@@ -31,7 +32,7 @@ export const OrderView = () => {
       };
     });
     console.log("items", items);
-    const fetchData = await fetch("/api/order", {
+    const fetchData = await fetchWithAuth("/api/order", {
       method: "POST",
       body: JSON.stringify({
         items,
