@@ -4,7 +4,7 @@ import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import { useOrderStore } from "@/provider/order-store-provider";
 import { useQuery } from "@tanstack/react-query";
 import { Settings } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MenuItem } from "../type/MenuItem";
 import { AddMenu } from "./AddMenu";
 import { MenuCard } from "./MenuCard";
@@ -22,11 +22,7 @@ export const MenuView = () => {
     },
   });
 
-  useEffect(() => {
-    console.log("data", data);
-  }, [data]);
-
-  if (isPending) return <div>Loading...</div>;
+  if (isPending || isLoading) return <div>Loading...</div>;
 
   if (error) return <div>메뉴 가져오는데 실패했습니다...</div>;
 

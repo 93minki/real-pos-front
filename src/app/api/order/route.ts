@@ -36,13 +36,13 @@ export async function POST(request: NextRequest) {
         "Content-Type": "application/json",
         ...(cookieHeader && { Cookie: cookieHeader }),
       },
-      body: JSON.stringify({
-        items: body.items,
-        status: body.status,
-      }),
+      body: JSON.stringify(body),
     });
     const data = await response.json();
-    return NextResponse.json({ success: true, data });
+    return NextResponse.json(
+      { success: response.ok, data },
+      { status: response.status }
+    );
   } catch (error) {
     console.error("POST request error:", error);
     return NextResponse.json(

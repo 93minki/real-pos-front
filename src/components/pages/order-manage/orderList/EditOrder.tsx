@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { calcTotalPrice } from "@/lib/utils";
+import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FormEvent } from "react";
 import { OrderItemDatas, OrderListItems } from "../type/OrderItem";
@@ -21,18 +21,21 @@ interface EditOrderProps {
 
 const editOrderState = async ({
   orderId,
-  totalPrice,
   updateOrderItems,
 }: {
   orderId: string;
-  totalPrice: number;
   updateOrderItems: OrderItemDatas[];
 }) => {
-  const response = await fetch(`/api/order/${orderId}`, {
+  const items = updateOrderItems.map((item) => ({
+    menuId: item.menu.id,
+    quantity: item.menu.quantity,
+    price: item.menu.price,
+  }));
+
+  const response = await fetchWithAuth(`/api/order/${orderId}`, {
     method: "PATCH",
     body: JSON.stringify({
-      items: updateOrderItems,
-      totalPrice,
+      items,
     }),
     headers: {
       "Content-Type": "application/json",
@@ -85,8 +88,7 @@ export const EditOrder = ({ orderItems, orderId }: EditOrderProps) => {
       ...item,
       quantity: Number(data[item.menu.name]),
     }));
-    const totalPrice = calcTotalPrice(updateOrderItems);
-    mutation.mutate({ orderId, totalPrice, updateOrderItems });
+    mutation.mutate({ orderId, updateOrderItems });
   };
 
   return (
