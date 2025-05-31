@@ -1,6 +1,5 @@
 "use client";
 
-import { calcTotalPrice } from "@/lib/utils";
 import { OrderItemDatas } from "../type/OrderItem";
 
 interface CompletedOrderProp {
@@ -24,7 +23,9 @@ export const CompletedOrder = ({ orderItems }: CompletedOrderProp) => {
         ))}
       <span className="text-right text-lg">
         합계:
-        <span className="font-bold">{calcTotalPrice(orderItems)}</span>
+        <span className="font-bold">
+          {orderItems.reduce((acc, cur) => acc + cur.price, 0)}
+        </span>
       </span>
     </div>
   );

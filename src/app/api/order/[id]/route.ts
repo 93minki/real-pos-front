@@ -50,6 +50,7 @@ export async function PATCH(
       .filter(Boolean)
       .join("; ");
     const body = await request.json();
+    console.log("body", body);
     const response = await fetch(`${apiUrl}/orders/${params.id}`, {
       method: "PATCH",
       headers: {
