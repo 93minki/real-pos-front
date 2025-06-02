@@ -1,4 +1,3 @@
-import { calcTotalPrice } from "@/lib/utils";
 import { createStore } from "zustand";
 
 export type OrderItemsType = {
@@ -44,7 +43,10 @@ export const createOrderStore = (initState: OrderState = defaultInitiState) => {
 
           return {
             orderItems: updateOrderItems,
-            totalPrice: calcTotalPrice(updateOrderItems),
+            totalPrice: updateOrderItems.reduce(
+              (acc, item) => acc + item.price * item.quantity,
+              0
+            ),
           };
         } else {
           return {
@@ -65,7 +67,10 @@ export const createOrderStore = (initState: OrderState = defaultInitiState) => {
           );
           return {
             orderItems: updateOrderItems,
-            totalPrice: calcTotalPrice(updateOrderItems),
+            totalPrice: updateOrderItems.reduce(
+              (acc, item) => acc + item.price * item.quantity,
+              0
+            ),
           };
         } else {
           return state;
@@ -84,7 +89,10 @@ export const createOrderStore = (initState: OrderState = defaultInitiState) => {
 
           return {
             orderItems: updateOrderItems,
-            totalPrice: calcTotalPrice(updateOrderItems),
+            totalPrice: updateOrderItems.reduce(
+              (acc, item) => acc + item.price * item.quantity,
+              0
+            ),
           };
         } else {
           return state;
@@ -103,7 +111,10 @@ export const createOrderStore = (initState: OrderState = defaultInitiState) => {
             existItem.quantity -= 1;
             return {
               orderItems: updateOrderItems,
-              totalPrice: calcTotalPrice(updateOrderItems),
+              totalPrice: updateOrderItems.reduce(
+                (acc, item) => acc + item.price * item.quantity,
+                0
+              ),
             };
           } else {
             const deletedItem = state.orderItems.filter(
@@ -111,7 +122,10 @@ export const createOrderStore = (initState: OrderState = defaultInitiState) => {
             );
             return {
               orderItems: deletedItem,
-              totalPrice: calcTotalPrice(deletedItem),
+              totalPrice: deletedItem.reduce(
+                (acc, item) => acc + item.price * item.quantity,
+                0
+              ),
             };
           }
         } else {

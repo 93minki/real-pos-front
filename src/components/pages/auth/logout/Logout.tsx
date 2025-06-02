@@ -1,11 +1,14 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 export const Logout = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const logoutHandler = async () => {
+    queryClient.clear();
     const response = await fetch("/api/auth/logout", {
       method: "POST",
       headers: {

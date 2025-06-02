@@ -48,9 +48,10 @@ export const Calendar = ({
   }, [year, month]);
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex justify-between items-center px-16">
+    <div className="flex flex-col gap-2 w-[340px] mx-auto">
+      <div className="flex justify-between items-center px-2 py-1 bg-white rounded-lg shadow mb-1">
         <SquareChevronLeft
+          className="cursor-pointer hover:text-blue-500 transition w-6 h-6"
           onClick={() => {
             if (month === 1) {
               setYear((prev) => prev - 1);
@@ -60,10 +61,11 @@ export const Calendar = ({
             }
           }}
         />
-        <span>
+        <span className="font-semibold text-base">
           {year}년 {month}월
         </span>
         <SquareChevronRight
+          className="cursor-pointer hover:text-blue-500 transition w-6 h-6"
           onClick={() => {
             if (month === 12) {
               setYear((prev) => prev + 1);
@@ -75,29 +77,50 @@ export const Calendar = ({
         />
       </div>
 
-      <div className="grid grid-cols-7 gap-1 justify-center">
+      <div className="grid grid-cols-7 gap-[2px] bg-white rounded-lg shadow p-1">
         {["일", "월", "화", "수", "목", "금", "토"].map((day, index) => (
           <div
             key={index}
-            className={`text-center ${index === 0 ? "text-red-500" : ""}`}
+            className={`text-center font-bold py-[2px] text-xs ${
+              index === 0
+                ? "text-red-500"
+                : index === 6
+                ? "text-blue-500"
+                : "text-gray-700"
+            }`}
           >
             {day}
           </div>
         ))}
         {dayArray.map((arr, i) => {
+          const isToday = (() => {
+            const today = new Date();
+            return (
+              +arr === today.getDate() &&
+              month === today.getMonth() + 1 &&
+              year === today.getFullYear()
+            );
+          })();
           return (
             <button
               key={i}
-              className={`border aspect-square`}
+              disabled={arr === " "}
+              className={`w-8 h-8 flex items-center justify-center rounded-full transition border-none outline-none focus:ring-2 focus:ring-blue-400 text-xs
+                ${
+                  arr === " "
+                    ? "bg-transparent cursor-default"
+                    : date === +arr
+                    ? "bg-blue-500 text-white font-bold shadow-lg"
+                    : isToday
+                    ? "bg-blue-100 text-blue-700 font-semibold"
+                    : "hover:bg-gray-100 text-gray-800"
+                }
+              `}
               onClick={() => {
                 setDate(+arr);
               }}
             >
-              <span
-                className={`w-full h-full flex justify-center items-center ${
-                  date === +arr ? "bg-red-300 border rounded-full" : ""
-                }`}
-              >
+              <span className="w-full h-full flex justify-center items-center">
                 {arr}
               </span>
             </button>

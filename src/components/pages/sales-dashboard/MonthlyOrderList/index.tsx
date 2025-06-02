@@ -1,16 +1,19 @@
 "use client";
+import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { OrderItem } from "../../order-manage/type/OrderItem";
+import { OrderListItems } from "../../order-manage/type/OrderItem";
 import { Calendar } from "./Calendar";
 import { OrderList } from "./OrderList";
 import { OrderPieChart } from "./OrderPieChart";
 
 const fetchMonthOrder = async (year: number, month: number) => {
-  const response = await fetch(`api/order/filter?month=${year}-${month}`);
-  const responseData: { success: boolean; data: OrderItem[] } =
+  const response = await fetchWithAuth(
+    `/api/order/monthly?year=${year}&month=${month}`
+  );
+  const responseData: { success: boolean; data: OrderListItems[] } =
     await response.json();
-
+  console.log("responseData", responseData.data);
   return responseData.data;
 };
 
@@ -35,8 +38,8 @@ export const MonthlyOrderList = () => {
   if (isError) return <div>{error.toString()}</div>;
 
   return (
-    <div className="flex">
-      <div className="flex flex-col gap-4 ">
+    <div className="grid grid-cols-[auto,1fr] grid-rows-[3fr,7fr] gap-4 w-full">
+      <div className="">
         <Calendar
           year={year}
           setYear={setYear}
@@ -45,16 +48,16 @@ export const MonthlyOrderList = () => {
           date={date}
           setDate={setDate}
         />
-        <div>
-          <OrderPieChart monthOrderData={data || []} />
-        </div>
       </div>
-      <OrderList
-        year={year}
-        month={month}
-        date={date}
-        monthOrderData={data || []}
-      />
+      <div className="row-span-2 w-full ">
+        <OrderList
+          year={year.toString().padStart(4, "0")}
+          month={month.toString().padStart(2, "0")}
+          date={date.toString().padStart(2, "0")}
+          monthOrderData={data || []}
+        />
+      </div>
+      <OrderPieChart monthOrderData={data || []} />
     </div>
   );
 };

@@ -8,10 +8,10 @@ import {
 } from "@/components/ui/chart";
 import { useEffect, useState } from "react";
 import { LabelList, Pie, PieChart } from "recharts";
-import { OrderItem } from "../../order-manage/type/OrderItem";
+import { OrderListItems } from "../../order-manage/type/OrderItem";
 
 interface OrderPieChartProps {
-  monthOrderData: OrderItem[];
+  monthOrderData: OrderListItems[];
 }
 
 interface chartItemType {
@@ -58,13 +58,15 @@ export const OrderPieChart = ({ monthOrderData }: OrderPieChartProps) => {
 
     monthOrderData.forEach((orderData) => {
       orderData.items.forEach((order) => {
-        const existingItem = menuSet.find((set) => set.menu === order.name);
+        const existingItem = menuSet.find(
+          (set) => set.menu === order.menu.name
+        );
 
         if (existingItem) {
           existingItem.quantity += order.quantity;
         } else {
           menuSet.push({
-            menu: order.name,
+            menu: order.menu.name,
             quantity: order.quantity,
           });
         }
@@ -94,11 +96,23 @@ export const OrderPieChart = ({ monthOrderData }: OrderPieChartProps) => {
   }, [monthOrderData]);
 
   return (
-    <div>
-      <span>월 매출:</span>{monthOrderData.reduce((acc, cur) => acc + cur.totalPrice, 0)}
+    <div className="flex flex-col items-center gap-4 mt-4 justify-self-center">
+      <span className="text-xl font-bold text-gray-800 mb-2">
+        월 매출:{" "}
+        <span className="text-blue-600">
+          {monthOrderData
+            .reduce(
+              (acc, cur) =>
+                acc + cur.items.reduce((acc, cur) => acc + cur.price, 0),
+              0
+            )
+            .toLocaleString()}
+          원
+        </span>
+      </span>
       <ChartContainer
         config={chartConfig}
-        className="mx-auto aspect-square w-[500px]"
+        className="mx-auto aspect-square w-[350px] bg-white rounded-xl shadow p-4"
       >
         <PieChart>
           <ChartTooltip
@@ -118,6 +132,25 @@ export const OrderPieChart = ({ monthOrderData }: OrderPieChartProps) => {
           </Pie>
         </PieChart>
       </ChartContainer>
+      {orderChartData.length > 0 && (
+        <div className="flex flex-wrap justify-center gap-3 mt-2">
+          {orderChartData.map((item, idx) => (
+            <div
+              key={item.menu}
+              className="flex items-center gap-2 bg-gray-50 rounded px-2 py-1 shadow-sm"
+            >
+              <span
+                className="inline-block w-3 h-3 rounded-full"
+                style={{ background: item.fill }}
+              ></span>
+              <span className="text-sm font-medium text-gray-700">
+                {item.menu}
+              </span>
+              <span className="text-xs text-gray-500">({item.quantity})</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
