@@ -50,7 +50,7 @@ export const OrderList = ({
   }, [monthOrderData, date]);
 
   return (
-    <div className="flex flex-col gap-4 ml-8">
+    <div className="flex flex-col gap-4 ml-8 h-full overflow-y-auto">
       <div className="mb-2">
         <span className="font-semibold text-lg mr-2">
           {year}-{month}-{date} 총 매출:
@@ -61,7 +61,7 @@ export const OrderList = ({
       </div>
       <div className="flex flex-wrap gap-4">
         {orderListByDay.length === 0 ? (
-          <div className="w-full text-center text-gray-400 py-12 bg-white rounded-lg shadow">
+          <div className="w-full h-full text-center text-gray-400 py-12 bg-white rounded-lg shadow">
             주문 내역이 없습니다.
           </div>
         ) : (
@@ -69,7 +69,7 @@ export const OrderList = ({
             return (
               <div
                 key={order.id}
-                className="flex flex-col gap-2 bg-white rounded-xl shadow-md p-4 w-[230px] border hover:shadow-lg transition"
+                className="flex flex-col gap-2 bg-white rounded-xl shadow-md p-4 w-[230px] h-[250px]  border hover:shadow-lg transition"
               >
                 <span className="text-sm text-gray-500">
                   주문 시간:{" "}
@@ -84,8 +84,7 @@ export const OrderList = ({
                     .toLocaleString()}
                   원
                 </span>
-                <div className="mt-2">
-                  <span className="font-semibold text-gray-700">주문 내역</span>
+                <div className="mt-2 overflow-y-auto">
                   <ul className="mt-1 ml-2 flex flex-col gap-1">
                     {order.items.map((item) => (
                       <li
@@ -93,7 +92,7 @@ export const OrderList = ({
                         className="flex gap-2 text-gray-800"
                       >
                         <span className="font-medium">{item.menu.name}</span>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-gray-500 self-center">
                           x{item.quantity}
                         </span>
                       </li>

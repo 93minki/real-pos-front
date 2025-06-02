@@ -21,12 +21,12 @@ export const OrderList = () => {
       <div className="flex items-center justify-center relative px-2 py-4 bg-[#FDEACA] rounded-lg">
         <span className="text-2xl">주문 현황</span>
       </div>
-      <ul className="grid grid-cols-3 gap-4">
+      <ul className="grid grid-cols-3 gap-2">
         {data &&
           data.map((order) => {
             return (
               order.status === "IN_PROGRESS" && (
-                <li key={order.id} className="">
+                <li key={order.id} className="justify-self-center">
                   <Order
                     orderItems={order.items}
                     orderId={order.id.toString()}

@@ -49,6 +49,7 @@ export const OrderPieChart = ({ monthOrderData }: OrderPieChartProps) => {
 
   useEffect(() => {
     const menuSet: chartItemType[] = [];
+    console.log(monthOrderData);
 
     if (monthOrderData.length === 0) {
       setOrderChartData([]);
@@ -112,7 +113,7 @@ export const OrderPieChart = ({ monthOrderData }: OrderPieChartProps) => {
       </span>
       <ChartContainer
         config={chartConfig}
-        className="mx-auto aspect-square bg-white rounded-xl shadow p-4"
+        className="mx-auto aspect-square bg-white rounded-xl shadow p-4 w-full"
       >
         <PieChart>
           <ChartTooltip

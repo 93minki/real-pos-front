@@ -30,7 +30,7 @@ export const MenuCard = ({
     >
       <span className="text-xl font-bold">{name}</span>
       <span className="text-lg">{price}원</span>
-      {editMode && (
+      {editMode ? (
         <div className="flex gap-4">
           <EditMenu
             name={name}
@@ -41,17 +41,18 @@ export const MenuCard = ({
             description={description || ""}
           />
         </div>
+      ) : (
+        <Button
+          disabled={editMode}
+          onClick={(e) => {
+            if (!editMode) {
+              addOrder({ id, name, price, quantity: 1 });
+            }
+          }}
+        >
+          추가
+        </Button>
       )}
-      <Button
-        disabled={editMode}
-        onClick={(e) => {
-          if (!editMode) {
-            addOrder({ id, name, price, quantity: 1 });
-          }
-        }}
-      >
-        추가하기
-      </Button>
     </div>
   );
 };

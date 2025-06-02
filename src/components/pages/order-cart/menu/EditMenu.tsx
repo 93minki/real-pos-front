@@ -114,7 +114,7 @@ export const EditMenu = ({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button type="button" variant={"outline"}>
+        <Button type="button" variant={"default"}>
           수정
         </Button>
       </DialogTrigger>
