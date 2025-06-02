@@ -1,3 +1,4 @@
+import NavigationBar from "@/components/ui/NavigationBar";
 import { OrderStoreProvider } from "@/provider/order-store-provider";
 import { ReactQueryClientProvider } from "@/provider/ReactQueryClientProvider";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -19,10 +20,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className}`} suppressHydrationWarning={true}>
+      <body
+        className={`${inter.className} bg-[#f5f5f3]`}
+        suppressHydrationWarning={true}
+      >
         <ReactQueryClientProvider>
           <ReactQueryDevtools initialIsOpen={false} />
-          <OrderStoreProvider>{children}</OrderStoreProvider>
+          <OrderStoreProvider>
+            <NavigationBar />
+            <div className="pt-20">
+              {/* 네비게이션 바 높이만큼 패딩 */}
+              {children}
+            </div>
+          </OrderStoreProvider>
         </ReactQueryClientProvider>
       </body>
     </html>
