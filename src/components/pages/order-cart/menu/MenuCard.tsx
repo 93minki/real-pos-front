@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { useOrderStore } from "@/provider/order-store-provider";
-import { DeleteMenu } from "./DeleteMenu";
 import { EditMenu } from "./EditMenu";
 
 interface MenuCardProps {
@@ -41,7 +40,6 @@ export const MenuCard = ({
             category={category || ""}
             description={description || ""}
           />
-          <DeleteMenu id={id} />
         </div>
       )}
       <Button

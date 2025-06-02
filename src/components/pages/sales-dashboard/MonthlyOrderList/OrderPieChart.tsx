@@ -96,10 +96,10 @@ export const OrderPieChart = ({ monthOrderData }: OrderPieChartProps) => {
   }, [monthOrderData]);
 
   return (
-    <div className="flex flex-col items-center gap-4 mt-4 justify-self-center">
+    <div className="flex flex-col items-center gap-4 mt-4 justify-self-cente w-[350px]">
       <span className="text-xl font-bold text-gray-800 mb-2">
         월 매출:{" "}
-        <span className="text-blue-600">
+        <span className="text-[#AF794B]">
           {monthOrderData
             .reduce(
               (acc, cur) =>
@@ -112,7 +112,7 @@ export const OrderPieChart = ({ monthOrderData }: OrderPieChartProps) => {
       </span>
       <ChartContainer
         config={chartConfig}
-        className="mx-auto aspect-square w-[350px] bg-white rounded-xl shadow p-4"
+        className="mx-auto aspect-square bg-white rounded-xl shadow p-4"
       >
         <PieChart>
           <ChartTooltip

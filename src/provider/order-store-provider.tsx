@@ -1,6 +1,6 @@
 "use client";
 
-import { createOrderStore, OrderStore } from "@/store/order-store";
+import { createOrderStore, OrderStore } from "@/order-store";
 import { createContext, useContext, useRef } from "react";
 import { useStore } from "zustand";
 

@@ -55,7 +55,7 @@ export const OrderList = ({
         <span className="font-semibold text-lg mr-2">
           {year}-{month}-{date} 총 매출:
         </span>
-        <span className="text-2xl text-blue-600 font-bold">
+        <span className="text-2xl text-[#AF794B] font-bold">
           {totalPriceByDay.toLocaleString()}
         </span>
       </div>
@@ -77,7 +77,7 @@ export const OrderList = ({
                     {trimOrderTime(order.updated_at)}
                   </span>
                 </span>
-                <span className="text-base font-bold text-blue-700">
+                <span className="text-base font-bold text-[#AF794B]">
                   주문 금액:{" "}
                   {order.items
                     .reduce((acc, cur) => acc + cur.price, 0)
