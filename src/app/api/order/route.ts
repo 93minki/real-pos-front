@@ -1,10 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const accessToken = request.cookies.get("accessToken")?.value;
+    const refreshToken = request.cookies.get("refreshToken")?.value;
+    const cookieHeader = [
+      accessToken ? `accessToken=${accessToken}` : null,
+      refreshToken ? `refreshToken=${refreshToken}` : null,
+    ]
+      .filter(Boolean)
+      .join("; ");
     const response = await fetch(`${apiUrl}/orders`, {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        ...(cookieHeader && { Cookie: cookieHeader }),
+      },
     });
     const data = await response.json();
     console.log("data", data);

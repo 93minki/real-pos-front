@@ -29,6 +29,7 @@ export const SigninForm = () => {
       body: JSON.stringify(data),
     });
     const result = await response.json();
+    console.log("result", result);
     if (result.code === "OK") {
       router.push("/");
     } else {

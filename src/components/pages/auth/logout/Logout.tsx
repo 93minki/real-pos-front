@@ -1,5 +1,6 @@
 "use client";
 
+import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
@@ -9,7 +10,7 @@ export const Logout = () => {
 
   const logoutHandler = async () => {
     queryClient.clear();
-    const response = await fetch("/api/auth/logout", {
+    const response = await fetchWithAuth("/api/auth/logout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

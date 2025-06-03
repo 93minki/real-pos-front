@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback } from "react";
+import { Logout } from "../pages/auth/logout/Logout";
 
 export default function NavigationBar() {
   const router = useRouter();
@@ -10,11 +10,6 @@ export default function NavigationBar() {
   if (pathname === "/signin" || pathname === "/signup") {
     return null;
   }
-
-  const handleLogout = useCallback(() => {
-    localStorage.clear();
-    router.push("/signin");
-  }, [router]);
 
   return (
     <nav className="w-full bg-white shadow flex items-center px-8 py-3 gap-4 fixed top-0 left-0 z-50">
@@ -39,12 +34,7 @@ export default function NavigationBar() {
         </Link>
       </div>
       <div className="flex-1"></div>
-      <button
-        onClick={handleLogout}
-        className="px-4 py-2 rounded bg-[#AF794B] text-white font-semibold hover:bg-[#8c6239] transition"
-      >
-        로그아웃
-      </button>
+      <Logout />
     </nav>
   );
 }

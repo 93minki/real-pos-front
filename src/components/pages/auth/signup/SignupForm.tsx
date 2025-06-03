@@ -49,7 +49,7 @@ export const SignupForm = () => {
     const result = await response.json();
     console.log(result);
 
-    if (result.code === "OK") {
+    if (result.data.code === "OK") {
       router.push("/signin");
     } else {
       alert(result.message || "회원가입에 실패했습니다.");

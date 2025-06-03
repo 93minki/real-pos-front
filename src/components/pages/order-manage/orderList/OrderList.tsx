@@ -1,5 +1,6 @@
 "use client";
 import { fetchWithAuth } from "@/lib/fetchWithAuth";
+import { useOrderSSE } from "@/lib/useOrderSSE";
 import { useQuery } from "@tanstack/react-query";
 import { OrderListItems } from "../type/OrderItem";
 import { Order } from "./Order";
@@ -13,6 +14,7 @@ export const OrderList = () => {
       return response.data;
     },
   });
+  useOrderSSE();
 
   if (isPending) return <div>Loading...</div>;
 
