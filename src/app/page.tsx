@@ -3,8 +3,8 @@ import { OrderView } from "@/components/pages/order-cart/order/OrderView";
 
 export default function Home() {
   return (
-    <main className="flex flex-col min-h-screen items-center justify-between p-24 bg-[#F2F2F0] ">
-      <div className="flex w-full">
+    <main className="flex flex-col h-screen items-center justify-between p-24 bg-[#F2F2F0] ">
+      <div className="flex w-full h-full ">
         <MenuView />
         <OrderView />
       </div>

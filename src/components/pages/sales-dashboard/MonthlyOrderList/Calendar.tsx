@@ -43,7 +43,6 @@ export const Calendar = ({
     for (let i = 0; i < moreDaysCount; i++) {
       days.push(" ");
     }
-    console.log("days", days);
     setDayArray(days);
   }, [year, month]);
 

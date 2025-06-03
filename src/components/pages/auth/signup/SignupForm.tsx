@@ -47,7 +47,6 @@ export const SignupForm = () => {
       body: JSON.stringify({ ...data, phone }),
     });
     const result = await response.json();
-    console.log(result);
 
     if (result.data.code === "OK") {
       router.push("/signin");

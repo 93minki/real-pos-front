@@ -28,10 +28,7 @@ export default function RootLayout({
           <ReactQueryDevtools initialIsOpen={false} />
           <OrderStoreProvider>
             <NavigationBar />
-            <div className="pt-20">
-              {/* 네비게이션 바 높이만큼 패딩 */}
-              {children}
-            </div>
+            {children}
           </OrderStoreProvider>
         </ReactQueryClientProvider>
       </body>

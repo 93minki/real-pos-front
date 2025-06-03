@@ -49,7 +49,6 @@ export const OrderPieChart = ({ monthOrderData }: OrderPieChartProps) => {
 
   useEffect(() => {
     const menuSet: chartItemType[] = [];
-    console.log(monthOrderData);
 
     if (monthOrderData.length === 0) {
       setOrderChartData([]);

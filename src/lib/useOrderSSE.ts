@@ -12,7 +12,6 @@ export function useOrderSSE() {
     });
 
     eventSource.addEventListener("orderAdded", () => {
-      console.log("orderAdded");
       queryClient.invalidateQueries({ queryKey: ["order-list"] });
     });
 

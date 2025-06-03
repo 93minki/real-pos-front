@@ -13,7 +13,6 @@ const fetchMonthOrder = async (year: number, month: number) => {
   );
   const responseData: { success: boolean; data: OrderListItems[] } =
     await response.json();
-  console.log("responseData", responseData.data);
   return responseData.data;
 };
 
@@ -38,7 +37,7 @@ export const MonthlyOrderList = () => {
   if (isError) return <div>{error.toString()}</div>;
 
   return (
-    <div className="grid grid-cols-[auto,1fr] grid-rows-[3fr,7fr] gap-4 w-full">
+    <div className="grid grid-cols-[auto,1fr] grid-rows-[3fr,7fr] gap-4 w-full h-full">
       <div className="">
         <Calendar
           year={year}

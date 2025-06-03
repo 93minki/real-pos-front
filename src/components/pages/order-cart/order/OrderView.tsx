@@ -31,7 +31,6 @@ export const OrderView = () => {
         quantity: item.quantity,
       };
     });
-    console.log("items", items);
     const fetchData = await fetchWithAuth("/api/order", {
       method: "POST",
       body: JSON.stringify({
@@ -43,18 +42,17 @@ export const OrderView = () => {
       },
     });
     const response = await fetchData.json();
-    console.log("response", response);
     reset();
   };
 
   return (
-    <div className="flex-grow-[2] basis-[20%] max-w-[20%] min-w-[20%] px-2 flex flex-col h-[850px] gap-8 border-r">
+    <div className="flex-grow-[2] basis-[20%] max-w-[20%] min-w-[20%] px-2 flex flex-col gap-8 border-r">
       <div className="flex items-center justify-center relative px-2 py-4 bg-[#FDEACA] rounded-lg">
         <span className="text-2xl">주문 목록</span>
       </div>
 
       {/* 주문 목록을 담는 부분 */}
-      <div className="flex flex-col  overflow-y-auto flex-grow py-4 gap-2">
+      <div className="flex flex-col overflow-y-auto flex-grow py-4 gap-2">
         {orderItems.map((item) => {
           return (
             <OrderItems

@@ -22,7 +22,6 @@ export async function DELETE(
       },
     });
     const data = await response.json();
-    console.log("data", data);
     return NextResponse.json(
       { success: response.ok, data },
       { status: response.status }
@@ -50,7 +49,6 @@ export async function PATCH(
       .filter(Boolean)
       .join("; ");
     const body = await request.json();
-    console.log("body", body);
     const response = await fetch(`${apiUrl}/orders/${params.id}`, {
       method: "PATCH",
       headers: {

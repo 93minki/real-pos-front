@@ -17,16 +17,16 @@ export const OrderHistory = () => {
   if (isPending) return <div>Loading...</div>;
 
   return (
-    <div className="flex-grow-[5] basis-[50%] max-w-[50%] min-w-[50%] flex flex-col gap-8">
-      <div className="flex items-center justify-center relative px-2 py-4 bg-[#FDEACA] rounded-lg">
+    <div className="flex flex-col flex-grow-[5] basis-[50%] max-w-[50%] min-w-[50%] h-[calc(100vh-120px)] gap-4">
+      <div className="flex items-center justify-center relative px-2 py-4 bg-[#FDEACA] rounded-lg shrink-0">
         <span className="text-2xl">완료된 주문</span>
       </div>
-      <ul className="grid grid-cols-3 gap-4 ">
+      <ul className="grid grid-cols-3 gap-4 flex-1 overflow-y-auto">
         {data &&
           data.map((order) => {
             return (
               order.status === "COMPLETED" && (
-                <li key={order.id} className="">
+                <li key={order.id}>
                   <CompletedOrder orderItems={order.items} />
                 </li>
               )

@@ -50,7 +50,7 @@ export const OrderList = ({
   }, [monthOrderData, date]);
 
   return (
-    <div className="flex flex-col gap-4 ml-8 h-full overflow-y-auto">
+    <div className="flex flex-col gap-4 ml-8 h-full">
       <div className="mb-2">
         <span className="font-semibold text-lg mr-2">
           {year}-{month}-{date} 총 매출:
@@ -59,7 +59,7 @@ export const OrderList = ({
           {totalPriceByDay.toLocaleString()}
         </span>
       </div>
-      <div className="flex flex-wrap gap-4">
+      <div className="flex flex-wrap gap-4 h-full overflow-y-auto">
         {orderListByDay.length === 0 ? (
           <div className="w-full h-full text-center text-gray-400 py-12 bg-white rounded-lg shadow">
             주문 내역이 없습니다.
