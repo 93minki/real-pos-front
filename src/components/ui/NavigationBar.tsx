@@ -9,10 +9,6 @@ import { Logout } from "../pages/auth/logout/Logout";
 export default function NavigationBar() {
   const pathname = usePathname();
 
-  if (pathname === "/signin" || pathname === "/signup") {
-    return null;
-  }
-
   const { data } = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
@@ -21,6 +17,10 @@ export default function NavigationBar() {
       return response;
     },
   });
+
+  if (pathname === "/signin" || pathname === "/signup") {
+    return null;
+  }
 
   return (
     <nav className="w-full bg-white shadow flex items-center px-8 py-3 gap-4 fixed top-0 left-0 z-50">
