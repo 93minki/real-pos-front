@@ -36,16 +36,10 @@ export function useOrderSSE() {
     );
 
     // 메시지 이벤트 핸들러
-    eventSourceRef.current.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        if (data.type === "orderAdded") {
-          queryClient.invalidateQueries({ queryKey: ["order-list"] });
-        }
-      } catch (error) {
-        console.error("[SSE] Message parsing error:", error);
-      }
-    };
+    eventSourceRef.current.addEventListener("orderAdded", (event) => {
+      console.log("[SSE] Received orderAdded event:", event);
+      queryClient.invalidateQueries({ queryKey: ["order-list"] });
+    });
 
     // 에러 이벤트 핸들러
     eventSourceRef.current.onerror = (error) => {
