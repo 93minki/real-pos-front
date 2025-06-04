@@ -5,8 +5,7 @@ import { useEffect, useRef } from "react";
 
 export function useOrderSSE() {
   const queryClient = useQueryClient();
-  const abortControllerRef = useRef<AbortController | null>(null);
-  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const eventSourceRef = useRef<EventSource | null>(null);
 
   const { data: userData } = useQuery({
     queryKey: ["user"],
@@ -24,62 +23,45 @@ export function useOrderSSE() {
     }
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    let buffer = "";
-    const connectSSE = async () => {
+
+    // 기존 연결이 있으면 닫기
+    if (eventSourceRef.current) {
+      eventSourceRef.current.close();
+    }
+
+    // EventSource 생성
+    eventSourceRef.current = new EventSource(
+      `${apiUrl}/orders/sse?userId=${userData.id}`,
+      { withCredentials: true }
+    );
+
+    // 메시지 이벤트 핸들러
+    eventSourceRef.current.onmessage = (event) => {
       try {
-        abortControllerRef.current?.abort();
-        abortControllerRef.current = new AbortController();
-
-        const response = await fetch(
-          `${apiUrl}/orders/sse?userId=${userData.id}`,
-          {
-            method: "GET",
-            headers: {
-              Accept: "text/event-stream",
-              "Cache-Control": "no-cache",
-            },
-            signal: abortControllerRef.current.signal,
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        const data = JSON.parse(event.data);
+        if (data.type === "orderAdded") {
+          queryClient.invalidateQueries({ queryKey: ["order-list"] });
         }
-
-        const reader = response.body?.getReader();
-        const decoder = new TextDecoder("utf-8");
-
-        if (!reader) {
-          throw new Error("Failed to get reader");
-        }
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-
-          buffer += decoder.decode(value, { stream: true });
-
-          const events = buffer.split("\n\n");
-          buffer = events.pop() || "";
-
-          for (const eventBlock of events) {
-            if (eventBlock.startsWith("event: orderAdded")) {
-              queryClient.invalidateQueries({ queryKey: ["order-list"] });
-            }
-          }
-        }
-      } catch (error: any) {
-        if (error.name !== "AbortError") {
-          console.error("[SSE] Connection Error:", error);
-          reconnectTimeoutRef.current = setTimeout(connectSSE, 5000);
-        }
+      } catch (error) {
+        console.error("[SSE] Message parsing error:", error);
       }
     };
 
-    connectSSE();
+    // 에러 이벤트 핸들러
+    eventSourceRef.current.onerror = (error) => {
+      console.error("[SSE] Connection Error:", error);
+    };
+
+    // 연결 성공 핸들러
+    eventSourceRef.current.onopen = () => {
+      console.log("[SSE] Connection opened");
+    };
 
     return () => {
-      abortControllerRef.current?.abort();
-      clearTimeout(reconnectTimeoutRef.current as NodeJS.Timeout);
+      if (eventSourceRef.current) {
+        eventSourceRef.current.close();
+        eventSourceRef.current = null;
+      }
     };
   }, [queryClient, userData?.id]);
 }
