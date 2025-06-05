@@ -43,6 +43,12 @@ export default function NavigationBar() {
         >
           매출관리
         </Link>
+        <Link
+          href="/profile"
+          className="px-4 py-2 rounded font-semibold hover:bg-gray-100 transition"
+        >
+          계정관리
+        </Link>
       </div>
       <div className="flex-1"></div>
       <div className="flex items-center gap-2">

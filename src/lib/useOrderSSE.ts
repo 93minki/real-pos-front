@@ -37,7 +37,6 @@ export function useOrderSSE() {
 
     // 메시지 이벤트 핸들러
     eventSourceRef.current.addEventListener("orderAdded", (event) => {
-      console.log("[SSE] Received orderAdded event:", event);
       queryClient.invalidateQueries({ queryKey: ["order-list"] });
     });
 
