@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { fetchWithAuth } from "@/lib/fetchWithAuth";
-import { UserResponseType } from "@/lib/UserResponseType";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { Edit3, Save, X } from "lucide-react";
@@ -90,7 +89,7 @@ const UpdateProfile = () => {
     queryKey: ["user"],
     queryFn: async () => {
       const fetchData = await fetchWithAuth("/api/user");
-      const response: { data: UserResponseType } = await fetchData.json();
+      const response = await fetchData.json();
       return response.data;
     },
   });

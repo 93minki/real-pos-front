@@ -13,7 +13,7 @@ const fetchMonthOrder = async (year: number, month: number) => {
   );
   const responseData: { success: boolean; data: OrderListItems[] } =
     await response.json();
-  return responseData.data;
+  return responseData.data.filter((order) => order.status !== "IN_PROGRESS");
 };
 
 export const MonthlyOrderList = () => {

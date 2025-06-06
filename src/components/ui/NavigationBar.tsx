@@ -1,6 +1,5 @@
 "use client";
 import { fetchWithAuth } from "@/lib/fetchWithAuth";
-import { UserResponseType } from "@/lib/UserResponseType";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -8,15 +7,19 @@ import { Logout } from "../pages/auth/logout/Logout";
 
 export default function NavigationBar() {
   const pathname = usePathname();
+  const isAuthPage = pathname === "/signin" || pathname === "/signup";
 
   const { data } = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
       const fetchData = await fetchWithAuth("/api/user");
-      const response: UserResponseType = await fetchData.json();
-      return response;
+      const response = await fetchData.json();
+      return response.data;
     },
+    enabled: !isAuthPage,
   });
+
+  if (!data) return null;
 
   if (pathname === "/signin" || pathname === "/signup") {
     return null;

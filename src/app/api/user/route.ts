@@ -20,8 +20,10 @@ export async function GET(request: NextRequest) {
     });
 
     const data = await response.json();
-
-    return NextResponse.json(data);
+    return NextResponse.json(
+      { success: response.ok, data },
+      { status: response.status }
+    );
   } catch (error) {
     return NextResponse.json(
       { success: false, error: "Failed to process Get User request" },

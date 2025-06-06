@@ -4,4 +4,5 @@ export type UserResponseType = {
   store_name: string;
   created_at: string;
   updated_at: string;
+  phone: string;
 };

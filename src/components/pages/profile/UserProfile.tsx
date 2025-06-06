@@ -1,11 +1,6 @@
-// 유저 정보가 보여지는 곳
-// 유저의 이메일, 스토어 이름, 핸드폰 번호 등 개인 정보가 보여진다.
-// 비밀번호 변경 기능도 있어야 함.
-// 회원 탈퇴 기능도 있어야 함.
 "use client";
 
 import { fetchWithAuth } from "@/lib/fetchWithAuth";
-import { UserResponseType } from "@/lib/UserResponseType";
 import { useQuery } from "@tanstack/react-query";
 import { Mail, Phone, Settings, Shield, Store, User } from "lucide-react";
 import DeleteAccount from "./DeleteAccount";
@@ -16,7 +11,7 @@ const UserProfile = () => {
     queryKey: ["user"],
     queryFn: async () => {
       const fetchData = await fetchWithAuth("/api/user");
-      const response: { data: UserResponseType } = await fetchData.json();
+      const response = await fetchData.json();
       return response.data;
     },
   });
@@ -92,7 +87,9 @@ const UserProfile = () => {
                     </div>
                     <div className="bg-gray-50 rounded-lg px-4 py-3">
                       <p className="text-gray-900 font-medium">
-                        등록된 전화번호가 없습니다
+                        {data?.phone
+                          ? data.phone
+                          : "등록된 전화번호가 없습니다"}
                       </p>
                     </div>
                   </div>

@@ -203,25 +203,27 @@ export const EditOrder = ({ orderItems, orderId }: EditOrderProps) => {
           {showMenuList && menuList && menuList.length > 0 && (
             <div className="border rounded-lg p-4 mb-6 bg-gray-50">
               <div className="flex flex-wrap gap-4">
-                {menuList.map((menu) => (
-                  <div
-                    key={menu.id}
-                    className="flex flex-col items-center w-32 p-2 bg-white rounded shadow"
-                  >
-                    <div className="font-semibold mb-1">{menu.name}</div>
-                    <div className="text-sm text-gray-500 mb-2">
-                      {menu.price}원
-                    </div>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="w-full"
-                      onClick={() => handleAddMenu(menu)}
+                {menuList
+                  .filter((menu) => menu.is_active === 1)
+                  .map((menu) => (
+                    <div
+                      key={menu.id}
+                      className="flex flex-col items-center w-32 p-2 bg-white rounded shadow"
                     >
-                      추가
-                    </Button>
-                  </div>
-                ))}
+                      <div className="font-semibold mb-1">{menu.name}</div>
+                      <div className="text-sm text-gray-500 mb-2">
+                        {menu.price}원
+                      </div>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="w-full"
+                        onClick={() => handleAddMenu(menu)}
+                      >
+                        추가
+                      </Button>
+                    </div>
+                  ))}
               </div>
             </div>
           )}
