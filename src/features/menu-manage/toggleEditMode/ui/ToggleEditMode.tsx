@@ -14,7 +14,7 @@ export const ToggleEditMode = ({
 }: ToggleEditModeProps) => {
   return (
     <Toggle variant={"default"} pressed={isEditMode} onPressedChange={onToggle}>
-      <Settings className="w-4 h-4" />
+      <Settings className="w-6 h-6" />
     </Toggle>
   );
 };

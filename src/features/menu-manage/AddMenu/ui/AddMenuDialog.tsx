@@ -109,7 +109,6 @@ export const AddMenuDialog = () => {
               value={formData.category}
               onChange={(e) => handleChange("category", e.target.value)}
               placeholder="카테고리를 입력하세요"
-              required
             />
           </div>
 

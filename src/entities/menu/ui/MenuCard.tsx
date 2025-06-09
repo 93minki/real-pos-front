@@ -39,7 +39,7 @@ export const MenuCard = ({
   return (
     <Card
       className={cn(
-        "cursor-pointer transition-all duration-200 hover:shadow-md select-none",
+        "cursor-pointer transition-all duration-200 hover:shadow-md select-none h-[200px] flex flex-col",
         !isActive && !isEditMode && "opacity-50",
         !isActive && isEditMode && "border-red-200 bg-red-50",
         isActive && "border-[#FDEACA] bg-white hover:bg-opacity-50",
@@ -47,41 +47,41 @@ export const MenuCard = ({
       )}
       onClick={handleSelectClick}
     >
-      <CardHeader className="pb-2">
+      <CardHeader className="pb-2 flex-shrink-0">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold truncate">
-            {menu.name} {menu.id}
+            {menu.name}
           </CardTitle>
           {isEditMode && (
-            <Badge variant={isActive ? "default" : "destructive"}>
+            <Badge variant={isActive ? "primary" : "destructive"}>
               {isActive ? "활성" : "비활성"}
             </Badge>
           )}
         </div>
       </CardHeader>
-      <CardContent className="pt-0">
-        <div className="space-y-2">
-          <p className="text-xl font-bold text-blue-600">
+      <CardContent className="pt-0 flex flex-col flex-grow">
+        <div className="flex flex-col gap-2 h-full">
+          <p className="text-xl font-bold text-[#6E4E39] flex-shrink-0">
             {menu.price.toLocaleString()}원
           </p>
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-gray-600 flex-grow">
             <p className="font-medium">{menu.category}</p>
             {menu.description && (
-              <p className="text-xs mt-1 line-clamp-2">{menu.description}</p>
+              <p className="text-xs line-clamp-1">{menu.description}</p>
             )}
           </div>
+          {isEditMode && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleEditClick}
+              className="mt-auto self-end justify-self-end"
+            >
+              <Edit className="h-3 w-3 mr-1" />
+              수정
+            </Button>
+          )}
         </div>
-        {isEditMode && (
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={handleEditClick}
-            className="flex-1"
-          >
-            <Edit className="h-3 w-3 mr-1" />
-            수정
-          </Button>
-        )}
       </CardContent>
     </Card>
   );

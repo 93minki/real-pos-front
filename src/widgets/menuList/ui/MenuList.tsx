@@ -1,7 +1,6 @@
 "use client";
 
-import { useMenuList } from "@/entities/menu/model/menu-queries";
-import { MenuCard } from "@/entities/menu/ui";
+import { MenuCard, useMenuList } from "@/entities";
 import { AddMenuDialog, EditMenuDialog, ToggleEditMode } from "@/features";
 import { useOrderStore } from "@/lib/order-store";
 import { MenuItemType } from "@/shared/types";

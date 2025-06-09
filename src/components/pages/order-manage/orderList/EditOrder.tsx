@@ -12,7 +12,8 @@ import {
 import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FormEvent, useState } from "react";
-import { MenuItem } from "../../order-cart/type/MenuItem";
+
+import { MenuItemType } from "@/shared/types";
 import { OrderItemDatas, OrderListItems } from "../type/OrderItem";
 
 interface EditOrderProps {
@@ -63,7 +64,7 @@ export const EditOrder = ({ orderItems, orderId }: EditOrderProps) => {
     queryKey: ["menu-list"],
     queryFn: async () => {
       const fetchData = await fetchWithAuth("/api/menu");
-      const response: { data: MenuItem[] } = await fetchData.json();
+      const response: { data: MenuItemType[] } = await fetchData.json();
       return response.data;
     },
   });
@@ -98,7 +99,7 @@ export const EditOrder = ({ orderItems, orderId }: EditOrderProps) => {
     },
   });
 
-  const handleAddMenu = (menu: MenuItem) => {
+  const handleAddMenu = (menu: MenuItemType) => {
     setOrderItemList((prev) => {
       const exist = prev.find((item) => item.menu.id === menu.id.toString());
       if (exist) {

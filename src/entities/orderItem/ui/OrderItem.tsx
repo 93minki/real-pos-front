@@ -1,26 +1,22 @@
-interface OrderItemsProps {
+interface OrderItemProps {
   id: number;
   name: string;
   quantity: number;
   upCount: (id: number) => void;
   downCount: (id: number) => void;
-  deleteItem: (id: number) => void;
 }
 
-export const OrderItems = ({
+export const OrderItem = ({
   id,
   name,
   quantity,
   upCount,
   downCount,
-  deleteItem,
-}: OrderItemsProps) => {
+}: OrderItemProps) => {
   return (
     <div className="flex justify-center items-center relative bg-white rounded-lg">
       <div className="flex-grow-[3] basis-[60%] max-w-[60%] min-w-[60%] py-2 px-4">
-        <span className="text-lg font-semibold">
-          {name} {id}
-        </span>
+        <span className="text-lg font-semibold">{name}</span>
       </div>
       <div className="flex-grow-[7] basis-[40%] max-w-[40%] min-w-[40%] py-2 px-4 flex gap-4">
         <button
@@ -40,13 +36,6 @@ export const OrderItems = ({
         >
           +
         </button>
-        {/* NOTE 삭제 버튼 활용 여부는 생각좀 해봐야 함. */}
-        {/* <SquareX
-          className="absolute left-0 top-1/2"
-          onClick={() => {
-            deleteItem(name);
-          }}
-        /> */}
       </div>
     </div>
   );
