@@ -1,7 +1,7 @@
 "use client";
 
 import { fetchWithAuth } from "@/lib/fetchWithAuth";
-import { useOrderStore } from "@/provider/order-store-provider";
+import { useOrderStore } from "@/lib/order-store";
 import { OrderItems } from "./OrderItems";
 
 export const OrderView = () => {
@@ -41,7 +41,6 @@ export const OrderView = () => {
         "Content-Type": "application/json",
       },
     });
-    const response = await fetchData.json();
     reset();
   };
 

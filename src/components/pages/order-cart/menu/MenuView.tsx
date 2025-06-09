@@ -1,7 +1,7 @@
 "use client";
 import { Toggle } from "@/components/ui/toggle";
 import { fetchWithAuth } from "@/lib/fetchWithAuth";
-import { useOrderStore } from "@/provider/order-store-provider";
+import { useOrderStore } from "@/lib/order-store";
 import { useQuery } from "@tanstack/react-query";
 import { Settings } from "lucide-react";
 import { useState } from "react";
@@ -11,7 +11,7 @@ import { MenuCard } from "./MenuCard";
 
 export const MenuView = () => {
   const [menuEditMode, setMenuEditMode] = useState(false);
-  const { reset } = useOrderStore((state) => state);
+  const reset = useOrderStore((state) => state.reset);
 
   const { isPending, error, data, isLoading } = useQuery({
     queryKey: ["menu-list"],

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useOrderStore } from "@/provider/order-store-provider";
+import { useOrderStore } from "@/lib/order-store";
 import { EditMenu } from "./EditMenu";
 
 interface MenuCardProps {
@@ -21,7 +21,8 @@ export const MenuCard = ({
   category,
   description,
 }: MenuCardProps) => {
-  const { addOrder } = useOrderStore((state) => state);
+  const addOrder = useOrderStore((state) => state.addOrder);
+
   return (
     <div
       className={`flex flex-col rounded-lg shadow-lg p-4 justify-center items-center gap-4 ${
