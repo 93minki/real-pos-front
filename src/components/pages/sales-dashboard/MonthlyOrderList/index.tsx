@@ -29,7 +29,7 @@ export const MonthlyOrderList = () => {
   }, []);
 
   const { isPending, error, data, isLoading, isError } = useQuery({
-    queryKey: [`month-order`, year, month],
+    queryKey: [`monthly-order-list`, year, month],
     queryFn: () => fetchMonthOrder(year, month),
   });
 

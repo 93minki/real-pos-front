@@ -1,8 +1,7 @@
 // import { MenuView } from "@/components/pages/order-cart/menu/MenuView";
-import { MenuList } from "@/widgets";
-import { MenuCart } from "@/widgets/menuCart/ui/MenuCart";
+import { MenuCart, MenuList } from "@/widgets";
 
-const MainPage = () => {
+const MenuManage = () => {
   return (
     <div className="flex w-full h-full">
       <MenuList />
@@ -11,4 +10,4 @@ const MainPage = () => {
   );
 };
 
-export default MainPage;
+export default MenuManage;

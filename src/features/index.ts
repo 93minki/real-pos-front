@@ -1,5 +1,11 @@
-export { AddMenuDialog } from "./menu-manage/AddMenu/ui/AddMenuDialog";
-export { EditMenuDialog } from "./menu-manage/EditMenu/ui/EditMenuDialog";
-export { ToggleEditMode } from "./menu-manage/toggleEditMode/ui/ToggleEditMode";
+export { CartList } from "./cart/cart-list/ui/CartList";
 
-export { MenuCartList } from "./menu-cart/MenuCart/ui/MenuCartList";
+export { AddMenuDialog } from "./menu-manage/add-menu-dialog/ui/AddMenuDialog";
+export { EditMenuDialog } from "./menu-manage/edit-menu-dialog/ui/EditMenuDialog";
+export { ToggleEditMode } from "./menu-manage/toggle-edit-mode/ui/ToggleEditMode";
+
+export { ConfirmOrderButton } from "./order-manage/confirm-order/ui/ConfirmOrderButton";
+export { DeleteOrderButton } from "./order-manage/delete-order/ui/DeleteOrderButton";
+export { EditOrderDialog } from "./order-manage/edit-order/ui/EditOrderDialog";
+
+export { PlaceOrderButton } from "./place-order/place-order-button/ui/PlaceOrderButton";
