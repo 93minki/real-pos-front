@@ -1,20 +1,11 @@
 "use client";
 
-import { fetchWithAuth } from "@/lib/fetchWithAuth";
-import { useQuery } from "@tanstack/react-query";
+import { useUserInfo } from "@/entities";
+import { DeleteAccount, UpdateProfile } from "@/features";
 import { Mail, Phone, Settings, Shield, Store, User } from "lucide-react";
-import DeleteAccount from "./DeleteAccount";
-import UpdateProfile from "./UpdateProfile";
 
 const UserProfile = () => {
-  const { data, isLoading, isFetching } = useQuery({
-    queryKey: ["user"],
-    queryFn: async () => {
-      const fetchData = await fetchWithAuth("/api/user");
-      const response = await fetchData.json();
-      return response.data;
-    },
-  });
+  const { data, isLoading, isFetching } = useUserInfo();
 
   if (isLoading || isFetching) {
     return (
@@ -111,7 +102,7 @@ const UserProfile = () => {
                   <p className="text-sm text-gray-600">정보 수정</p>
                 </div>
               </div>
-              <UpdateProfile />
+              <UpdateProfile userInfo={data} />
             </div>
 
             {/* 보안 카드 */}

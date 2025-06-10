@@ -81,7 +81,27 @@ export const EditOrderDialog = ({
 
   return (
     <Dialog>
-      <DialogTrigger>수정</DialogTrigger>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          className="w-full bg-white hover:bg-blue-50 border-blue-200 text-blue-700 hover:text-blue-800 transition-colors rounded-lg"
+        >
+          <svg
+            className="w-4 h-4 mr-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+            />
+          </svg>
+          수정
+        </Button>
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>주문 수정</DialogTitle>

@@ -1,6 +1,4 @@
-// 회원 탈퇴 기능
-// Shadcn/ui AlertDialog 사용
-
+"use client";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -12,37 +10,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { fetchWithAuth } from "@/lib/fetchWithAuth";
+import { useDeleteAccount } from "@/entities";
 import { AlertTriangle, Trash2, X } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 
-const DeleteAccount = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-  const deleteAccount = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetchWithAuth("/api/user/delete", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const result = await response.json();
-
-      if (response.status === 200) {
-        alert("회원탈퇴가 완료되었습니다.");
-        router.push("/signin");
-      } else {
-        alert(result.error || "회원탈퇴에 실패했습니다.");
-      }
-    } catch (error) {
-      alert("회원탈퇴 처리 중 오류가 발생했습니다.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+export const DeleteAccount = () => {
+  const mutation = useDeleteAccount();
 
   return (
     <AlertDialog>
@@ -83,17 +55,13 @@ const DeleteAccount = () => {
             취소
           </AlertDialogCancel>
           <Button
-            onClick={deleteAccount}
-            disabled={isLoading}
+            onClick={() => mutation.mutateAsync()}
             className="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors disabled:opacity-50"
           >
             <Trash2 className="w-4 h-4 mr-2" />
-            {isLoading ? "처리중..." : "회원탈퇴"}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );
 };
-
-export default DeleteAccount;

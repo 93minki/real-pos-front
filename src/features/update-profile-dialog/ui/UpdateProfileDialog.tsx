@@ -1,5 +1,3 @@
-// 여기서 유저의 비밀번호, 핸드폰 번호 등을 변경할 수 있어야 함.
-// Shadcn/ui Dialog 사용
 "use client";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,9 +8,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { fetchWithAuth } from "@/lib/fetchWithAuth";
+import { useUpdateUserInfo } from "@/entities";
+import { UserInfoType } from "@/shared/types/user-types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
 import { Edit3, Save, X } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -73,8 +71,13 @@ const updateProfileSchema = z
 
 type UpdateProfileFormData = z.infer<typeof updateProfileSchema>;
 
-const UpdateProfile = () => {
+interface UpdateProfileProps {
+  userInfo?: UserInfoType;
+}
+
+export const UpdateProfile = ({ userInfo }: UpdateProfileProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const mutation = useUpdateUserInfo();
   const {
     register,
     handleSubmit,
@@ -83,15 +86,6 @@ const UpdateProfile = () => {
     watch,
   } = useForm<UpdateProfileFormData>({
     resolver: zodResolver(updateProfileSchema),
-  });
-
-  const { data, isLoading, isFetching } = useQuery({
-    queryKey: ["user"],
-    queryFn: async () => {
-      const fetchData = await fetchWithAuth("/api/user");
-      const response = await fetchData.json();
-      return response.data;
-    },
   });
 
   const passwordValue = watch("password");
@@ -104,7 +98,7 @@ const UpdateProfile = () => {
       if (
         formData.storeName &&
         formData.storeName.trim() !== "" &&
-        formData.storeName !== data?.store_name
+        formData.storeName !== userInfo?.store_name
       ) {
         updateData.store_name = formData.storeName.trim();
       }
@@ -122,33 +116,12 @@ const UpdateProfile = () => {
         alert("변경할 정보가 없습니다.");
         return;
       }
-
-      const response = await fetch("/api/user/update", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updateData),
-      });
-      const result = await response.json();
-
-      if (response.status === 200) {
-        alert("회원정보 수정이 완료되었습니다.");
-        setIsOpen(false);
-        reset();
-        // 사용자 정보 다시 조회
-        window.location.reload();
-      } else {
-        alert(result.error || "회원정보 수정에 실패했습니다.");
-      }
+      await mutation.mutateAsync(updateData);
+      reset();
     } catch (error) {
       alert("회원정보 수정 중 오류가 발생했습니다.");
     }
   };
-
-  if (isLoading || isFetching) {
-    return <div className="animate-pulse h-10 bg-gray-200 rounded-lg"></div>;
-  }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -180,7 +153,7 @@ const UpdateProfile = () => {
             <input
               id="storeName"
               {...register("storeName")}
-              placeholder={data?.store_name || "가게 이름을 입력해주세요"}
+              placeholder={userInfo?.store_name || "가게 이름을 입력해주세요"}
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#AF794B] focus:border-transparent transition-all outline-none"
             />
             {errors.storeName && (
@@ -284,5 +257,3 @@ const UpdateProfile = () => {
     </Dialog>
   );
 };
-
-export default UpdateProfile;

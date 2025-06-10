@@ -14,23 +14,42 @@ export const InprogressOrderList = ({ orders }: InprogressOrderListProps) => {
   return (
     <div className="flex flex-col flex-grow-[5] basis-[50%] max-w-[50%] min-w-[50%] h-[calc(100vh-120px)] gap-4">
       <div className="flex items-center justify-center relative px-2 py-4 bg-[#FDEACA] rounded-lg shrink-0">
-        <span className="text-2xl">주문 현황</span>
+        <span className="text-2xl font-semibold">주문 현황</span>
       </div>
-      <ul className="grid grid-cols-3 gap-2 flex-1 overflow-y-auto">
+      <ul className="grid grid-cols-3 gap-4 flex-1 overflow-y-auto p-2">
         {orders.map((order) => {
           return (
             <li key={order.id} className="justify-self-center">
-              <div className="flex flex-col gap-2 p-2 border bg-[#FFF5EB] border-[#FFEEDB] rounded-lg">
-                <OrderCard order={order} />
-                <div className="flex gap-2 justify-center items-center">
-                  <EditOrderDialog
-                    orderItems={order.items}
-                    orderId={order.id.toString()}
-                  />
-                  <DeleteOrderButton orderId={order.id.toString()} />
+              <div className="relative group">
+                {/* 메인 주문 카드 */}
+                <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden">
+                  <OrderCard order={order} />
+
+                  {/* 버튼 영역 */}
+                  <div className="px-4 pb-4 bg-white border-t border-gray-100">
+                    {/* 수정/삭제 버튼 행 */}
+                    <div className="flex gap-2 mb-3 pt-3">
+                      <div className="flex-1">
+                        <EditOrderDialog
+                          orderItems={order.items}
+                          orderId={order.id.toString()}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <DeleteOrderButton orderId={order.id.toString()} />
+                      </div>
+                    </div>
+
+                    {/* 완료 버튼 */}
+                    <div className="w-full">
+                      <ConfirmOrderButton orderId={order.id.toString()} />
+                    </div>
+                  </div>
                 </div>
-                <div className="flex gap-4 justify-center items-center">
-                  <ConfirmOrderButton orderId={order.id.toString()} />
+
+                {/* 진행중 상태 표시 */}
+                <div className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full shadow-md">
+                  진행중
                 </div>
               </div>
             </li>

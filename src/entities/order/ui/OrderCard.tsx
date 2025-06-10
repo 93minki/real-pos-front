@@ -7,32 +7,48 @@ interface OrderCardProps {
 
 export const OrderCard = ({ order }: OrderCardProps) => {
   return (
-    <div
-      key={order.id}
-      className="flex flex-col gap-2 bg-white rounded-xl shadow-md p-4 w-[230px] h-[250px]  border hover:shadow-lg transition"
-    >
-      <span className="text-sm text-gray-500">
-        주문 시간:{" "}
-        <span className="font-semibold text-gray-800">
+    <div key={order.id} className="flex flex-col gap-3 p-4 w-[230px] h-[250px]">
+      {/* 주문 시간 */}
+      <div className="flex items-center justify-between">
+        <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md">
+          주문 시간
+        </span>
+        <span className="text-sm font-semibold text-gray-800">
           {trimOrderTime(order.updated_at)}
         </span>
-      </span>
-      <span className="text-base font-bold text-[#AF794B]">
-        주문 금액:{" "}
-        {order.items.reduce((acc, cur) => acc + cur.price, 0).toLocaleString()}
-        원
-      </span>
-      <div className="mt-2 overflow-y-auto">
-        <ul className="mt-1 ml-2 flex flex-col gap-1">
-          {order.items.map((item) => (
-            <li key={item.menu.id} className="flex gap-2 text-gray-800">
-              <span className="font-medium">{item.menu.name}</span>
-              <span className="text-xs text-gray-500 self-center">
-                x{item.quantity}
-              </span>
-            </li>
-          ))}
-        </ul>
+      </div>
+
+      {/* 주문 금액 */}
+      <div className="bg-gradient-to-r from-[#AF794B] to-[#6E4E39] text-white p-3 rounded-lg">
+        <div className="text-sm opacity-90">주문 금액</div>
+        <div className="text-xl font-bold">
+          {order.items
+            .reduce((acc, cur) => acc + cur.price, 0)
+            .toLocaleString()}
+          원
+        </div>
+      </div>
+
+      {/* 주문 내역 */}
+      <div className="flex-1 overflow-hidden">
+        <div className="text-sm font-medium text-gray-700 mb-2">주문 내역</div>
+        <div className="h-full overflow-y-auto">
+          <ul className="space-y-1">
+            {order.items.map((item) => (
+              <li
+                key={item.menu.id}
+                className="flex items-center justify-between bg-gray-50 px-2 py-1 rounded text-sm"
+              >
+                <span className="font-medium text-gray-800 truncate">
+                  {item.menu.name}
+                </span>
+                <span className="text-xs text-gray-600 bg-white px-1 py-0.5 rounded font-semibold ml-2 shrink-0">
+                  ×{item.quantity}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

@@ -8,4 +8,6 @@ export { ConfirmOrderButton } from "./order-manage/confirm-order/ui/ConfirmOrder
 export { DeleteOrderButton } from "./order-manage/delete-order/ui/DeleteOrderButton";
 export { EditOrderDialog } from "./order-manage/edit-order/ui/EditOrderDialog";
 
+export { DeleteAccount } from "./delete-account/ui/DeleteAccount";
 export { PlaceOrderButton } from "./place-order/place-order-button/ui/PlaceOrderButton";
+export { UpdateProfile } from "./update-profile-dialog/ui/UpdateProfileDialog";

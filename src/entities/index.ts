@@ -16,3 +16,10 @@ export {
   useTodayOrderList,
 } from "@/entities/order/model/order-queries";
 export { OrderCard } from "@/entities/order/ui/OrderCard";
+
+export {
+  useDeleteAccount,
+  USER_QUERY_KEYS,
+  useUpdateUserInfo,
+  useUserInfo,
+} from "@/entities/user/model/user-queries";
