@@ -19,16 +19,11 @@ export const Calendar = ({
   date,
   setDate,
 }: CalendarProps) => {
-  const [, setStartDate] = useState<Date>();
-  const [, setLastDate] = useState<Date>();
   const [dayArray, setDayArray] = useState<string[]>([]);
 
   useEffect(() => {
     const start = new Date(year, month - 1, 1);
     const last = new Date(year, month, 0);
-
-    setStartDate(start);
-    setLastDate(last);
 
     const indentCount = start.getDay();
     const days = Array.from({ length: last.getDate() }, (_, i) =>

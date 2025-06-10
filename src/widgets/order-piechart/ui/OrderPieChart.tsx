@@ -6,12 +6,12 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { OrderType } from "@/shared/types";
 import { useEffect, useState } from "react";
 import { LabelList, Pie, PieChart } from "recharts";
-import { OrderListItems } from "../../order-manage/type/OrderItem";
 
 interface OrderPieChartProps {
-  monthOrderData: OrderListItems[];
+  monthOrderData: OrderType[];
 }
 
 interface chartItemType {

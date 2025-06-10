@@ -1,4 +1,4 @@
-import MenuManage from "@/views/MainPage";
+import MenuManage from "@/views/MenuManage";
 
 export default function Home() {
   return (

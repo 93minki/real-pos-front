@@ -20,8 +20,8 @@ export const InprogressOrderList = ({ orders }: InprogressOrderListProps) => {
         {orders.map((order) => {
           return (
             <li key={order.id} className="justify-self-center">
-              <div className="flex flex-col shadow-lg rounded-lg p-4 bg-white gap-2 w-[230px]">
-                <OrderCard orderItems={order.items} />
+              <div className="flex flex-col gap-2 p-2 border bg-[#FFF5EB] border-[#FFEEDB] rounded-lg">
+                <OrderCard order={order} />
                 <div className="flex gap-2 justify-center items-center">
                   <EditOrderDialog
                     orderItems={order.items}

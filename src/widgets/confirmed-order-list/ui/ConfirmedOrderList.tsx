@@ -15,9 +15,7 @@ export const ConfirmedOrderList = ({ orders }: ConfirmedOrderListProps) => {
         {orders.map((order) => {
           return (
             <li key={order.id}>
-              <div className="flex flex-col shadow-lg rounded-lg p-4 bg-white gap-2 w-[230px] h-[200px] overflow-y-auto">
-                <OrderCard orderItems={order.items} />
-              </div>
+              <OrderCard order={order} />
             </li>
           );
         })}
