@@ -19,10 +19,10 @@ export const Logout = () => {
 
     const result = await response.json();
 
-    if (result.code === "OK") {
+    if (result.success) {
       router.push("/signin");
     } else {
-      alert(result.message || "로그아웃에 실패했습니다.");
+      alert(result.error || "로그아웃에 실패했습니다.");
     }
   };
 

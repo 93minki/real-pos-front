@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
       },
     });
     const data = await response.json();
-    return NextResponse.json(
+    return NextResponse.json(~
       { success: true, data },
       { status: response.status }
     );

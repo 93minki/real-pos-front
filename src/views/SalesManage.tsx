@@ -17,8 +17,13 @@ const SalesManage = () => {
 
   const { data: orderList } = useMonthlyOrderList(year, month);
 
-  const completedOrders =
-    orderList?.filter((order) => order.status === "COMPLETED") || [];
+  const monthlyOrderList = orderList?.filter(
+    (order) => order.status === "COMPLETED"
+  );
+  const selectedDayOrderList = monthlyOrderList?.filter((order) => {
+    const orderDate = new Date(order.updated_at).getDate();
+    return orderDate === date;
+  });
 
   return (
     <div className="grid grid-cols-[auto,1fr] grid-rows-[3fr,7fr] gap-4 w-full h-full">
@@ -33,9 +38,12 @@ const SalesManage = () => {
         />
       </div>
       <div className="row-span-2 w-full ">
-        <ConfirmedOrderList orders={completedOrders || []} />
+        <ConfirmedOrderList
+          orders={selectedDayOrderList || []}
+          layout="expanded"
+        />
       </div>
-      <OrderPieChart monthOrderData={completedOrders || []} />
+      <OrderPieChart monthOrderData={monthlyOrderList || []} />
     </div>
   );
 };

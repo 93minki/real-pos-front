@@ -29,6 +29,7 @@ export type DeleteAccountResponseType = {
   success: boolean;
   error?: string;
   data: {
+    code: string;
     message: string;
   };
 };

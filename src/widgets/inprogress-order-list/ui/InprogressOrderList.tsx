@@ -46,11 +46,6 @@ export const InprogressOrderList = ({ orders }: InprogressOrderListProps) => {
                     </div>
                   </div>
                 </div>
-
-                {/* 진행중 상태 표시 */}
-                <div className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full shadow-md">
-                  진행중
-                </div>
               </div>
             </li>
           );

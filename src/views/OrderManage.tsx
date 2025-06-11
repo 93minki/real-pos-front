@@ -24,7 +24,7 @@ const OrderManage = () => {
   return (
     <div className="flex w-full h-full gap-4">
       <InprogressOrderList orders={inprogressOrders} />
-      <ConfirmedOrderList orders={completedOrders} />
+      <ConfirmedOrderList orders={completedOrders} layout="compact" />
     </div>
   );
 };

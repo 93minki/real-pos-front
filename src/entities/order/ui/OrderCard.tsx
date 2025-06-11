@@ -20,7 +20,6 @@ export const OrderCard = ({ order }: OrderCardProps) => {
 
       {/* 주문 금액 */}
       <div className="bg-gradient-to-r from-[#AF794B] to-[#6E4E39] text-white p-3 rounded-lg">
-        <div className="text-sm opacity-90">주문 금액</div>
         <div className="text-xl font-bold">
           {order.items
             .reduce((acc, cur) => acc + cur.price, 0)
@@ -31,7 +30,6 @@ export const OrderCard = ({ order }: OrderCardProps) => {
 
       {/* 주문 내역 */}
       <div className="flex-1 overflow-hidden">
-        <div className="text-sm font-medium text-gray-700 mb-2">주문 내역</div>
         <div className="h-full overflow-y-auto">
           <ul className="space-y-1">
             {order.items.map((item) => (

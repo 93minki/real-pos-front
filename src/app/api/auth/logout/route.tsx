@@ -1,3 +1,4 @@
+import { clearAuthCookies } from "@/lib/clearAuthCookies";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -20,17 +21,17 @@ export async function POST(request: NextRequest) {
       credentials: "include",
     });
     const result = await response.json();
-    const setCookie = response.headers.get("Set-Cookie");
-    const nextResponse = NextResponse.json(result, { status: response.status });
-    if (setCookie) {
-      nextResponse.headers.set("Set-Cookie", setCookie);
-    }
 
-    return nextResponse;
+    const nextResponse = NextResponse.json(
+      { success: true, data: result },
+      { status: response.status }
+    );
+    return clearAuthCookies(nextResponse);
   } catch (error) {
-    return NextResponse.json(
+    const errorResponse = NextResponse.json(
       { success: false, error: "Failed to process Logout request" },
       { status: 500 }
     );
+    return clearAuthCookies(errorResponse);
   }
 }

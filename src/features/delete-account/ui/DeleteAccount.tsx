@@ -12,9 +12,20 @@ import {
 import { Button } from "@/components/ui/button";
 import { useDeleteAccount } from "@/entities";
 import { AlertTriangle, Trash2, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export const DeleteAccount = () => {
   const mutation = useDeleteAccount();
+  const router = useRouter();
+
+  const handleDeleteAccount = async () => {
+    try {
+      await mutation.mutateAsync();
+      router.push("/signin");
+    } catch (error) {
+      console.error("회원탈퇴 실패:", error);
+    }
+  };
 
   return (
     <AlertDialog>
@@ -55,7 +66,7 @@ export const DeleteAccount = () => {
             취소
           </AlertDialogCancel>
           <Button
-            onClick={() => mutation.mutateAsync()}
+            onClick={handleDeleteAccount}
             className="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors disabled:opacity-50"
           >
             <Trash2 className="w-4 h-4 mr-2" />

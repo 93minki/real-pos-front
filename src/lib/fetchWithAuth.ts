@@ -10,6 +10,7 @@ export async function fetchWithAuth(input: RequestInfo, init?: RequestInit) {
     if (refreshRes.ok && refreshData.code === "OK") {
       res = await fetch(input, { ...init, credentials: "include" });
     } else {
+      window.location.href = "/signin";
       throw new Error("로그인 필요");
     }
   }
