@@ -1,4 +1,4 @@
-import { clearAuthCookies } from "@/lib/clearAuthCookies";
+import { clearAuthCookies } from "@/shared/lib/clearAuthCookies";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {

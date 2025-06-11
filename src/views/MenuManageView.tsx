@@ -1,7 +1,6 @@
-// import { MenuView } from "@/components/pages/order-cart/menu/MenuView";
 import { MenuCart, MenuList } from "@/widgets";
 
-const MenuManage = () => {
+export const MenuManageView = () => {
   return (
     <div className="flex w-full h-full">
       <MenuList />
@@ -9,5 +8,3 @@ const MenuManage = () => {
     </div>
   );
 };
-
-export default MenuManage;

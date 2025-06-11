@@ -1,9 +1,9 @@
 "use client";
-import { fetchWithAuth } from "@/lib/fetchWithAuth";
+import { fetchWithAuth } from "@/shared/lib/fetchWithAuth";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Logout } from "../pages/auth/logout/Logout";
+import { Logout } from "../../features/auth/logout/ui/Logout";
 
 export default function NavigationBar() {
   const pathname = usePathname();

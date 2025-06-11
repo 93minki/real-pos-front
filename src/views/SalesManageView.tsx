@@ -3,7 +3,7 @@ import { useMonthlyOrderList } from "@/entities";
 import { Calendar, ConfirmedOrderList, OrderPieChart } from "@/widgets";
 import { useEffect, useState } from "react";
 
-const SalesManage = () => {
+export const SalesManageView = () => {
   const [year, setYear] = useState(0);
   const [month, setMonth] = useState(0);
   const [date, setDate] = useState(0);
@@ -47,5 +47,3 @@ const SalesManage = () => {
     </div>
   );
 };
-
-export default SalesManage;

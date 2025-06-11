@@ -1,4 +1,4 @@
-import { fetchWithAuth } from "@/lib/fetchWithAuth";
+import { fetchWithAuth } from "@/shared/lib/fetchWithAuth";
 import {
   DeleteAccountResponseType,
   UpdateUserInfoResponseType,

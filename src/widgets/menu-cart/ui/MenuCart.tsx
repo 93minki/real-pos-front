@@ -1,6 +1,6 @@
 "use client";
 import { CartList, PlaceOrderButton } from "@/features";
-import { useOrderStore } from "@/lib/order-store";
+import { useOrderStore } from "@/shared/lib/order-store";
 
 export const MenuCart = () => {
   const { orderItems } = useOrderStore((state) => state);

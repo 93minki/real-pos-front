@@ -2,7 +2,7 @@
 
 import { MenuCard, useMenuList } from "@/entities";
 import { AddMenuDialog, EditMenuDialog, ToggleEditMode } from "@/features";
-import { useOrderStore } from "@/lib/order-store";
+import { useOrderStore } from "@/shared/lib/order-store";
 import { MenuItemType } from "@/shared/types";
 import { useState } from "react";
 

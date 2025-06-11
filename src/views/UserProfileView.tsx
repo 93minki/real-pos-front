@@ -4,7 +4,7 @@ import { useUserInfo } from "@/entities";
 import { DeleteAccount, UpdateProfile } from "@/features";
 import { Mail, Phone, Settings, Shield, Store, User } from "lucide-react";
 
-const UserProfile = () => {
+export const UserProfileView = () => {
   const { data, isLoading, isFetching } = useUserInfo();
 
   if (isLoading || isFetching) {
@@ -124,5 +124,3 @@ const UserProfile = () => {
     </div>
   );
 };
-
-export default UserProfile;

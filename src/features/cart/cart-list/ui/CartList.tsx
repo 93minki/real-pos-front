@@ -1,5 +1,5 @@
 import { CartItem } from "@/entities";
-import { OrderItemsType, useOrderStore } from "@/lib/order-store";
+import { OrderItemsType, useOrderStore } from "@/shared/lib/order-store";
 
 interface CartListProps {
   orderItems: OrderItemsType[];

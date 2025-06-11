@@ -1,9 +1,9 @@
 "use client";
 import { useTodayOrderList } from "@/entities";
-import { useOrderSSE } from "@/lib/useOrderSSE";
+import { useOrderSSE } from "@/shared/lib/useOrderSSE";
 import { ConfirmedOrderList, InprogressOrderList } from "@/widgets";
 
-const OrderManage = () => {
+export const OrderManageView = () => {
   useOrderSSE();
   const { data: orderList, isPending, isFetching } = useTodayOrderList();
 
@@ -28,5 +28,3 @@ const OrderManage = () => {
     </div>
   );
 };
-
-export default OrderManage;
