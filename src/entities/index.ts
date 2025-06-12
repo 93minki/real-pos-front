@@ -23,3 +23,5 @@ export {
   useUpdateUserInfo,
   useUserInfo,
 } from "@/entities/user/model/user-queries";
+export { userAPI } from "./user/model/user-api";
+export type { SigninFormData, SignupFormData, UserInfo } from "./user/types";

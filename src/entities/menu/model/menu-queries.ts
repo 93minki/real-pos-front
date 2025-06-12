@@ -1,5 +1,8 @@
-import { menuAPI } from "@/shared/api/menu";
-import { CreateMenuRequestType, UpdateMenuRequestType } from "@/shared/types";
+import {
+  menuAPI,
+  type CreateMenuRequestType,
+  type UpdateMenuRequestType,
+} from "@/shared";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const MENU_QUERY_KEYS = {

@@ -13,5 +13,14 @@ export type {
   EditOrderResponseType,
   GetOrderListResponseType,
   OrderItemType,
+  OrderStoreItemType,
   OrderType,
 } from "./order-types";
+
+export type {
+  DeleteAccountResponseType,
+  UpdateUserInfoResponseType,
+  UpdateUserInfoType,
+  UserInfoResponseType,
+  UserInfoType,
+} from "./user-types";

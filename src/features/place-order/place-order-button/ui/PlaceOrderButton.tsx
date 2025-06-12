@@ -1,6 +1,5 @@
 "use client";
-import { fetchWithAuth } from "@/shared/lib/fetchWithAuth";
-import { useOrderStore } from "@/shared/lib/order-store";
+import { fetchWithAuth, useOrderStore } from "@/shared";
 
 interface PlaceOrderButtonProps {
   className?: string;

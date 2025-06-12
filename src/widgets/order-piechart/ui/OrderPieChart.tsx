@@ -1,12 +1,12 @@
 "use client";
 
+import { OrderType } from "@/shared/types";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
-import { OrderType } from "@/shared/types";
+} from "@/shared/ui/chart";
 import { useEffect, useState } from "react";
 import { LabelList, Pie, PieChart } from "recharts";
 

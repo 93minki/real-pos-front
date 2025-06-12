@@ -1,3 +1,4 @@
+import { useDeleteOrder } from "@/entities";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,9 +9,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { useDeleteOrder } from "@/entities";
+} from "@/shared/ui/alert-dialog";
+import { Button } from "@/shared/ui/button";
 
 interface DeleteOrderButtonProps {
   orderId: string;

@@ -1,14 +1,15 @@
-import { userAPI } from "@/shared/api/user";
+import { userAPI } from "@/shared";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const USER_QUERY_KEYS = {
   user: ["user"] as const,
 };
 
-export const useUserInfo = () => {
+export const useUserInfo = (enabled: boolean = true) => {
   return useQuery({
     queryKey: USER_QUERY_KEYS.user,
     queryFn: userAPI.getUserInfo,
+    enabled,
   });
 };
 

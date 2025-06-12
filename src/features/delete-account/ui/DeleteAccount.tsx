@@ -1,4 +1,5 @@
 "use client";
+import { useDeleteAccount } from "@/entities";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -8,9 +9,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { useDeleteAccount } from "@/entities";
+} from "@/shared/ui/alert-dialog";
+import { Button } from "@/shared/ui/button";
 import { AlertTriangle, Trash2, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 

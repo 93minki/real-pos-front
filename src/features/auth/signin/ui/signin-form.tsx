@@ -1,7 +1,7 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { SigninFormData, userAPI } from "@/entities/user";
-import { FormField } from "@/shared/ui/form-field/form-field";
+import { SigninFormData, userAPI } from "@/entities";
+import { FormField } from "@/shared";
+import { Button } from "@/shared/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";

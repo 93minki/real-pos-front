@@ -1,8 +1,8 @@
 import { CartItem } from "@/entities";
-import { OrderItemsType, useOrderStore } from "@/shared/lib/order-store";
+import { OrderStoreItemType, useOrderStore } from "@/shared";
 
 interface CartListProps {
-  orderItems: OrderItemsType[];
+  orderItems: OrderStoreItemType[];
 }
 
 export const CartList = ({ orderItems }: CartListProps) => {

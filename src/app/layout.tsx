@@ -1,5 +1,5 @@
-import NavigationBar from "@/components/ui/NavigationBar";
-import { ReactQueryClientProvider } from "@/provider/ReactQueryClientProvider";
+import { ReactQueryClientProvider } from "@/provider";
+import { NavigationBar } from "@/widgets";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";

@@ -1,5 +1,4 @@
-import { trimOrderTime } from "@/shared/lib/utils";
-import { OrderType } from "@/shared/types";
+import { type OrderType, trimOrderTime } from "@/shared";
 
 interface OrderCardProps {
   order: OrderType;

@@ -1,15 +1,15 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import { useUpdateUserInfo } from "@/entities";
+import { UserInfoType } from "@/shared";
+import { Button } from "@/shared/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { useUpdateUserInfo } from "@/entities";
-import { UserInfoType } from "@/shared/types/user-types";
+} from "@/shared/ui/dialog";
+import { Label } from "@/shared/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Edit3, Save, X } from "lucide-react";
 import { useState } from "react";

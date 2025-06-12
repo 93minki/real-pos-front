@@ -1,6 +1,6 @@
-export { MenuManageView } from "./MenuManageView";
-export { OrderManageView } from "./OrderManageView";
-export { SalesManageView } from "./SalesManageView";
-export { SigninView } from "./SigninView";
-export { SignupView } from "./SignupView";
-export { UserProfileView } from "./UserProfileView";
+export { MenuManageView } from "./MenuManageView/MenuManageView";
+export { OrderManageView } from "./OrderManageView/OrderManageView";
+export { SalesManageView } from "./SalesManageView/SalesManageView";
+export { SigninView } from "./SigninView/SigninView";
+export { SignupView } from "./SignupView/SignupView";
+export { UserProfileView } from "./UserProfileView/UserProfileView";

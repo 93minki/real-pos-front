@@ -1,4 +1,4 @@
-import { clearAuthCookies } from "@/shared/lib/clearAuthCookies";
+import { clearAuthCookies } from "@/shared";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(request: NextRequest) {

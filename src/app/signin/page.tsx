@@ -1,4 +1,4 @@
-import { SigninView } from "@/views/SigninView";
+import { SigninView } from "@/views";
 
 export default function SignInPage() {
   return <SigninView />;

@@ -15,6 +15,13 @@ export type OrderItemType = {
   };
 };
 
+export type OrderStoreItemType = {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+};
+
 export type OrderType = {
   id: number;
   status: "IN_PROGRESS" | "COMPLETED";

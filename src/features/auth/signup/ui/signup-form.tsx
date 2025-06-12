@@ -1,9 +1,7 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { SignupFormData, userAPI } from "@/entities/user";
-import { addPhonePrefix } from "@/shared/lib";
-import { FormField } from "@/shared/ui/form-field/form-field";
-import { PhoneInput } from "@/shared/ui/phone-input/phone-input";
+import { SignupFormData, userAPI } from "@/entities";
+import { addPhonePrefix, FormField, PhoneInput } from "@/shared";
+import { Button } from "@/shared/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";

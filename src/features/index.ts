@@ -11,3 +11,7 @@ export { EditOrderDialog } from "./order-manage/edit-order/ui/EditOrderDialog";
 export { DeleteAccount } from "./delete-account/ui/DeleteAccount";
 export { PlaceOrderButton } from "./place-order/place-order-button/ui/PlaceOrderButton";
 export { UpdateProfile } from "./update-profile-dialog/ui/UpdateProfileDialog";
+
+export { Logout } from "./auth/logout/ui/Logout";
+export { SigninForm } from "./auth/signin/ui/signin-form";
+export { SignupForm } from "./auth/signup/ui/signup-form";

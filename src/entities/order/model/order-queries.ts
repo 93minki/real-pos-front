@@ -1,5 +1,4 @@
-import { orderAPI } from "@/shared/api/order";
-import { OrderItemType, OrderType } from "@/shared/types";
+import { orderAPI, type OrderItemType, type OrderType } from "@/shared";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const ORDER_QUERY_KEYS = {

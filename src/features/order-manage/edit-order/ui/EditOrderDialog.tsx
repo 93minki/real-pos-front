@@ -1,5 +1,7 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import { useEditOrder, useMenuList } from "@/entities";
+import { MenuItemType, OrderItemType } from "@/shared";
+import { Button } from "@/shared/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -9,9 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { useEditOrder, useMenuList } from "@/entities";
-import { MenuItemType, OrderItemType } from "@/shared/types";
+} from "@/shared/ui/dialog";
 import { FormEvent, useState } from "react";
 
 interface EditOrderDialogProps {

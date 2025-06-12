@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchWithAuth } from "@/shared/lib/fetchWithAuth";
+import { fetchWithAuth } from "@/shared";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 

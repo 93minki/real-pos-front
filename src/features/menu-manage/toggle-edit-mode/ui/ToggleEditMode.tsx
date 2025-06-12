@@ -1,6 +1,6 @@
 "use clinet";
 
-import { Toggle } from "@/components/ui/toggle";
+import { Toggle } from "@/shared/ui/toggle";
 import { Settings } from "lucide-react";
 
 interface ToggleEditModeProps {

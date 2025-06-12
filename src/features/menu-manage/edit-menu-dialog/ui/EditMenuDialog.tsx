@@ -1,18 +1,18 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { useUpdateMenu } from "@/entities";
+import { MenuItemType, UpdateMenuRequestType } from "@/shared";
+import { Button } from "@/shared/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
-import { useUpdateMenu } from "@/entities";
-import { MenuItemType, UpdateMenuRequestType } from "@/shared/types";
+} from "@/shared/ui/dialog";
+import { Input } from "@/shared/ui/input";
+import { Label } from "@/shared/ui/label";
+import { Switch } from "@/shared/ui/switch";
+import { Textarea } from "@/shared/ui/textarea";
 import { useEffect, useState } from "react";
 
 interface EditMenuDialogProps {

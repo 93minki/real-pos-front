@@ -1,19 +1,13 @@
 import { create } from "zustand";
-
-export type OrderItemsType = {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-};
+import { OrderStoreItemType } from "../types";
 
 export type OrderState = {
-  orderItems: OrderItemsType[];
+  orderItems: OrderStoreItemType[];
   totalPrice: number;
 };
 
 export type OrderActions = {
-  addOrder: (item: OrderItemsType) => void;
+  addOrder: (item: OrderStoreItemType) => void;
   deleteOrder: (id: number) => void;
   increaseOrderCount: (id: number) => void;
   decreaseOrderCount: (id: number) => void;

@@ -1,4 +1,5 @@
-import { fetchWithAuth } from "@/shared/lib/fetchWithAuth";
+"use client";
+import { fetchWithAuth } from "@/shared";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 

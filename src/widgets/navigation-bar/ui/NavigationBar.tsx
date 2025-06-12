@@ -1,23 +1,14 @@
 "use client";
-import { fetchWithAuth } from "@/shared/lib/fetchWithAuth";
-import { useQuery } from "@tanstack/react-query";
+import { useUserInfo } from "@/entities";
+import { Logout } from "@/features";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Logout } from "../../features/auth/logout/ui/Logout";
 
-export default function NavigationBar() {
+export const NavigationBar = () => {
   const pathname = usePathname();
   const isAuthPage = pathname === "/signin" || pathname === "/signup";
 
-  const { data } = useQuery({
-    queryKey: ["user"],
-    queryFn: async () => {
-      const fetchData = await fetchWithAuth("/api/user");
-      const response = await fetchData.json();
-      return response.data;
-    },
-    enabled: !isAuthPage,
-  });
+  const { data } = useUserInfo(!isAuthPage);
 
   if (!data) return null;
 
@@ -60,4 +51,4 @@ export default function NavigationBar() {
       <Logout />
     </nav>
   );
-}
+};
