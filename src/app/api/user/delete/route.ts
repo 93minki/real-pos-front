@@ -1,3 +1,4 @@
+import { clearAuthCookies } from "@/shared";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(request: NextRequest) {
@@ -18,17 +19,19 @@ export async function DELETE(request: NextRequest) {
         "Content-Type": "application/json",
         ...(cookieHeader && { Cookie: cookieHeader }),
       },
+      credentials: "include",
     });
-    const data = await response.json();
-
-    return NextResponse.json(
-      { success: data.ok, data },
+    const result = await response.json();
+    const nextResponse = NextResponse.json(
+      { success: true, data: result },
       { status: response.status }
     );
+    return clearAuthCookies(nextResponse);
   } catch (error) {
-    return NextResponse.json(
+    const errorResponse = NextResponse.json(
       { success: false, error: "Failed to process DELETE request" },
       { status: 500 }
     );
+    return clearAuthCookies(errorResponse);
   }
 }

@@ -3,7 +3,5 @@ export default function SigninLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className="flex justify-center items-center h-svh">{children}</div>
-  );
+  return <div className="relative overflow-hidden">{children}</div>;
 }

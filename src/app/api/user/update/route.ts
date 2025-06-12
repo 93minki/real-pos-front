@@ -23,7 +23,7 @@ export async function PUT(request: NextRequest) {
     const data = await response.json();
 
     return NextResponse.json(
-      { success: data.ok, data },
+      { success: true, data },
       { status: response.status }
     );
   } catch (error) {

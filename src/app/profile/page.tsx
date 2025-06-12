@@ -1,5 +1,5 @@
-import UserProfile from "@/components/pages/profile/UserProfile";
+import { UserProfileView } from "@/views";
 
 export default function ProfilePage() {
-  return <UserProfile />;
+  return <UserProfileView />;
 }

@@ -19,7 +19,10 @@ export async function GET(request: NextRequest) {
       },
     });
     const data = await response.json();
-    return NextResponse.json({ success: true, data });
+    return NextResponse.json(~
+      { success: true, data },
+      { status: response.status }
+    );
   } catch (error) {
     console.error("GET request error:", error);
     return NextResponse.json(

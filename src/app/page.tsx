@@ -1,13 +1,9 @@
-import { MenuView } from "@/components/pages/order-cart/menu/MenuView";
-import { OrderView } from "@/components/pages/order-cart/order/OrderView";
+import { MenuManageView } from "@/views";
 
 export default function Home() {
   return (
     <main className="flex flex-col h-screen items-center justify-between p-24 bg-[#F2F2F0] ">
-      <div className="flex w-full h-full ">
-        <MenuView />
-        <OrderView />
-      </div>
+      <MenuManageView />
     </main>
   );
 }
