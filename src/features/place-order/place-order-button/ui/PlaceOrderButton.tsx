@@ -1,5 +1,6 @@
 "use client";
 import { fetchWithAuth, useOrderStore } from "@/shared";
+import { toast } from "@/shared/hooks/use-toast";
 
 interface PlaceOrderButtonProps {
   isEnabled: boolean;
@@ -16,7 +17,7 @@ export const PlaceOrderButton = ({ isEnabled }: PlaceOrderButtonProps) => {
       };
     });
 
-    await fetchWithAuth("/api/order", {
+    const response = await fetchWithAuth("/api/order", {
       method: "POST",
       body: JSON.stringify({
         items,
@@ -26,6 +27,23 @@ export const PlaceOrderButton = ({ isEnabled }: PlaceOrderButtonProps) => {
         "Content-Type": "application/json",
       },
     });
+    console.log(response.ok);
+    if (!response.ok) {
+      toast({
+        title: "주문 실패",
+        description: "주문 실패.",
+        variant: "destructive",
+        duration: 1000,
+      });
+      return;
+    } else {
+      toast({
+        title: "주문 성공",
+        description: "주문 성공.",
+        variant: "default",
+        duration: 1000,
+      });
+    }
 
     reset();
   };

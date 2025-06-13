@@ -119,6 +119,7 @@ export const UpdateProfile = ({ userInfo }: UpdateProfileProps) => {
       await mutation.mutateAsync(updateData);
       reset();
     } catch (error) {
+      console.log(error);
       alert("회원정보 수정 중 오류가 발생했습니다.");
     }
   };

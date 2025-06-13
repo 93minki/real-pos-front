@@ -1,4 +1,5 @@
 import { orderAPI, type OrderItemType, type OrderType } from "@/shared";
+import { toast } from "@/shared/hooks/use-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const ORDER_QUERY_KEYS = {
@@ -34,6 +35,18 @@ export const useEditOrder = () => {
     }) => orderAPI.editOrder({ orderId, editOrderItem }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ORDER_QUERY_KEYS.orderList });
+      toast({
+        title: "주문 수정 성공",
+        description: "주문 수정 성공했습니다.",
+        variant: "default",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "주문 수정 실패",
+        description: "주문 수정 실패했습니다.",
+        variant: "destructive",
+      });
     },
   });
 };
@@ -73,10 +86,18 @@ export const useConfirmOrder = () => {
         ORDER_QUERY_KEYS.orderList,
         context?.previousData
       );
+      toast({
+        title: "주문 완료 실패",
+        description: "주문 완료 실패했습니다.",
+        variant: "destructive",
+      });
     },
-    onSettled: () => {
-      // 성공/실패와 관계없이 최종적으로 서버와 동기화
-      queryClient.invalidateQueries({ queryKey: ORDER_QUERY_KEYS.orderList });
+    onSuccess: () => {
+      toast({
+        title: "주문 완료 성공",
+        description: "주문 완료 성공했습니다.",
+        variant: "default",
+      });
     },
   });
 };
@@ -88,6 +109,18 @@ export const useDeleteOrder = () => {
     mutationFn: (orderId: string) => orderAPI.deleteOrder(orderId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ORDER_QUERY_KEYS.orderList });
+      toast({
+        title: "주문 삭제 성공",
+        description: "주문 삭제 성공했습니다.",
+        variant: "default",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "주문 삭제 실패",
+        description: "주문 삭제 실패했습니다.",
+        variant: "destructive",
+      });
     },
   });
 };

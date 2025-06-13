@@ -1,4 +1,5 @@
 import { userAPI } from "@/shared";
+import { toast } from "@/shared/hooks/use-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const USER_QUERY_KEYS = {
@@ -18,8 +19,19 @@ export const useUpdateUserInfo = () => {
   return useMutation({
     mutationFn: userAPI.updateUserInfo,
     onSuccess: () => {
-      alert("회원정보 수정이 완료되었습니다.");
+      toast({
+        title: "회원정보 수정 성공",
+        description: "회원정보 수정 성공했습니다.",
+        variant: "default",
+      });
       queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.user });
+    },
+    onError: () => {
+      toast({
+        title: "회원정보 수정 실패",
+        description: "회원정보 수정 실패했습니다.",
+        variant: "destructive",
+      });
     },
   });
 };
