@@ -5,9 +5,9 @@ import { ConfirmedOrderList, InprogressOrderList } from "@/widgets";
 
 export const OrderManageView = () => {
   useOrderSSE();
-  const { data: orderList, isPending, isFetching } = useTodayOrderList();
+  const { data: orderList, isPending } = useTodayOrderList();
 
-  if (isPending || isFetching) {
+  if (isPending) {
     return (
       <div className="flex w-full h-full gap-4 items-center justify-center">
         <div>Loading...</div>

@@ -11,7 +11,7 @@ export const MenuCart = () => {
         <span className="text-2xl">주문 목록</span>
       </div>
       <CartList orderItems={orderItems} />
-      <PlaceOrderButton />
+      <PlaceOrderButton isEnabled={orderItems.length > 0} />
     </div>
   );
 };
