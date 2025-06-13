@@ -1,4 +1,5 @@
 import { ReactQueryClientProvider } from "@/provider";
+import { Toaster } from "@/shared/ui/toaster";
 import { NavigationBar } from "@/widgets";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { Metadata } from "next";
@@ -24,6 +25,7 @@ export default async function RootLayout({
         suppressHydrationWarning={true}
       >
         <ReactQueryClientProvider>
+          <Toaster />
           <ReactQueryDevtools initialIsOpen={false} />
           <NavigationBar />
           {children}
